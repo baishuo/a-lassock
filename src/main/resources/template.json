@@ -1,0 +1,124 @@
+{
+	"courses":[
+		{
+			"id":"0000001",
+			"type":"syslog",
+			"name":"syslog-udp/514",
+			"subType":"udp",
+			"basketName":"kafkamemory",
+			"parameters":{
+				"port":"514"
+			}	
+		}
+	],
+	"template":{
+		"telnet":{
+			"type":"telnet2",
+			"basketName":"filedown",
+			"runType":"CRON",
+			"discription" : "直接登录采集",
+			"parameters":{
+				"brand":"cisco",
+				"deviceType":"cisco"
+			}
+		},
+		"jump1":{
+			"type":"telnet2",
+			"basketName":"filedown",
+			"runType":"TIMER",
+			"period":"3000000",
+			"discription" : "跳转登录采集",
+			"parameters":{
+				"jumped" : [
+					"10.10.255.1;cisco"
+						],
+				"brand":"cisco",
+				"deviceType":"cisco"
+			}
+		},
+		"jump2":{
+			"type":"telnet2",
+			"basketName":"filedown",
+			"runType":"TIMER",
+			"period":"3000000",
+			"discription" : "跳转登录采集" ,
+			"parameters":{
+				"jumped" : [
+					"10.10.255.1;cisco",
+					"10.10.255.129;cisco;cisco"
+						],
+				"brand":"cisco",
+				"deviceType":"cisco"
+			}
+		},
+		"flow":{
+			"discription":"流量采集",
+			"type":"snmp",
+			"subType":"flow",
+			"basketName":"kafkamemory",
+			"runType":"SCHEDULE",
+			"period":"60000",
+			"parameters":{
+				"devType":"cisco",
+				"protocol":"udp",
+				"community":"anq.tivoli92",
+				"version":"1",
+				"oids" :[
+					"1.3.6.1.2.1.4.20.1.2",
+					"1.3.6.1.2.1.4.20.1.3",
+					"1.3.6.1.2.1.2.2.1.10",
+					"1.3.6.1.2.1.2.2.1.11",
+					"1.3.6.1.2.1.2.2.1.16",
+					"1.3.6.1.2.1.2.2.1.17"
+				]
+			}	
+		},
+		"cpu":{
+			"type":"snmp",
+			"subType":"cpu",
+			"basketName":"kafkamemory",
+			"runType":"SCHEDULE",
+			"period":"60000",
+			"parameters":{
+				"devType":"cisco",
+				"protocol":"udp",
+				"version":"1",
+				"oids" :[
+					"1.3.6.1.4.1.9.9.109.1.1.1.1.5.1"
+				]
+			}	
+		},
+		"memory":{
+			"type":"snmp",
+			"subType":"memory",
+			"basketName":"kafkamemory",
+			"runType":"SCHEDULE",
+			"period":"60000",
+			"parameters":{
+				"devType":"cisco",
+				"protocol":"udp",
+				"version":"1",
+				"oids" :[
+					"1.3.6.1.4.1.9.9.48.1.1.1.5.1",
+					"1.3.6.1.4.1.9.9.48.1.1.1.6.1"
+				]
+			}	
+		},
+		"temperature":{
+			"type":"snmp",
+			"subType":"temperature",
+			"basketName":"kafkamemory",
+			"runType":"SCHEDULE",
+			"period":"60000",
+			"parameters":{
+				"trap":"false",
+				"devType":"cisco",
+				"protocol":"udp",
+				"version":"1",
+				"oids" :[
+					"1.3.6.1.4.1.9.9.13.1.3.1.3.1"
+				]
+			}	
+		}
+	}
+}

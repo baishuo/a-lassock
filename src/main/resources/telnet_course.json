@@ -1,0 +1,188 @@
+{
+	"courses":[
+	],
+	"commServers":[
+		{
+			"host":[
+				"h04-a13-sec-hx7606-1,10.10.254.2,cisco,cisco,7606hpltoxa,yes,yes,no,show run;show arp;show cdp neighbors detail",
+				"j03-09-sec-hx7606-2,10.10.254.6,cisco,cisco,7606jgtoxa,yes,yes,no,show run;show arp;show cdp neighbors detail",
+				"j03-07-kf-hx2801-1YY,193.250.1.200,cisco,cisco,dc.cisco,yes,yes,no,show run;show arp;show cdp neighbors detail",
+				"h04-a09-sec-qg7606-1,10.10.254.230,cisco,cisco,7606qgfh,yes,yes,no,show run;show arp;show cdp neighbors detail",
+				"h04-a11-sec-bjzh7609-2,10.10.254.251,cisco,cisco,7609bjzhh,yes,yes,no,show run;show arp;show cdp neighbors detail",
+				"j03-09-sec-bjzh7606-1,10.10.254.233,cisco,cisco,7606bjzhh,yes,yes,no,show run;show arp;show cdp neighbors detail",
+				"h04-a07-unsec-2gds3945e-1,10.96.0.37,cisco,cisco,3945e.disai,no,no,yes,show run;show arp;show cdp neighbors detail",
+				"h04-a07-unsec-2gds3945e-2,10.96.0.36,cisco,cisco,3945e.disai,no,no,yes,show run;show arp;show cdp neighbors detail",
+				"h04-a09-unsec-DS2801-1,10.128.0.13,cisco,cisco,2801disai,no,no,yes,show run;show arp;show cdp neighbors detail",
+				"h04-a12-sec-2gatm7204-1,10.96.0.133,cisco,cisco,2gatmrouter,no,yes,no,show run;show arp;show cdp neighbors detail",
+				"h04-a12-sec-2gatm7204-2,10.96.0.132,cisco,cisco,2gatmrouter,no,yes,no,show run;show arp;show cdp neighbors detail",
+				"h04-a12-unsec-yinlian3845-1,10.10.254.235,cisco,cisco,3845yinlian,no,no,yes,show run;show arp;show cdp neighbors detail",
+				"j03-03-unsec-yinlian2911-1,10.10.254.250,cisco,cisco,2911yinlian,no,no,yes,show run;show arp;show cdp neighbors detail",
+				"j03-09-unsec-yinlian2811-1,10.10.254.206,cisco,cisco,2811yinlian,no,no,yes,show run;show arp;show cdp neighbors detail",
+				"h04-a14-wlw-wxpos3945-1,10.96.1.168,cisco,cisco,3945pos,yes,yes,no,show run;show arp;show cdp neighbors detail",
+				"h04-a14-wlw-wxpos3945-2,10.96.1.167,cisco,cisco,3945pos,yes,yes,no,show run;show arp;show cdp neighbors detail",
+				"h04-a11-sec-atm7204-1,10.96.1.7,cisco,cisco,7204.atm,yes,yes,no,show run;show arp;show cdp neighbors detail"
+			],
+			"template":"router"
+		},
+		{
+			"host":[
+				"h04-a01-sec-hx6509-1,10.10.255.1,cisco,cisco,dc.cisco,yes,yes,no,show run;show mac-address-table;show arp;show cdp neighbors detail",
+				"h04-a02-sec-hx6509-2,10.10.255.2,cisco,cisco,dc.cisco,yes,yes,no,show run;show mac-address-table;show arp;show cdp neighbors detail",
+				"h11-c17-sec-hx6509-3,10.10.255.7,cisco,cisco,6509anquan,no,yes,no,show run;show mac-address-table;show arp;show cdp neighbors detail",
+				"h11-c19-sec-hx6509-4,10.10.255.8,cisco,cisco,6509anquan,no,yes,no,show run;show mac-address-table;show arp;show cdp neighbors detail",
+				"j03-08-sec-hx6509-1,10.10.255.190,cisco,cisco,dc.cisco,no,yes,no,show run;show mac-address-table;show arp;show cdp neighbors detail",
+				"j03-01-kf-hx4948-1,10.10.255.201,cisco,cisco,dc.cisco,yes,yes,no,show run;show mac-address-table;show arp;show cdp neighbors detail",
+				"j03-01-kf-hx4948-2,10.10.255.202,cisco,cisco,dc.cisco,yes,yes,no,show run;show mac-address-table;show arp;show cdp neighbors detail",
+				"j04-01-kf-hj3750-1,10.10.255.210,cisco,cisco,dc.cisco,yes,yes,no,show run;show mac address-table;show arp;show cdp neighbors detail",
+				"j04-02-kf-jr2960-1,10.10.255.203,cisco,cisco,dc.cisco,yes,yes,no,show run;show mac-address-table;show arp;show cdp neighbors detail",
+				"j04-02-kf-jr2960-2,10.10.255.204,cisco,cisco,dc.cisco,yes,yes,no,show run;show mac-address-table;show arp;show cdp neighbors detail",
+				"j04-02-kf-jr2960-3,10.10.255.205,cisco,cisco,dc.cisco,yes,yes,no,show run;show mac-address-table;show arp;show cdp neighbors detail",
+				"j04-01-kf-jr2960-4,10.10.255.208,cisco,cisco,dc.cisco,no,yes,no,show run;show mac address-table;show arp;show cdp neighbors detail",
+				"j04-01-kf-jr2960-5,10.10.255.209,cisco,cisco,dc.cisco,yes,yes,no,show run;show mac address-table;show arp;show cdp neighbors detail",
+				"JGM-C2960-3FZuoXi-1,10.10.255.215,cisco,cisco,dc.cisco,yes,yes,no,show run;show mac address-table;show arp;show cdp neighbors detail",
+				"j03-09-kf-hx2921-1,10.10.254.217,cisco,cisco,dc.cisco,no,yes,no,show run;show mac-address-table;show arp;show cdp neighbors detail",
+				"j03-09-kf-hx2921-2XA,10.10.254.218,cisco,cisco,dc.cisco,no,yes,no,show run;show mac-address-table;show arp;show cdp neighbors detail",
+				"h04-a15-kf-hx2921-1,10.10.254.219,cisco,cisco,dc.cisco,no,yes,no,show run;show mac-address-table;show arp;show cdp neighbors detail",
+				"h04-a07-unsec-2gds2628g-1,10.96.0.34,cisco,cisco,star,no,no,yes,show run;show mac-address-table;show arp;show cdp neighbors detail",
+				"h04-a07-unsec-2gds2628g-2,10.96.0.33,cisco,cisco,star,no,no,yes,show run;show mac-address-table;show arp;show cdp neighbors detail",
+				"h04-a12-sec-2gatm3560x-1,10.96.0.142,cisco,cisco,2gatmswi,no,yes,no,show run;show mac address-table;show arp;show cdp neighbors detail",
+				"h04-a12-sec-2gatm3560x-2,10.96.0.141,cisco,cisco,2gatmswi,no,yes,no,show run;show mac address-table;show arp;show cdp neighbors detail",
+				"h04-c01-secwxdmz-wx3560x-1,10.10.255.9,cisco,cisco,swxdmzswi,yes,yes,no,show run;show mac address-table;show arp;show cdp neighbors detail",
+				"h04-c01-secwxdmz-wx3560x-2,10.10.255.10,cisco,cisco,swxdmzswi,yes,yes,no,show run;show mac address-table;show arp;show cdp neighbors detail",
+				"h11-c27-dmz-hx3750-1,10.10.255.188,,cisco,dc.cisco,no,yes,no,show run;show mac-address-table;show arp;show cdp neighbors detail",
+				"h11-c27-dmz-hx4948-1,10.10.255.187,,cisco,dc.cisco,no,yes,no,show run;show mac-address-table;show arp;show cdp neighbors detail",
+				"ZH_UNSEC_S3750_HX_2,10.96.255.250,cisco,cisco,cisco,no,no,yes,show run;show mac address-table;show arp;show cdp neighbors detail",
+				"ZH-UNSEC-S3750-DWDM,10.96.255.3,cisco,cisco,cisco,no,no,yes,show run;show mac address-table;show arp;show cdp neighbors detail",
+				"ZH_UNSEC_S3750_HX_1,10.96.255.249,cisco,cisco,cisco,no,no,yes,show run;show mac address-table;show arp;show cdp neighbors detail"
+			],
+			"template":""
+		}
+	],
+	"snmpServers":[
+		{
+			"host":[
+			],
+			"template":"telnet"
+		}
+	],
+	
+	"template":{
+		"telnet":{
+			"type":"telnet2",
+			"basketName":"filedown",
+			"runType":"SCHEDULE",
+			"period":"3000000",
+			"discription" : "直接登录采集",
+			"parameters":{
+				"brand":"cisco",
+				"deviceType":"cisco"
+			}
+		},
+		"jump1":{
+			"type":"telnet2",
+			"basketName":"filedown",
+			"runType":"TIMER",
+			"period":"3000000",
+			"discription" : "跳转登录采集" ,
+			"parameters":{
+				"jumped" : [
+					"10.10.255.1;cisco"
+						],
+				"brand":"cisco",
+				"deviceType":"cisco"
+			}
+		},
+		"jump2":{
+			"type":"telnet2",
+			"basketName":"filedown",
+			"runType":"TIMER",
+			"period":"3000000",
+			"discription" : "跳转登录采集" ,
+			"parameters":{
+				"jumped" : [
+					"10.10.255.1;cisco",
+					"10.10.255.129;cisco;cisco"
+						],
+				"brand":"cisco",
+				"deviceType":"cisco"
+			}
+		},
+		"flow":{
+			"discription":"流量采集",
+			"type":"snmp",
+			"subType":"flow",
+			"basketName":"simple",
+			"runType":"TIMER",
+			"period":"10000",
+			"parameters":{
+				"devType":"cisco",
+				"protocol":"udp",
+				"community":"public",
+				"version":"1",
+				"oids" :[
+					"1.3.6.1.2.1.4.20.1.2",
+					"1.3.6.1.2.1.4.20.1.3",
+					"1.3.6.1.2.1.2.2.1.10",
+					"1.3.6.1.2.1.2.2.1.11",
+					"1.3.6.1.2.1.2.2.1.16",
+					"1.3.6.1.2.1.2.2.1.17"
+				]
+			}	
+		},
+		"cpu":{
+			"type":"snmp",
+			"subType":"cpu",
+			"basketName":"simple",
+			"runType":"TIMER",
+			"period":"10000",
+			"parameters":{
+				"devType":"cisco",
+				"protocol":"udp",
+				"community":"public",
+				"version":"1",
+				"period":10000,
+				"oids" :[
+					"1.3.6.1.4.1.2021.10.1.3.1"
+				]
+			}	
+		},
+		"memory":{
+			"type":"snmp",
+			"subType":"memory",
+			"basketName":"simple",
+			"runType":"TIMER",
+			"period":"10000",
+			"parameters":{
+				"devType":"cisco",
+				"protocol":"udp",
+				"community":"public",
+				"version":"1",
+				"period":10000,
+				"oids" :[
+					"1.3.6.1.2.1.25.2.3.1.6.1",
+					"1.3.6.1.2.1.25.2.2.0"
+				]
+			}	
+		},
+		"temperature":{
+			"type":"snmp",
+			"subType":"temperature",
+			"basketName":"simple",
+			"runType":"TIMER",
+			"period":"10000",
+			"parameters":{
+				"trap":"false",
+				"devType":"cisco",
+				"protocol":"udp",
+				"port":"161",
+				"host":"aleiyec",
+				"community":"public",
+				"version":"1",
+				"period":10000,
+				"oids" :[
+					"1.3.6.1.4.1.2021.11.9.0"
+				]
+			}	
+		}
+	}
+}
