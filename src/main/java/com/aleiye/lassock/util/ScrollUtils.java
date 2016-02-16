@@ -8,7 +8,7 @@ import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 
 import com.aleiye.lassock.annotations.Required;
-import com.aleiye.lassock.common.Context;
+import com.aleiye.lassock.live.conf.Context;
 import com.aleiye.lassock.live.scroll.Course;
 import com.aleiye.lassock.live.scroll.Sign;
 

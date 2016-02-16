@@ -56,7 +56,10 @@ public class LiveContainer extends Logging implements Destroyable {
 	public void initialize() throws Exception {
 		loadBaskets();
 
-		hill = (Hill) new DefaultHill();
+//		hill = (Hill) new DefaultHill();
+//		hill.setBaskets(baskets);
+//		hill.initialize();
+		hill = new HillMirror();
 		hill.setBaskets(baskets);
 		hill.initialize();
 		// 采集图管理初始化

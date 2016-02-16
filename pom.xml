@@ -13,6 +13,8 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jdk.version>1.7</jdk.version>
 		<junit.version>4.12</junit.version>
+		
+		<org.slf4j-version>1.6.1</org.slf4j-version>
 		<!-- 必须 -->
 		<quartz.version>2.2.1</quartz.version>
 		<jdbc.oracle.version>10.2.0.4.0</jdbc.oracle.version>
@@ -113,6 +115,16 @@
 			<version>${junit.version}</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>1.2.16</version>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>${org.slf4j-version}</version>
+		</dependency>
 		<!-- 采集组件 -->
 		<!-- syslog -->
 		<dependency>
@@ -212,6 +224,12 @@
 			<artifactId>netty-all</artifactId>
 			<version>4.0.23.Final</version>
 		</dependency>
+		<!-- google -->
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>11.0.2</version>
+		</dependency>
 		<!-- kafka -->
 		<!--protostuff <dependency> <groupId>com.dyuproject.protostuff</groupId> 
 			<artifactId>protostuff-runtime</artifactId> <version>1.0.8</version> </dependency> -->
@@ -237,10 +255,6 @@
 			<artifactId>kafka_2.10</artifactId>
 			<version>${kafka.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>11.0.2</version>
-		</dependency>
+		
 	</dependencies>
 </project>

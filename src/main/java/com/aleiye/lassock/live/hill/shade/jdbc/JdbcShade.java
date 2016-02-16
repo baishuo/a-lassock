@@ -11,8 +11,8 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
-import com.aleiye.lassock.common.Context;
 import com.aleiye.lassock.dbcs.DBManager;
+import com.aleiye.lassock.live.conf.Context;
 import com.aleiye.lassock.live.hill.shade.AbstractPollableShade;
 import com.aleiye.lassock.live.scroll.Sign;
 import com.aleiye.lassock.model.Mushroom;

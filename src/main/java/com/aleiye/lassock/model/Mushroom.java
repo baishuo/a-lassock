@@ -1,6 +1,6 @@
 package com.aleiye.lassock.model;
 
-import com.aleiye.lassock.common.Context;
+import com.aleiye.lassock.live.conf.Context;
 
 /**
  * (蘑茹)采集产出

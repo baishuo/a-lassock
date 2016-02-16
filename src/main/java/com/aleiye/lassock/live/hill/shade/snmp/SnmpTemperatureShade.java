@@ -10,7 +10,7 @@ import org.snmp4j.Snmp;
 import org.snmp4j.Target;
 import org.snmp4j.smi.VariableBinding;
 
-import com.aleiye.lassock.common.Context;
+import com.aleiye.lassock.live.conf.Context;
 import com.aleiye.lassock.model.Mushroom;
 
 /**
@@ -41,7 +41,7 @@ public class SnmpTemperatureShade extends SnmpStandardShade {
 		StringBuffer buffer = new StringBuffer();
 		buffer.append(vt1OutletTemperature.getVariable().toString());// 温度
 		map.put("A_message", buffer.toString());
-		map.putAll(sign.getAttributes());
+		map.putAll(sign.getValues());
 		Mushroom mushroom = new Mushroom();
 		mushroom.setContent(map);
 		putMushroom(sign, mushroom);

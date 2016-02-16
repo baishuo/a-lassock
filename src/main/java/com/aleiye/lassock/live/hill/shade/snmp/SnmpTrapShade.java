@@ -25,8 +25,8 @@ import org.snmp4j.transport.DefaultUdpTransportMapping;
 import org.snmp4j.util.MultiThreadedMessageDispatcher;
 import org.snmp4j.util.ThreadPool;
 
-import com.aleiye.lassock.common.Context;
 import com.aleiye.lassock.lang.Sistem;
+import com.aleiye.lassock.live.conf.Context;
 import com.aleiye.lassock.live.hill.shade.AbstractEventDrivenShade;
 import com.aleiye.lassock.model.Mushroom;
 import com.aleiye.lassock.util.ScrollUtils;

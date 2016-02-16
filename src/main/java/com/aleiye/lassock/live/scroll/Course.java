@@ -1,11 +1,9 @@
 package com.aleiye.lassock.live.scroll;
 
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
 
 import com.aleiye.lassock.annotations.Required;
-import com.aleiye.lassock.common.Context;
+import com.aleiye.lassock.live.conf.ValueStation;
 
 /**
  * 采集课程
@@ -14,7 +12,7 @@ import com.aleiye.lassock.common.Context;
  * @since 2015年5月25日
  * @version 2.1.2
  */
-public class Course extends Context implements Cloneable {
+public class Course extends ValueStation implements Cloneable {
 	// 课程唯一标识
 	@Required
 	private String id;
@@ -28,29 +26,18 @@ public class Course extends Context implements Cloneable {
 	// 子类型
 	// SYSLOG[TCP,UDP];SNMP[TRAP,FLOW,CPU,MEMORY,TEMPERATURE]
 	private String subType;
-
-	// 数传输方式
-	private String transportType = null;
 	// 对列名
 	private String basketName;
 
-	// 用户ID
-	private String userId;
-
-	// 是否失败
-	private boolean failure = false;
-
-	private Exception exception;
-
 	/** 运行方式 */
 	private RunType runType = RunType.DEFAULT;
-
+	// 延迟时间
 	private long delay = 3000;
-
+	// 周期时间
 	private long period = 10000;
-
+	// Cron 执行时间
 	private String cron;
-
+	// 组名
 	private String groupName;
 
 	public String getGroupName() {
@@ -59,18 +46,6 @@ public class Course extends Context implements Cloneable {
 
 	public void setGroupName(String groupName) {
 		this.groupName = groupName;
-	}
-
-	public static enum RunType {
-		DEFAULT, TIMER, SCHEDULE, CRON, GROUP
-	}
-
-	public String getUserId() {
-		return userId;
-	}
-
-	public void setUserId(String userId) {
-		this.userId = userId;
 	}
 
 	public String getId() {
@@ -89,40 +64,16 @@ public class Course extends Context implements Cloneable {
 		this.type = type;
 	}
 
-	public boolean isFailure() {
-		return failure;
-	}
-
-	public void setFailure(boolean failure) {
-		this.failure = failure;
-	}
-
-	public Exception getException() {
-		return exception;
-	}
-
-	public void setException(Exception exception) {
-		this.exception = exception;
-	}
-
-	public String getTransportType() {
-		return transportType;
-	}
-
-	public void setTransportType(String transportType) {
-		this.transportType = transportType;
-	}
-
 	@Override
 	public Course clone() throws CloneNotSupportedException {
 		Course c = (Course) super.clone();
-		Map<String, Object> p = this.getParameters();
-		c.setParameters(new HashMap<String, Object>());
-		for (Entry<String, Object> entry : p.entrySet()) {
-			c.put(entry.getKey(), entry.getValue());
-		}
-		c.setAttributes(new HashMap<String, Object>());
-		c.addAllAttributes(this.getAttributes());
+		// Map<String, Object> p = this.getParameters();
+		// c.setParameters(new HashMap<String, Object>());
+		// for (Entry<String, Object> entry : p.entrySet()) {
+		// c.put(entry.getKey(), entry.getValue());
+		// }
+		c.setVallues(new HashMap<String, Object>());
+		c.addAllVallues(this.getValues());
 
 		return c;
 	}
@@ -181,5 +132,16 @@ public class Course extends Context implements Cloneable {
 
 	public void setBasketName(String basketName) {
 		this.basketName = basketName;
+	}
+
+	/**
+	 * 运行方式
+	 * 
+	 * @author ruibing.zhao
+	 * @since 2016年2月15日
+	 * @version 1.0
+	 */
+	public static enum RunType {
+		DEFAULT, TIMER, SCHEDULE, CRON, GROUP, TEXT
 	}
 }

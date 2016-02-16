@@ -3,9 +3,10 @@ package com.aleiye.lassock.live.scroll;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 
-import com.aleiye.lassock.common.Context;
+import com.aleiye.lassock.live.conf.ValueStation;
+import com.aleiye.lassock.live.hill.shade.AbstractShade;
 import com.aleiye.lassock.live.scroll.Course.RunType;
 
 /**
@@ -22,7 +23,7 @@ import com.aleiye.lassock.live.scroll.Course.RunType;
  * @see Course
  * @see AbstractShade
  */
-public class Sign extends Context {
+public class Sign extends ValueStation {
 	// 关个多个课程时拼接字符
 	public static final String JOIN_CHAR = ",";
 	// 唯一标识
@@ -35,14 +36,15 @@ public class Sign extends Context {
 	private String subType;
 	// 编码
 	private String encoding = "UTF-8";
-	// 关联课程配置ID列表
-	private List<String> courseIdList = new ArrayList<String>();
-	// 配置ID列表 以 JOIN_CHAR 拼接
-	private volatile String courseIds;
 	// 是否移除
 	private boolean removed = false;
 	// 是否丢失
 	private boolean lost = false;
+
+	// 关联课程配置ID列表
+	private List<String> courseIdList = new ArrayList<String>();
+	// 配置ID列表 以 JOIN_CHAR 拼接
+	private volatile String courseIds;
 
 	/** 运行方式 */
 	private RunType runType = RunType.DEFAULT;
@@ -52,24 +54,11 @@ public class Sign extends Context {
 	private long period = 10000;
 
 	private String cron;
-	
+
 	private String groupName;
-
-	public String getGroupName() {
-		return groupName;
-	}
-
-	public void setGroupName(String groupName) {
-		this.groupName = groupName;
-	}
-
-	public String getDescription() {
-		return "";
-	}
 
 	/**
 	 * 关联课程个数
-	 * 
 	 * @return
 	 */
 	public int associateSize() {
@@ -100,13 +89,25 @@ public class Sign extends Context {
 			courseIds = StringUtils.join(courseIdList, JOIN_CHAR);
 		}
 	}
-
+	
 	public List<String> getCourseIdList() {
 		return courseIdList;
 	}
 
 	public String getCourseIds() {
 		return courseIds;
+	}
+
+	public String getGroupName() {
+		return groupName;
+	}
+
+	public void setGroupName(String groupName) {
+		this.groupName = groupName;
+	}
+
+	public String getDescription() {
+		return "";
 	}
 
 	public boolean isRemoved() {

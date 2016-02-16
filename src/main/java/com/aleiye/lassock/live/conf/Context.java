@@ -1,10 +1,9 @@
-package com.aleiye.lassock.common;
+package com.aleiye.lassock.live.conf;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.aleiye.lassock.live.conf.AttributeAware;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Maps;
@@ -13,7 +12,7 @@ import com.google.common.collect.Maps;
  * The context is a key-value store used to pass configuration information
  * throughout the system.
  */
-public class Context extends AttributeAware {
+public class Context {
 
 	private Map<String, Object> parameters;
 

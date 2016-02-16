@@ -3,8 +3,8 @@ package com.aleiye.lassock.live.hill.shade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.aleiye.lassock.common.Context;
-import com.aleiye.lassock.live.conf.Configurable;
+import com.aleiye.lassock.common.able.Configurable;
+import com.aleiye.lassock.live.conf.Context;
 import com.aleiye.lassock.live.lifecycle.LifecycleState;
 import com.aleiye.lassock.live.scroll.Course;
 import com.aleiye.lassock.util.LogUtils;
