@@ -9,6 +9,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -18,9 +20,12 @@ import org.apache.commons.lang.StringUtils;
 
 import com.aleiye.lassock.live.exception.CourseException;
 import com.aleiye.lassock.live.exception.SignException;
+import com.aleiye.lassock.live.mark.Marker;
 import com.aleiye.lassock.live.scroll.Const;
 import com.aleiye.lassock.live.scroll.Course;
+import com.aleiye.lassock.util.ClassUtils;
 import com.aleiye.lassock.util.CloseableUtils;
+import com.aleiye.lassock.util.ConfigUtils;
 import com.aleiye.lassock.util.MarkUtil;
 import com.aleiye.lassock1.live.hills.AbstractHill;
 import com.aleiye.lassock1.live.hills.Shade;
@@ -333,6 +338,9 @@ public class TextHill extends AbstractHill<TextSign, TextShade> {
 		}
 	}, "t120");
 
+	Marker<Long> marker = null;
+	Timer timer;
+	boolean markerEnabled = false;
 	@Override
 	public void initialize() throws Exception {
 		// 初始化执行线程
@@ -343,6 +351,24 @@ public class TextHill extends AbstractHill<TextSign, TextShade> {
 		t119.start();
 		// 医生开启
 		t120.start();
+		// 标记初始化
+		if (markerEnabled = ConfigUtils.getConfig().getBoolean("marker.enabled")) {
+			marker = ClassUtils.newInstance(ConfigUtils.getConfig().getString("marker.class"));
+			marker.load();
+			timer = new Timer("marker_timer");
+			TimerTask tt = new TimerTask() {
+				@Override
+				public void run() {
+					try {
+						marker.save();
+					} catch (Exception e) {
+						logError("mark save is failure!", e);
+					}
+				}
+			};
+			timer.schedule(tt, 10000, ConfigUtils.getConfig().getLong("marker.period"));
+			MarkUtil.setMarker(marker);
+		}
 	}
 
 	/**
@@ -521,7 +547,17 @@ public class TextHill extends AbstractHill<TextSign, TextShade> {
 			}
 			emergency.clear();
 			idles.clear();
+			
+			// 定时关闭
+			if (timer != null) {
+				timer.cancel();
+			}
+			// 标记关闭
+			if (markerEnabled) {
+				CloseableUtils.closeQuietly(marker);
+			}
 			super.destroy();
+			
 		}
 	}
 }

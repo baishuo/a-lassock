@@ -282,6 +282,10 @@ public class FileShade extends TextShade {
 						es = ds.getChannel();
 						ds.seek(this.si);
 					} else {
+						if(this.di > length){
+							this.si = this.di = length;
+							ds.seek(this.si);
+						}
 						stat = Stat.END;
 					}
 				} else {
