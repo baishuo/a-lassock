@@ -32,7 +32,7 @@ public class SystemInfo {
 			FileSystem fslist[] = sigar.getFileSystemList();
 			for (int i = fslist.length - 1; i >= 0; i--) {
 				FileSystem fs = fslist[i];
-				if (Sistem.getSystem() != OSType.WINDOWS) {
+				if (Sistem.getSysType() != OSType.WINDOWS) {
 					if (fs.getDirName().equals("/")) {
 						main = fs;
 						continue;

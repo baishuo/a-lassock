@@ -43,7 +43,7 @@ public class SyslogTCPShade extends SyslogShade {
 				ByteBuf data = in.readBytes(in.readableBytes());
 				String ip = address.getAddress().getHostAddress();
 				if (ip.equals("127.0.0.1")) {
-					ip = Sistem.IP;
+					ip = Sistem.getIp();
 				}
 				Mushroom mr = new Mushroom();
 				mr.put("sender", address.getAddress().getHostName());
@@ -65,7 +65,9 @@ public class SyslogTCPShade extends SyslogShade {
 		}
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({
+			"rawtypes", "unchecked"
+	})
 	@Override
 	protected void doStart() throws Exception {
 		LOGGER.info("Syslog TCP/" + this.sign.getPort() + " shade starting...");

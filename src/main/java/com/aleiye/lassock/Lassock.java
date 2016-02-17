@@ -4,8 +4,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Raker(搂耙)的入口程序
- * Created by ywt on 15/5/9.
+ * Lassock启动程序
+ * 
+ * @author ruibing.zhao
+ * @since 2016年2月17日
+ * @version 1.0
  */
 public class Lassock {
 
@@ -15,14 +18,12 @@ public class Lassock {
 
 		_LOG.info("Running Lassock");
 		try {
-			// 初始System值
-//			Env.load(ConfigUtils.getConfig().getConfig("system"));
 			// live
 			final LassockStartable startable = new LassockStartable();
 			// 开启
 			startable.startup();
 
-			_LOG.info("Raker was Lassock!");
+			_LOG.info("Lassock was startup!");
 
 			Runtime.getRuntime().addShutdownHook(new Thread() {
 				@Override

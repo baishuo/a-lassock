@@ -79,7 +79,7 @@ public class SnmpStandardShade extends SnmpShade {
 				StringBuffer sb = new StringBuffer();
 				sb.append(System.currentTimeMillis());
 				sb.append(" ");
-				sb.append(Sistem.HOST);
+				sb.append(Sistem.getHost());
 				sb.append(" ");
 				sb.append(this.sign.getHost());
 				sb.append(" ");

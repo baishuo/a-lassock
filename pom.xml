@@ -13,7 +13,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<jdk.version>1.7</jdk.version>
 		<junit.version>4.12</junit.version>
-		
+
 		<org.slf4j-version>1.6.1</org.slf4j-version>
 		<!-- 必须 -->
 		<quartz.version>2.2.1</quartz.version>
@@ -21,22 +21,22 @@
 		<jdbc.sqlserver.version>3.0</jdbc.sqlserver.version>
 		<mysql.version>5.1.31</mysql.version>
 		<c3p0.version>0.9.1.2</c3p0.version>
-		
+
 		<commons.lang3.version>3.1</commons.lang3.version>
 		<commons-net.vesion>3.3</commons-net.vesion>
 		<commons.lang.version>2.6</commons.lang.version>
-		
+
 		<typesafe.config.version>1.2.1</typesafe.config.version>
 		<akka.version>2.3.10</akka.version>
-		
+
 		<jackson.version>1.9.13</jackson.version>
 		<json.lib.version>2.3</json.lib.version>
-		
+
 		<kafka.version>0.8.1.1</kafka.version>
 	</properties>
 
 	<build>
-		<finalName>raker</finalName>
+		<finalName>lassock</finalName>
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
@@ -75,7 +75,7 @@
 						<manifest>
 							<addClasspath>true</addClasspath>
 							<classpathPrefix>lib/</classpathPrefix>
-							<mainClass>com.aleiye.raker.Raker</mainClass>
+							<mainClass>com.aleiye.lassock.Lassock</mainClass>
 						</manifest>
 					</archive>
 					<excludes>
@@ -255,6 +255,6 @@
 			<artifactId>kafka_2.10</artifactId>
 			<version>${kafka.version}</version>
 		</dependency>
-		
+
 	</dependencies>
 </project>

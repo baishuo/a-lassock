@@ -42,7 +42,7 @@ public class SyslogUDPShade extends SyslogShade {
 				String ip = remoteAddress.getAddress().getHostAddress(), host = remoteAddress.getAddress()
 						.getHostName();
 				if (ip.equals("127.0.0.1")) {
-					ip = Sistem.IP;
+					ip = Sistem.getHost();
 				}
 
 				Mushroom mr = new Mushroom();

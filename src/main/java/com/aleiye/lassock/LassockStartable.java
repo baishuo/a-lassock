@@ -3,7 +3,7 @@ package com.aleiye.lassock;
 import com.aleiye.lassock.logging.Logging;
 
 /**
- * 彩集器 启动程序
+ * 采集器 启动程序
  * 
  * @author ruibing.zhao
  * @since 2015年4月17日

@@ -70,7 +70,7 @@ public class SnmpTrapShade extends AbstractEventDrivenShade implements CommandRe
 					StringBuffer sb = new StringBuffer();
 					sb.append(System.currentTimeMillis());
 					sb.append(" ");
-					sb.append(Sistem.HOST);
+					sb.append(Sistem.getHost());
 					sb.append(" ");
 					sb.append(peerIP);
 					sb.append(" ");
@@ -100,7 +100,7 @@ public class SnmpTrapShade extends AbstractEventDrivenShade implements CommandRe
 		MultiThreadedMessageDispatcher dispatcher = new MultiThreadedMessageDispatcher(threadPool,
 				new MessageDispatcherImpl());
 		// 监听本地IP端口
-		Address listenAddress = GenericAddress.parse(sign.getProtocol() + ":" + Sistem.IP + "/" + sign.getPort());
+		Address listenAddress = GenericAddress.parse(sign.getProtocol() + ":" + Sistem.getIp() + "/" + sign.getPort());
 		TransportMapping transport;
 		// 对TCP与UDP协议进行处理
 		if (listenAddress instanceof UdpAddress) {

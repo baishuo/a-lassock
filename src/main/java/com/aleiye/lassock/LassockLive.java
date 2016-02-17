@@ -31,7 +31,7 @@ public class LassockLive extends Logging {
 
 	public void startup() throws Exception {
 		try {
-			logInfo("Raker live starting......");
+			logInfo("Lassock live starting......");
 			if (isShuttingDown.get())
 				throw new IllegalStateException("Aleiye lassock is still shutting down, cannot re-start!");
 			if (startupComplete.get())
@@ -46,7 +46,7 @@ public class LassockLive extends Logging {
 				container = new LiveContainer(ConfigUtils.getConfig());
 				container.initialize();
 
-				logInfo("Raker live was started!");
+				logInfo("Lassock live was started!");
 
 				// 挂钩Live
 				liveness.lisen(container.live());
@@ -54,7 +54,7 @@ public class LassockLive extends Logging {
 				logInfo("startup completed");
 			}
 		} catch (Exception e) {
-			logError("Fatal error during RakerLive startup. Prepare to shutdown");
+			logError("Fatal error during LassockLive startup. Prepare to shutdown");
 			isStartingUp.set(false);
 			shutdown();
 			throw e;
@@ -78,7 +78,7 @@ public class LassockLive extends Logging {
 				logInfo("lassock has been shutdown");
 			}
 		} catch (Exception e) {
-			logError("Fatal error during RakerLive shutdown.", e);
+			logError("Fatal error during LassockLive shutdown.", e);
 			isShuttingDown.set(false);
 		}
 	}
