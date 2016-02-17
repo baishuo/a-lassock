@@ -18,7 +18,7 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 
 import com.aleiye.lassock.lang.Sistem;
-import com.aleiye.lassock.model.Mushroom;
+import com.aleiye.lassock.model.GeneralMushroom;
 
 /**
  * Syslog TCP采集器
@@ -45,10 +45,10 @@ public class SyslogTCPShade extends SyslogShade {
 				if (ip.equals("127.0.0.1")) {
 					ip = Sistem.getIp();
 				}
-				Mushroom mr = new Mushroom();
-				mr.put("sender", address.getAddress().getHostName());
-				mr.put("ip", ip);
-				mr.setContent(data.array());
+				GeneralMushroom mr = new GeneralMushroom();
+				mr.getHeaders().put("sender", address.getAddress().getHostName());
+				mr.getHeaders().put("ip", ip);
+				mr.setBody(data.array());
 				putMushroom(sign, mr);
 			}
 		}

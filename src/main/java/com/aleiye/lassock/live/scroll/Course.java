@@ -72,7 +72,7 @@ public class Course extends ValueStation implements Cloneable {
 		// for (Entry<String, Object> entry : p.entrySet()) {
 		// c.put(entry.getKey(), entry.getValue());
 		// }
-		c.setVallues(new HashMap<String, Object>());
+		c.setVallues(new HashMap<String, String>());
 		c.addAllVallues(this.getValues());
 
 		return c;

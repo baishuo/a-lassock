@@ -12,7 +12,7 @@ import org.snmp4j.Snmp;
 import org.snmp4j.Target;
 
 import com.aleiye.lassock.live.conf.Context;
-import com.aleiye.lassock.model.Mushroom;
+import com.aleiye.lassock.model.GeneralMushroom;
 
 public class SnmpFlowShade extends SnmpStandardShade {
 	private static final Logger LOGGER = LoggerFactory.getLogger(SnmpFlowShade.class);
@@ -114,10 +114,10 @@ public class SnmpFlowShade extends SnmpStandardShade {
 					.append(",").append(outFlowData.getLastFlow())// 前流量
 			;
 			map.putAll(sign.getValues());
-			Mushroom mushroom = new Mushroom();
+			GeneralMushroom generalMushroom = new GeneralMushroom();
 			map.put("A_message", buffer.toString());
-			mushroom.setContent(map);
-			putMushroom(sign, mushroom);
+			generalMushroom.setBody(map);
+			putMushroom(sign, generalMushroom);
 		}
 	}
 

@@ -15,7 +15,7 @@ import com.aleiye.lassock.dbcs.DBManager;
 import com.aleiye.lassock.live.conf.Context;
 import com.aleiye.lassock.live.hill.shade.AbstractPollableShade;
 import com.aleiye.lassock.live.scroll.Sign;
-import com.aleiye.lassock.model.Mushroom;
+import com.aleiye.lassock.model.GeneralMushroom;
 import com.aleiye.lassock.util.ScrollUtils;
 
 /**
@@ -48,27 +48,21 @@ public class JdbcShade extends AbstractPollableShade {
 		String symbol = String.valueOf(System.currentTimeMillis());
 		while (rs.next()) {
 			Map<String, Object> row = new HashMap<String, Object>(conut);
-			StringBuffer buf = new StringBuffer();
 			for (int i = 1; i < conut + 1; i++) {
 				Object value = rs.getObject(i);
 				if (value == null) {
 					continue;
 				}
-				buf.append("\t");
-				buf.append(value.toString());
-				row.put("its_" + rsmd.getColumnName(i), value);
+				row.put(rsmd.getColumnName(i), value);
 			}
-			row.put("isInterface", false);
-			row.put("A_message", buf.deleteCharAt(0).toString());
-			row.put("A_symbol", symbol);
 			rsall.add(row);
 		}
 		con.close();
-		Mushroom mushroom = new Mushroom();
-		mushroom.setContent(rsall);
-		mushroom.setSize(rsall.size());
-		mushroom.put("symbol", symbol);
-		putMushroom(sign, mushroom);
+		GeneralMushroom generalMushroom = new GeneralMushroom();
+		generalMushroom.setBody(rsall);
+		generalMushroom.getHeaders().put("size", rsall.size());
+		generalMushroom.getHeaders().put("symbol", symbol);
+		putMushroom(sign, generalMushroom);
 	}
 
 	@Override

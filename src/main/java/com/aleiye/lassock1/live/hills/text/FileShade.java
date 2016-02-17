@@ -10,7 +10,7 @@ import org.apache.commons.io.IOUtils;
 
 import com.aleiye.lassock.live.basket.Basket;
 import com.aleiye.lassock.live.exception.SignRemovedException;
-import com.aleiye.lassock.model.Mushroom;
+import com.aleiye.lassock.model.GeneralMushroom;
 import com.aleiye.lassock.util.MarkUtil;
 
 /**
@@ -60,11 +60,11 @@ public class FileShade extends TextShade {
 	}
 
 	private void makeMushroom(byte[] content) throws SignRemovedException, InterruptedException {
-		Mushroom mr = new Mushroom();
-		mr.setContent(content);
-		mr.setPath(this.sign.getPath());
-		mr.setSoffset(this.bx);
-		mr.setEoffset(this.dx);
+		GeneralMushroom mr = new GeneralMushroom();
+		mr.setBody(content);
+		mr.getHeaders().put("path", this.sign.getPath());
+		mr.getHeaders().put("soffset", this.bx);
+		mr.getHeaders().put("eoffset", this.dx);
 		putMushroom(mr);
 		MarkUtil.mark(this.sign.getId(), this.dx);
 	}
@@ -282,7 +282,7 @@ public class FileShade extends TextShade {
 						es = ds.getChannel();
 						ds.seek(this.si);
 					} else {
-						if(this.di > length){
+						if (this.di > length) {
 							this.si = this.di = length;
 							ds.seek(this.si);
 						}

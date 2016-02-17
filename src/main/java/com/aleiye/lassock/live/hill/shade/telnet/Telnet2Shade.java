@@ -13,7 +13,7 @@ import com.aleiye.lassock.live.exception.SignRemovedException;
 import com.aleiye.lassock.live.hill.shade.AbstractPollableShade;
 import com.aleiye.lassock.live.scroll.Course;
 import com.aleiye.lassock.live.scroll.Sign;
-import com.aleiye.lassock.model.Mushroom;
+import com.aleiye.lassock.model.GeneralMushroom;
 import com.aleiye.lassock.util.ScrollUtils;
 
 public class Telnet2Shade extends AbstractPollableShade {
@@ -142,12 +142,11 @@ public class Telnet2Shade extends AbstractPollableShade {
 	}
 
 	public void apply(List<Map<String, String>> input) {
-		Mushroom mushroom = new Mushroom();
-		mushroom.setContent(input);
-		mushroom.put("host", sign.getHost());
-		mushroom.putAll(sign.getValues());
+		GeneralMushroom generalMushroom = new GeneralMushroom();
+		generalMushroom.setBody(input);
+		generalMushroom.getHeaders().put("host", sign.getHost());
 		try {
-			putMushroom(sign, mushroom);
+			putMushroom(sign, generalMushroom);
 		} catch (InterruptedException | SignRemovedException e) {
 			LOGGER.debug(e.getMessage(), e);
 		}

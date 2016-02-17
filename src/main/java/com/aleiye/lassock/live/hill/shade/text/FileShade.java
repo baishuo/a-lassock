@@ -8,7 +8,7 @@ import java.nio.channels.FileChannel;
 
 import com.aleiye.lassock.live.basket.Basket;
 import com.aleiye.lassock.live.exception.SignRemovedException;
-import com.aleiye.lassock.model.Mushroom;
+import com.aleiye.lassock.model.GeneralMushroom;
 import com.aleiye.lassock.util.CloseableUtils;
 import com.aleiye.lassock.util.MarkUtil;
 

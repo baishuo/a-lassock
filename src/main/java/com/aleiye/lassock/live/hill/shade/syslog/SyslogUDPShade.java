@@ -18,7 +18,7 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 
 import com.aleiye.lassock.lang.Sistem;
-import com.aleiye.lassock.model.Mushroom;
+import com.aleiye.lassock.model.GeneralMushroom;
 
 /**
  * UDP SYSLOG 采集源
@@ -45,11 +45,11 @@ public class SyslogUDPShade extends SyslogShade {
 					ip = Sistem.getHost();
 				}
 
-				Mushroom mr = new Mushroom();
+				GeneralMushroom mr = new GeneralMushroom();
 				ByteBuf data = in.readBytes(in.readableBytes());
-				mr.setContent(data.array());
-				mr.put("sender", host);
-				mr.put("ip", ip);
+				mr.setBody(data.array());
+				mr.getHeaders().put("sender", host);
+				mr.getHeaders().put("ip", ip);
 				putMushroom(sign, mr);
 			}
 		}

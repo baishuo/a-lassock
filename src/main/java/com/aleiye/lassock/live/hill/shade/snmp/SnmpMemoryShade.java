@@ -11,7 +11,7 @@ import org.snmp4j.Target;
 import org.snmp4j.smi.VariableBinding;
 
 import com.aleiye.lassock.live.conf.Context;
-import com.aleiye.lassock.model.Mushroom;
+import com.aleiye.lassock.model.GeneralMushroom;
 
 /**
  * MEMORY
@@ -73,9 +73,9 @@ public class SnmpMemoryShade extends SnmpStandardShade {
 		map.put("A_message", buffer.toString());
 		// 附加属性添加到采集
 		map.putAll(this.sign.getValues());
-		Mushroom mushroom = new Mushroom();
-		mushroom.setContent(map);
-		putMushroom(sign, mushroom);
+		GeneralMushroom generalMushroom = new GeneralMushroom();
+		generalMushroom.setBody(map);
+		putMushroom(sign, generalMushroom);
 	}
 
 	@Override

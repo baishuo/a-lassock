@@ -28,7 +28,7 @@ import org.snmp4j.util.ThreadPool;
 import com.aleiye.lassock.lang.Sistem;
 import com.aleiye.lassock.live.conf.Context;
 import com.aleiye.lassock.live.hill.shade.AbstractEventDrivenShade;
-import com.aleiye.lassock.model.Mushroom;
+import com.aleiye.lassock.model.GeneralMushroom;
 import com.aleiye.lassock.util.ScrollUtils;
 
 /**
@@ -65,7 +65,7 @@ public class SnmpTrapShade extends AbstractEventDrivenShade implements CommandRe
 				Vector<? extends VariableBinding> recVBs = respEvnt.getPDU().getVariableBindings();
 				// 循环OID
 				for (int i = 0; i < recVBs.size(); i++) {
-					Mushroom mr = new Mushroom();
+					GeneralMushroom mr = new GeneralMushroom();
 					VariableBinding recVB = recVBs.elementAt(i);
 					StringBuffer sb = new StringBuffer();
 					sb.append(System.currentTimeMillis());
@@ -77,7 +77,7 @@ public class SnmpTrapShade extends AbstractEventDrivenShade implements CommandRe
 					sb.append(recVB.getOid().toString());
 					sb.append(" ");
 					sb.append(recVB.getVariable().toString());
-					mr.setContent(sb.toString().getBytes());
+					mr.setBody(sb.toString().getBytes());
 					try {
 						putMushroom(sign, mr);
 					} catch (Exception e) {

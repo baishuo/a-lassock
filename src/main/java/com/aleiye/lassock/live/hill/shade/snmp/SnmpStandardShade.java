@@ -31,7 +31,7 @@ import org.snmp4j.transport.DefaultUdpTransportMapping;
 import com.aleiye.lassock.lang.Sistem;
 import com.aleiye.lassock.live.conf.Context;
 import com.aleiye.lassock.live.scroll.Const;
-import com.aleiye.lassock.model.Mushroom;
+import com.aleiye.lassock.model.GeneralMushroom;
 import com.aleiye.lassock.util.ScrollUtils;
 
 /**
@@ -74,7 +74,7 @@ public class SnmpStandardShade extends SnmpShade {
 			Vector<? extends VariableBinding> recVBs = event.getResponse().getVariableBindings();
 			// 循环OID
 			for (int i = 0; i < recVBs.size(); i++) {
-				Mushroom mr = new Mushroom();
+				GeneralMushroom mr = new GeneralMushroom();
 				VariableBinding recVB = recVBs.elementAt(i);
 				StringBuffer sb = new StringBuffer();
 				sb.append(System.currentTimeMillis());
@@ -87,7 +87,7 @@ public class SnmpStandardShade extends SnmpShade {
 				sb.append(" ");
 				sb.append(recVB.getVariable().toString());
 				byte[] baos = sb.toString().getBytes();
-				mr.setContent(baos);
+				mr.setBody(baos);
 				try {
 					putMushroom(sign, mr);
 				} catch (Exception e) {

@@ -34,7 +34,7 @@ import com.aleiye.lassock.live.exception.SignRemovedException;
 import com.aleiye.lassock.live.hill.shade.AbstractPollableShade;
 import com.aleiye.lassock.live.scroll.Course;
 import com.aleiye.lassock.live.scroll.Sign;
-import com.aleiye.lassock.model.Mushroom;
+import com.aleiye.lassock.model.GeneralMushroom;
 import com.aleiye.lassock.util.ScrollUtils;
 
 public class TelnetShade extends AbstractPollableShade {
@@ -53,28 +53,28 @@ public class TelnetShade extends AbstractPollableShade {
 	private String[] commands;
 	private long millis = 2000;
 
-	//	public static void main(String args[]) {
-	//		TelnetShade shade = new TelnetShade();
-	//		shade.setBasket(new SimpleLogoutBasket());
-	//		shade.setName("test");
-	//		TelnetSign sign = new TelnetSign();
-	//		sign.setId("aaaa");
-	//		sign.setPrepareCommand("telnet aleiyec;pwd@123;root;pwd@123;telnet aleiyed;root;pwd@123");
-	//		sign.associate("1");
-	//		sign.setHost("10.0.1.1");
-	//		sign.setPort(23);
-	//		sign.setUesrname("admin");
-	//		sign.setPassword("yhxt@123");
-	//		String[] p = { "dis arp", "dis mac-address" };
-	//		sign.setCommands(p);
-	//		shade.configure(sign);
-	//		shade.start();
-	//		try {
-	//			shade.pick();
-	//		} catch (Exception e) {
-	//			e.printStackTrace();
-	//		}
-	//	}
+	// public static void main(String args[]) {
+	// TelnetShade shade = new TelnetShade();
+	// shade.setBasket(new SimpleLogoutBasket());
+	// shade.setName("test");
+	// TelnetSign sign = new TelnetSign();
+	// sign.setId("aaaa");
+	// sign.setPrepareCommand("telnet aleiyec;pwd@123;root;pwd@123;telnet aleiyed;root;pwd@123");
+	// sign.associate("1");
+	// sign.setHost("10.0.1.1");
+	// sign.setPort(23);
+	// sign.setUesrname("admin");
+	// sign.setPassword("yhxt@123");
+	// String[] p = { "dis arp", "dis mac-address" };
+	// sign.setCommands(p);
+	// shade.configure(sign);
+	// shade.start();
+	// try {
+	// shade.pick();
+	// } catch (Exception e) {
+	// e.printStackTrace();
+	// }
+	// }
 
 	@Override
 	protected void doPick() throws Exception {
@@ -213,14 +213,13 @@ public class TelnetShade extends AbstractPollableShade {
 	}
 
 	public void apply(List<Map<String, String>> input) {
-		Mushroom mushroom = new Mushroom();
-		mushroom.setContent(input);
-		//		mushroom.put(Const.command.HOST, sign.getHost());
-		//		mushroom.put(Const.command.BRAND, sign.getBrand());
-		//		mushroom.put(Const.command.DEVICETYPE, sign.getDeviceType());
-		mushroom.putAll(sign.getParameters());
+		GeneralMushroom generalMushroom = new GeneralMushroom();
+		generalMushroom.setBody(input);
+		// mushroom.put(Const.command.HOST, sign.getHost());
+		// mushroom.put(Const.command.BRAND, sign.getBrand());
+		// mushroom.put(Const.command.DEVICETYPE, sign.getDeviceType());
 		try {
-			putMushroom(sign, mushroom);
+			putMushroom(sign, generalMushroom);
 		} catch (InterruptedException | SignRemovedException e) {
 			LOGGER.debug(e.getMessage(), e);
 		}

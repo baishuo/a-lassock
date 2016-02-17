@@ -34,7 +34,7 @@ import com.aleiye.lassock.live.exception.SignRemovedException;
 import com.aleiye.lassock.live.hill.shade.AbstractPollableShade;
 import com.aleiye.lassock.live.scroll.Course;
 import com.aleiye.lassock.live.scroll.Sign;
-import com.aleiye.lassock.model.Mushroom;
+import com.aleiye.lassock.model.GeneralMushroom;
 import com.aleiye.lassock.util.ScrollUtils;
 
 public class TelnetJumpShade extends AbstractPollableShade {
@@ -228,14 +228,13 @@ public class TelnetJumpShade extends AbstractPollableShade {
 	}
 
 	public void apply(List<Map<String, String>> input) {
-		Mushroom mushroom = new Mushroom();
-		mushroom.setContent(input);
-		//		mushroom.put(Const.command.HOST, sign.getHost());
-		//		mushroom.put(Const.command.BRAND, sign.getBrand());
-		//		mushroom.put(Const.command.DEVICETYPE, sign.getDeviceType());
-		mushroom.putAll(sign.getParameters());
+		GeneralMushroom generalMushroom = new GeneralMushroom();
+		generalMushroom.setBody(input);
+		// mushroom.put(Const.command.HOST, sign.getHost());
+		// mushroom.put(Const.command.BRAND, sign.getBrand());
+		// mushroom.put(Const.command.DEVICETYPE, sign.getDeviceType());
 		try {
-			putMushroom(sign, mushroom);
+			putMushroom(sign, generalMushroom);
 		} catch (InterruptedException | SignRemovedException e) {
 			LOGGER.debug(e.getMessage(), e);
 		}
@@ -244,7 +243,7 @@ public class TelnetJumpShade extends AbstractPollableShade {
 	@Override
 	protected void doConfigure(Context context) throws Exception {
 		this.sign = (TelnetSign) ScrollUtils.forSign((Course) context, TelnetSign.class);
-		//		this.sign = (TelnetSign) context;
+		// this.sign = (TelnetSign) context;
 		host = sign.getHost();
 		port = sign.getPort();
 		username = sign.getUsername();

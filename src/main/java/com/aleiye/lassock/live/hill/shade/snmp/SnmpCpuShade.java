@@ -11,7 +11,7 @@ import org.snmp4j.Target;
 import org.snmp4j.smi.VariableBinding;
 
 import com.aleiye.lassock.live.conf.Context;
-import com.aleiye.lassock.model.Mushroom;
+import com.aleiye.lassock.model.GeneralMushroom;
 
 /**
  * CPU 使用获取
@@ -40,9 +40,9 @@ public class SnmpCpuShade extends SnmpStandardShade {
 		buffer.append(cpmCPUTotal1min.getVariable().toString());// 前流量
 		map.put("A_message", buffer.toString());
 		map.putAll(sign.getValues());
-		Mushroom mushroom = new Mushroom();
-		mushroom.setContent(map);
-		putMushroom(sign, mushroom);
+		GeneralMushroom generalMushroom = new GeneralMushroom();
+		generalMushroom.setBody(map);
+		putMushroom(sign, generalMushroom);
 	}
 
 	@Override

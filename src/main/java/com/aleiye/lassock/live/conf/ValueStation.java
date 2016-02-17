@@ -13,21 +13,21 @@ import javax.annotation.Nonnull;
  */
 public class ValueStation extends Context {
 	// 其它属性
-	protected Map<String, Object> values = new HashMap<String, Object>();
+	protected Map<String, String> values = new HashMap<String, String>();
 
-	public Map<String, Object> getValues() {
+	public Map<String, String> getValues() {
 		return values;
 	}
 
-	public void setVallues(Map<String, Object> attributes) {
+	public void setVallues(Map<String, String> attributes) {
 		this.values = attributes;
 	}
 
-	public Object getVallue(@Nonnull String key) {
+	public String getVallue(@Nonnull String key) {
 		return values.get(key);
 	}
 
-	public void addVallue(@Nonnull String key, Object value) {
+	public void addVallue(@Nonnull String key, String value) {
 		values.put(key, value);
 	}
 
@@ -35,7 +35,7 @@ public class ValueStation extends Context {
 		return values.containsKey(key);
 	}
 
-	public void addAllVallues(@Nonnull Map<String, ?> map) {
+	public void addAllVallues(@Nonnull Map<String, String> map) {
 		values.putAll(map);
 	}
 }

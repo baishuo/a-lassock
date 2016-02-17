@@ -15,7 +15,7 @@ import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.aleiye.lassock.model.Mushroom;
+import com.aleiye.lassock.model.GeneralMushroom;
 import com.aleiye.lassock.util.ConfigUtils;
 
 /**
@@ -30,20 +30,20 @@ public class FileDownBasket extends AbstractBasket {
 	private final String path = ConfigUtils.getConfig().getString("live.custom.filepath");
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-	BlockingQueue<Mushroom> queue = new LinkedBlockingQueue<Mushroom>();
+	BlockingQueue<GeneralMushroom> queue = new LinkedBlockingQueue<GeneralMushroom>();
 
 	@Override
-	public void push(Mushroom mushroom) throws InterruptedException {
+	public void push(GeneralMushroom generalMushroom) throws InterruptedException {
 		@SuppressWarnings("unchecked")
 		// 内容
-		List<Map<String, String>> contents = (List<Map<String, String>>) mushroom.getContent();
+		List<Map<String, String>> contents = (List<Map<String, String>>) generalMushroom.getBody();
 		// 主机
-		String hostDir = cutIP(mushroom.getString("host"));
+		String hostDir = cutIP(generalMushroom.getHeaders().get("host").toString());
 		// 日期
 		String dateStr = sdf.format(new Date());
 		// 保存目录
 		String filePath = path + File.separator + dateStr + File.separator + hostDir + File.separator;
-		mushroom.put("path", filePath);
+		generalMushroom.getHeaders().put("path", filePath);
 		for (int i = 0; i < contents.size(); i++) {
 			Map<String, String> content = contents.get(i);
 			String command = content.get("command");
@@ -58,11 +58,11 @@ public class FileDownBasket extends AbstractBasket {
 				LOGGER.debug(e.getMessage(), e);
 			}
 		}
-		queue.put(mushroom);
+		queue.put(generalMushroom);
 	}
 
 	@Override
-	public Mushroom take() throws InterruptedException {
+	public GeneralMushroom take() throws InterruptedException {
 		return queue.take();
 	}
 

@@ -5,7 +5,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import com.aleiye.lassock.live.basket.Basket;
 import com.aleiye.lassock.live.exception.SignRemovedException;
 import com.aleiye.lassock.live.scroll.Sign;
-import com.aleiye.lassock.model.Mushroom;
+import com.aleiye.lassock.model.GeneralMushroom;
 
 /**
  * 抽像采集子源
@@ -39,15 +39,14 @@ public abstract class AbstractShade<T extends Sign> implements Shade {
 	/**
 	 * 存入采集产出(蘑茹放入竹篮)
 	 * 
-	 * @param mushroom
+	 * @param generalMushroom
 	 * @throws InterruptedException 线程阻塞唤醒异常,该异常发生时代表该Shade关闭
 	 * @throws SignRemovedException Sign关联课程表为0时该异常发生,已无关联课程表的Sign(Shade)处于移除状态
 	 */
-	protected void putMushroom(Mushroom mushroom) throws InterruptedException, SignRemovedException {
+	protected void putMushroom(GeneralMushroom generalMushroom) throws InterruptedException, SignRemovedException {
 		// 判断关联课程是否为空
-		mushroom.setEnconde(sign.getEncoding());
-		mushroom.putAll(sign.getValues());
-		basket.push(mushroom);
+		generalMushroom.setOriginalValues(sign.getValues());
+		basket.push(generalMushroom);
 		// MonitorHelper.setPicked(sign.getKey(), cid.split(","),
 		// sign.getType(), sign.getDescription(),
 		// mushroom.getContent().length);
