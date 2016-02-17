@@ -7,7 +7,7 @@ import net.sf.json.JSONObject;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.aleiye.lassock.annotations.Required;
+import com.aleiye.lassock.annotation.Required;
 import com.aleiye.lassock.live.conf.Context;
 import com.aleiye.lassock.live.scroll.Course;
 import com.aleiye.lassock.live.scroll.Sign;
@@ -17,7 +17,6 @@ public class ScrollUtils {
 		Sign sign = clazz.newInstance();
 		JSONObject jo = JSONObject.fromObject(course);
 		jo.putAll(course.getParameters());
-//		System.out.println(jo.toString());
 		sign = JsonProvider.adaptMapper.readValue(jo.toString(), clazz);
 		sign.associate(((Course) course).getId());
 		return sign;
@@ -57,27 +56,27 @@ public class ScrollUtils {
 		return pro;
 	}
 
-//	public static void main(String args[]) {
-//		Course command = new Course();
-//		command.setId("101");
-//		command.setType("command");
-//		command.put(Const.command.HOST, "10.0.1.1");
-//		command.put(Const.command.PORT, "23");
-//		command.put(Const.command.UESRNAME, "admin");
-//		command.put(Const.command.PASSWORD, "yhxt@123");
-//		String[] commands = {
-//				"dis arp", "dis mac-address"
-//		};
-//		command.put(Const.command.PERIOD, "120000");
-//		command.put(Const.command.COMMANDS, commands);
-//		command.setRunType(RunType.TIMER);
-//
-//		try {
-//			SnmpSign sign = (SnmpSign) forSign(command, SnmpSign.class);
-//			System.out.print(sign);
-//		} catch (Exception e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//	}
+	// public static void main(String args[]) {
+	// Course command = new Course();
+	// command.setId("101");
+	// command.setType("command");
+	// command.put(Const.command.HOST, "10.0.1.1");
+	// command.put(Const.command.PORT, "23");
+	// command.put(Const.command.UESRNAME, "admin");
+	// command.put(Const.command.PASSWORD, "yhxt@123");
+	// String[] commands = {
+	// "dis arp", "dis mac-address"
+	// };
+	// command.put(Const.command.PERIOD, "120000");
+	// command.put(Const.command.COMMANDS, commands);
+	// command.setRunType(RunType.TIMER);
+	//
+	// try {
+	// SnmpSign sign = (SnmpSign) forSign(command, SnmpSign.class);
+	// System.out.print(sign);
+	// } catch (Exception e) {
+	// // TODO Auto-generated catch block
+	// e.printStackTrace();
+	// }
+	// }
 }

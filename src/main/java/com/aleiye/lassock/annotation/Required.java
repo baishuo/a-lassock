@@ -1,4 +1,4 @@
-package com.aleiye.lassock.annotations;
+package com.aleiye.lassock.annotation;
 
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 

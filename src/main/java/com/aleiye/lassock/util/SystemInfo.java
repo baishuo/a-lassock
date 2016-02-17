@@ -8,9 +8,8 @@ import org.hyperic.sigar.FileSystem;
 import org.hyperic.sigar.Sigar;
 import org.hyperic.sigar.SigarException;
 
-import com.aleiye.lassock.util.SigarUtils;
-import com.aleiye.lassock.util.SysUtil;
-import com.aleiye.lassock.util.SysUtil.OSType;
+import com.aleiye.lassock.lang.Sistem;
+import com.aleiye.lassock.lang.Sistem.OSType;
 
 /**
  * 系统信息
@@ -33,7 +32,7 @@ public class SystemInfo {
 			FileSystem fslist[] = sigar.getFileSystemList();
 			for (int i = fslist.length - 1; i >= 0; i--) {
 				FileSystem fs = fslist[i];
-				if (SysUtil.getSystem() != OSType.WINDOW) {
+				if (Sistem.getSystem() != OSType.WINDOWS) {
 					if (fs.getDirName().equals("/")) {
 						main = fs;
 						continue;

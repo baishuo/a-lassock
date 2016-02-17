@@ -2,7 +2,7 @@ package com.aleiye.lassock.live.scroll;
 
 import java.util.HashMap;
 
-import com.aleiye.lassock.annotations.Required;
+import com.aleiye.lassock.annotation.Required;
 import com.aleiye.lassock.live.conf.ValueStation;
 
 /**
