@@ -6,11 +6,11 @@ import java.util.TimerTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.aleiye.lassock.lifecycle.LifecycleState;
 import com.aleiye.lassock.live.hill.PollableShade;
 import com.aleiye.lassock.live.hill.Shade;
 import com.aleiye.lassock.live.hill.ShadeRunner;
-import com.aleiye.lassock.live.lifecycle.LifecycleState;
-import com.aleiye.lassock.live.scroll.Sign;
+import com.aleiye.lassock.live.hill.Sign;
 
 /**
  * Timer

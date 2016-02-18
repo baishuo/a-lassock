@@ -1,4 +1,4 @@
-package com.aleiye.lassock.live.lifecycle;
+package com.aleiye.lassock.lifecycle;
 
 /**
  * 生命周期

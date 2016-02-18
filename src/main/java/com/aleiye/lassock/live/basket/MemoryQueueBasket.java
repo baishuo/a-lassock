@@ -2,7 +2,7 @@ package com.aleiye.lassock.live.basket;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
-import com.aleiye.lassock.model.GeneralMushroom;
+import com.aleiye.lassock.model.Mushroom;
 
 /**
  * 内存队列基础型Basket
@@ -11,15 +11,15 @@ import com.aleiye.lassock.model.GeneralMushroom;
  * @version 2.1.2
  */
 public class MemoryQueueBasket extends AbstractBasket {
-	LinkedBlockingQueue<GeneralMushroom> queue = new LinkedBlockingQueue<GeneralMushroom>();
+	LinkedBlockingQueue<Mushroom> queue = new LinkedBlockingQueue<Mushroom>();
 
 	@Override
-	public void push(GeneralMushroom generalMushroom) throws InterruptedException {
+	public void push(Mushroom generalMushroom) throws InterruptedException {
 		queue.put(generalMushroom);
 	}
 
 	@Override
-	public GeneralMushroom take() throws InterruptedException {
+	public Mushroom take() throws InterruptedException {
 		return queue.take();
 	}
 }

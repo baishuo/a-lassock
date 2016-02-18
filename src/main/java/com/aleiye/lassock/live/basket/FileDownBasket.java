@@ -15,7 +15,7 @@ import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.aleiye.lassock.model.GeneralMushroom;
+import com.aleiye.lassock.model.Mushroom;
 import com.aleiye.lassock.util.ConfigUtils;
 
 /**
@@ -30,10 +30,10 @@ public class FileDownBasket extends AbstractBasket {
 	private final String path = ConfigUtils.getConfig().getString("live.custom.filepath");
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
-	BlockingQueue<GeneralMushroom> queue = new LinkedBlockingQueue<GeneralMushroom>();
+	BlockingQueue<Mushroom> queue = new LinkedBlockingQueue<Mushroom>();
 
 	@Override
-	public void push(GeneralMushroom generalMushroom) throws InterruptedException {
+	public void push(Mushroom generalMushroom) throws InterruptedException {
 		@SuppressWarnings("unchecked")
 		// 内容
 		List<Map<String, String>> contents = (List<Map<String, String>>) generalMushroom.getBody();
@@ -62,7 +62,7 @@ public class FileDownBasket extends AbstractBasket {
 	}
 
 	@Override
-	public GeneralMushroom take() throws InterruptedException {
+	public Mushroom take() throws InterruptedException {
 		return queue.take();
 	}
 

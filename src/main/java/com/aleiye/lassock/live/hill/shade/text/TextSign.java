@@ -1,6 +1,6 @@
 package com.aleiye.lassock.live.hill.shade.text;
 
-import com.aleiye.lassock.live.scroll.Sign;
+import com.aleiye.lassock.live.hill.Sign;
 
 /**
  * 文档采集标识

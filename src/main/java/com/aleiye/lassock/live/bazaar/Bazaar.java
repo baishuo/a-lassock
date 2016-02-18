@@ -1,8 +1,8 @@
 package com.aleiye.lassock.live.bazaar;
 
-import com.aleiye.lassock.live.NamedComponent;
+import com.aleiye.lassock.common.NamedComponent;
+import com.aleiye.lassock.lifecycle.LifecycleAware;
 import com.aleiye.lassock.live.basket.Basket;
-import com.aleiye.lassock.live.lifecycle.LifecycleAware;
 
 /**
  * 采集消费者(集市)

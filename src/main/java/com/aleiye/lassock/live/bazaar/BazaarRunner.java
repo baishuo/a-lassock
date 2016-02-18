@@ -5,8 +5,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.aleiye.lassock.live.lifecycle.LifecycleAware;
-import com.aleiye.lassock.live.lifecycle.LifecycleState;
+import com.aleiye.lassock.lifecycle.LifecycleAware;
+import com.aleiye.lassock.lifecycle.LifecycleState;
 
 /**
  * <p>
@@ -100,11 +100,6 @@ public class BazaarRunner implements LifecycleAware {
 		return lifecycleState;
 	}
 
-	/**
-	 * {@link Runnable} that {@linkplain SinkProcessor#process() polls} a
-	 * {@link SinkProcessor} and manages event delivery notification,
-	 * {@link Sink.Status BACKOFF} delay handling, etc.
-	 */
 	public static class PollingRunner implements Runnable {
 
 		private Bazaar policy;

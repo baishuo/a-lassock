@@ -8,9 +8,9 @@ import io.netty.util.concurrent.GlobalEventExecutor;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.aleiye.lassock.live.conf.Context;
+import com.aleiye.lassock.live.hill.Sign;
 import com.aleiye.lassock.live.hill.shade.AbstractEventDrivenShade;
-import com.aleiye.lassock.live.scroll.Sign;
+import com.aleiye.lassock.live.scroll.Course;
 import com.aleiye.lassock.util.ScrollUtils;
 
 /**
@@ -30,7 +30,7 @@ public abstract class SyslogShade extends AbstractEventDrivenShade {
 	protected Channel serverChannel;
 
 	@Override
-	protected void doConfigure(Context context) throws Exception {
+	protected void doConfigure(Course context) throws Exception {
 		this.sign = (SyslogSign) ScrollUtils.forSign(context, SyslogSign.class);
 	}
 

@@ -19,8 +19,8 @@ import org.quartz.impl.StdSchedulerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.aleiye.lassock.live.lifecycle.LifecycleState;
-import com.aleiye.lassock.live.scroll.Sign;
+import com.aleiye.lassock.lifecycle.LifecycleState;
+import com.aleiye.lassock.live.hill.Sign;
 
 /**
  * 任务管理

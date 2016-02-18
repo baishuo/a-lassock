@@ -29,8 +29,8 @@ import org.snmp4j.transport.DefaultTcpTransportMapping;
 import org.snmp4j.transport.DefaultUdpTransportMapping;
 
 import com.aleiye.lassock.lang.Sistem;
-import com.aleiye.lassock.live.conf.Context;
 import com.aleiye.lassock.live.scroll.Const;
+import com.aleiye.lassock.live.scroll.Course;
 import com.aleiye.lassock.model.GeneralMushroom;
 import com.aleiye.lassock.util.ScrollUtils;
 
@@ -98,7 +98,7 @@ public class SnmpStandardShade extends SnmpShade {
 	}
 
 	@Override
-	protected void doConfigure(Context context) throws Exception {
+	protected void doConfigure(Course context) throws Exception {
 		sign = (SnmpSign) ScrollUtils.forSign(context, SnmpSign.class);
 		// 目标地址
 		targetAddress = GenericAddress.parse(String.format(ADDRESS_FORMAT, sign.getProtocol(), sign.getHost(),

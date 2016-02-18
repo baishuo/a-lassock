@@ -8,12 +8,11 @@ import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 
 import com.aleiye.lassock.annotation.Required;
-import com.aleiye.lassock.live.conf.Context;
+import com.aleiye.lassock.live.hill.Sign;
 import com.aleiye.lassock.live.scroll.Course;
-import com.aleiye.lassock.live.scroll.Sign;
 
 public class ScrollUtils {
-	public static Sign forSign(Context course, Class<? extends Sign> clazz) throws Exception {
+	public static Sign forSign(Course course, Class<? extends Sign> clazz) throws Exception {
 		Sign sign = clazz.newInstance();
 		JSONObject jo = JSONObject.fromObject(course);
 		jo.putAll(course.getParameters());

@@ -4,7 +4,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.aleiye.lassock.live.basket.Basket;
 import com.aleiye.lassock.live.exception.SignRemovedException;
-import com.aleiye.lassock.live.scroll.Sign;
+import com.aleiye.lassock.live.hill.Sign;
 import com.aleiye.lassock.model.GeneralMushroom;
 
 /**

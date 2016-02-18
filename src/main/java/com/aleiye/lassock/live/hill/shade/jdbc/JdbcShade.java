@@ -12,9 +12,9 @@ import java.util.Map;
 import javax.sql.DataSource;
 
 import com.aleiye.lassock.dbcs.DBManager;
-import com.aleiye.lassock.live.conf.Context;
+import com.aleiye.lassock.live.hill.Sign;
 import com.aleiye.lassock.live.hill.shade.AbstractPollableShade;
-import com.aleiye.lassock.live.scroll.Sign;
+import com.aleiye.lassock.live.scroll.Course;
 import com.aleiye.lassock.model.GeneralMushroom;
 import com.aleiye.lassock.util.ScrollUtils;
 
@@ -66,11 +66,6 @@ public class JdbcShade extends AbstractPollableShade {
 	}
 
 	@Override
-	protected void doConfigure(Context context) throws Exception {
-		this.sign = (JdbcSign) ScrollUtils.forSign(context, JdbcSign.class);
-	}
-
-	@Override
 	protected void doStart() throws Exception {
 		this.dataSource = DBManager.getDataSource(sign.getDataSource());
 		sql = sign.getSql();
@@ -80,5 +75,11 @@ public class JdbcShade extends AbstractPollableShade {
 	@Override
 	protected void doStop() throws Exception {
 		dataSource = null;
+	}
+
+	@Override
+	public void doConfigure(Course course) throws Exception {
+		this.sign = (JdbcSign) ScrollUtils.forSign(course, JdbcSign.class);
+
 	}
 }

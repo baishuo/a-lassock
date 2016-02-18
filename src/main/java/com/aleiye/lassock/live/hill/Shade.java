@@ -1,9 +1,9 @@
 package com.aleiye.lassock.live.hill;
 
-import com.aleiye.lassock.live.NamedComponent;
+import com.aleiye.lassock.common.NamedComponent;
+import com.aleiye.lassock.lifecycle.LifecycleAware;
+import com.aleiye.lassock.live.CourseConfigurable;
 import com.aleiye.lassock.live.basket.Basket;
-import com.aleiye.lassock.live.lifecycle.LifecycleAware;
-import com.aleiye.lassock.live.scroll.Sign;
 
 /**
  * 采集子源
@@ -19,7 +19,7 @@ import com.aleiye.lassock.live.scroll.Sign;
  * @version 2.1.2
  * @see Hill
  */
-public interface Shade extends LifecycleAware, NamedComponent {
+public interface Shade extends LifecycleAware, NamedComponent, CourseConfigurable {
 
 	public void setBasket(Basket basket);
 

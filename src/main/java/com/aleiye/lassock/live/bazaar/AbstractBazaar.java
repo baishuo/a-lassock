@@ -1,7 +1,7 @@
 package com.aleiye.lassock.live.bazaar;
 
+import com.aleiye.lassock.lifecycle.LifecycleState;
 import com.aleiye.lassock.live.basket.Basket;
-import com.aleiye.lassock.live.lifecycle.LifecycleState;
 import com.google.common.base.Preconditions;
 
 /**

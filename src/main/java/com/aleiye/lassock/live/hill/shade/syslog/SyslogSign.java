@@ -1,6 +1,6 @@
 package com.aleiye.lassock.live.hill.shade.syslog;
 
-import com.aleiye.lassock.live.scroll.Sign;
+import com.aleiye.lassock.live.hill.Sign;
 
 /**
  * SYSLOG标识

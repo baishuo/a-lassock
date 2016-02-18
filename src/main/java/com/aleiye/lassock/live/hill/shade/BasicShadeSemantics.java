@@ -3,15 +3,13 @@ package com.aleiye.lassock.live.hill.shade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.aleiye.lassock.common.able.Configurable;
-import com.aleiye.lassock.live.conf.Context;
-import com.aleiye.lassock.live.lifecycle.LifecycleState;
+import com.aleiye.lassock.lifecycle.LifecycleState;
 import com.aleiye.lassock.live.scroll.Course;
 import com.aleiye.lassock.util.LogUtils;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Throwables;
 
-public abstract class BasicShadeSemantics extends AbstractShade implements Configurable {
+public abstract class BasicShadeSemantics extends AbstractShade {
 	private static final Logger logger = LoggerFactory.getLogger(BasicShadeSemantics.class);
 
 	private Exception exception;
@@ -20,17 +18,17 @@ public abstract class BasicShadeSemantics extends AbstractShade implements Confi
 		lifecycleState = LifecycleState.IDLE;
 	}
 
-	public synchronized void configure(Context context) {
+	public synchronized void configure(Course course) {
 		if (isStarted()) {
 			throw new IllegalStateException("Configure called when started");
 		} else {
 			try {
 				exception = null;
 				setLifecycleState(LifecycleState.IDLE);
-				doConfigure(context);
+				doConfigure(course);
 			} catch (Exception e) {
 				exception = e;
-				LogUtils.error(((Course) context).getName() + "configure exception:" + e.getMessage());
+				LogUtils.error(course.getName() + "configure exception:" + e.getMessage());
 				setLifecycleState(LifecycleState.ERROR);
 				Throwables.propagate(e);
 			}
@@ -83,7 +81,7 @@ public abstract class BasicShadeSemantics extends AbstractShade implements Confi
 		this.lifecycleState = lifecycleState;
 	}
 
-	protected abstract void doConfigure(Context context) throws Exception;
+	protected abstract void doConfigure(Course course) throws Exception;
 
 	protected abstract void doStart() throws Exception;
 

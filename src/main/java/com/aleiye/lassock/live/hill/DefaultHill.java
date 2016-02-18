@@ -13,13 +13,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.aleiye.lassock.common.able.Configurable;
+import com.aleiye.lassock.lifecycle.LifecycleState;
 import com.aleiye.lassock.live.basket.Basket;
 import com.aleiye.lassock.live.exception.CourseException;
 import com.aleiye.lassock.live.exception.SignException;
 import com.aleiye.lassock.live.hill.shade.tool.ShadeExecutor;
 import com.aleiye.lassock.live.hill.shade.tool.ShadeFileExecutor;
 import com.aleiye.lassock.live.hill.shade.tool.ShadeScheduler;
-import com.aleiye.lassock.live.lifecycle.LifecycleState;
 import com.aleiye.lassock.live.scroll.Course;
 import com.aleiye.lassock.util.ScrollUtils;
 

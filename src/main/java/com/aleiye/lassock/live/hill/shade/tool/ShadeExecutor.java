@@ -3,7 +3,7 @@ package com.aleiye.lassock.live.hill.shade.tool;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
-import com.aleiye.lassock.live.lifecycle.LifecycleState;
+import com.aleiye.lassock.lifecycle.LifecycleState;
 
 public class ShadeExecutor {
 	// 周期性的任务执行的线程池

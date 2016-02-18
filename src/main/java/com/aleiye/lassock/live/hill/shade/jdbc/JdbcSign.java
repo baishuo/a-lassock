@@ -1,6 +1,6 @@
 package com.aleiye.lassock.live.hill.shade.jdbc;
 
-import com.aleiye.lassock.live.scroll.Sign;
+import com.aleiye.lassock.live.hill.Sign;
 
 /**
  * JDBC 采集标识

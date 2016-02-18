@@ -10,7 +10,7 @@ import org.snmp4j.Snmp;
 import org.snmp4j.Target;
 import org.snmp4j.smi.VariableBinding;
 
-import com.aleiye.lassock.live.conf.Context;
+import com.aleiye.lassock.live.scroll.Course;
 import com.aleiye.lassock.model.GeneralMushroom;
 
 /**
@@ -32,7 +32,7 @@ public class SnmpMemoryShade extends SnmpStandardShade {
 	DecimalFormat df = new DecimalFormat(".##");
 
 	@Override
-	protected void doConfigure(Context context) throws Exception {
+	protected void doConfigure(Course context) throws Exception {
 		super.doConfigure(context);
 		usedOid = this.sign.getOids().get(0);
 		withOid = this.sign.getOids().get(1);

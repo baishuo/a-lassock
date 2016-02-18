@@ -1,6 +1,6 @@
 package com.aleiye.lassock.live.hill.shade.tool;
 
-import com.aleiye.lassock.live.lifecycle.LifecycleState;
+import com.aleiye.lassock.lifecycle.LifecycleState;
 import com.aleiye.lassock.util.DestroyableUtils;
 import com.aleiye.lassock1.live.hills.Hill1;
 import com.aleiye.lassock1.live.hills.text.TextHill;

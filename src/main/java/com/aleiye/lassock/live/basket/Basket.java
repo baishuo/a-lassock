@@ -1,8 +1,8 @@
 package com.aleiye.lassock.live.basket;
 
-import com.aleiye.lassock.live.NamedComponent;
-import com.aleiye.lassock.live.lifecycle.LifecycleAware;
-import com.aleiye.lassock.model.GeneralMushroom;
+import com.aleiye.lassock.common.NamedComponent;
+import com.aleiye.lassock.lifecycle.LifecycleAware;
+import com.aleiye.lassock.model.Mushroom;
 
 /**
  * 采集缓存对列(竹篮)
@@ -19,12 +19,12 @@ public interface Basket extends LifecycleAware, NamedComponent {
 	 * @param generalMushroom
 	 * @throws InterruptedException
 	 */
-	void push(GeneralMushroom generalMushroom) throws InterruptedException;
+	void push(Mushroom generalMushroom) throws InterruptedException;
 
 	/**
 	 * 取出
 	 * 
 	 * @return
 	 */
-	GeneralMushroom take() throws InterruptedException;
+	Mushroom take() throws InterruptedException;
 }

@@ -8,8 +8,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import com.aleiye.lassock.live.basket.Basket;
 import com.aleiye.lassock.live.exception.CourseException;
 import com.aleiye.lassock.live.exception.SignException;
+import com.aleiye.lassock.live.hill.Sign;
 import com.aleiye.lassock.live.scroll.Course;
-import com.aleiye.lassock.live.scroll.Sign;
 import com.aleiye.lassock.logging.Logging;
 import com.aleiye.lassock.util.CloseableUtils;
 

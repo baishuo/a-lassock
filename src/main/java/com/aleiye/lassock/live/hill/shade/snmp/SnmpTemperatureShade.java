@@ -10,7 +10,7 @@ import org.snmp4j.Snmp;
 import org.snmp4j.Target;
 import org.snmp4j.smi.VariableBinding;
 
-import com.aleiye.lassock.live.conf.Context;
+import com.aleiye.lassock.live.scroll.Course;
 import com.aleiye.lassock.model.GeneralMushroom;
 
 /**
@@ -44,7 +44,7 @@ public class SnmpTemperatureShade extends SnmpStandardShade {
 	}
 
 	@Override
-	protected void doConfigure(Context context) throws Exception {
+	protected void doConfigure(Course context) throws Exception {
 		super.doConfigure(context);
 		temperatureOid = sign.getOids().get(0);
 	}

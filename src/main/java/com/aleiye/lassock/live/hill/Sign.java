@@ -1,4 +1,4 @@
-package com.aleiye.lassock.live.scroll;
+package com.aleiye.lassock.live.hill;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,6 +7,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.aleiye.lassock.live.conf.ValueStation;
 import com.aleiye.lassock.live.hill.shade.AbstractShade;
+import com.aleiye.lassock.live.scroll.Course;
 import com.aleiye.lassock.live.scroll.Course.RunType;
 
 /**

@@ -1,6 +1,6 @@
 package com.aleiye.lassock.live.hill.shade.telnet;
 
-import com.aleiye.lassock.live.scroll.Sign;
+import com.aleiye.lassock.live.hill.Sign;
 
 /**
  * @author ruibing.zhao

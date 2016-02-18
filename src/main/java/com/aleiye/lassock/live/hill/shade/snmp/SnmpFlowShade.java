@@ -12,6 +12,7 @@ import org.snmp4j.Snmp;
 import org.snmp4j.Target;
 
 import com.aleiye.lassock.live.conf.Context;
+import com.aleiye.lassock.live.scroll.Course;
 import com.aleiye.lassock.model.GeneralMushroom;
 
 public class SnmpFlowShade extends SnmpStandardShade {
@@ -241,7 +242,7 @@ public class SnmpFlowShade extends SnmpStandardShade {
 	}
 
 	@Override
-	protected void doConfigure(Context context) throws Exception {
+	protected void doConfigure(Course context) throws Exception {
 		super.doConfigure(context);
 		prefixOid = sign.getOids().get(0);
 		suffixOid = sign.getOids().get(1);

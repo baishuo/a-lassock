@@ -28,6 +28,7 @@ import org.snmp4j.util.ThreadPool;
 import com.aleiye.lassock.lang.Sistem;
 import com.aleiye.lassock.live.conf.Context;
 import com.aleiye.lassock.live.hill.shade.AbstractEventDrivenShade;
+import com.aleiye.lassock.live.scroll.Course;
 import com.aleiye.lassock.model.GeneralMushroom;
 import com.aleiye.lassock.util.ScrollUtils;
 
@@ -89,7 +90,7 @@ public class SnmpTrapShade extends AbstractEventDrivenShade implements CommandRe
 	}
 
 	@Override
-	protected void doConfigure(Context context) throws Exception {
+	protected void doConfigure(Course context) throws Exception {
 		this.sign = (SnmpSign) ScrollUtils.forSign(context, SnmpSign.class);
 	}
 

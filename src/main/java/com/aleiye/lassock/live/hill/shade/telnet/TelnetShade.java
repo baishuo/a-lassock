@@ -29,11 +29,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
-import com.aleiye.lassock.live.conf.Context;
-import com.aleiye.lassock.live.exception.SignRemovedException;
+import com.aleiye.lassock.live.hill.Sign;
 import com.aleiye.lassock.live.hill.shade.AbstractPollableShade;
 import com.aleiye.lassock.live.scroll.Course;
-import com.aleiye.lassock.live.scroll.Sign;
 import com.aleiye.lassock.model.GeneralMushroom;
 import com.aleiye.lassock.util.ScrollUtils;
 
@@ -220,13 +218,13 @@ public class TelnetShade extends AbstractPollableShade {
 		// mushroom.put(Const.command.DEVICETYPE, sign.getDeviceType());
 		try {
 			putMushroom(sign, generalMushroom);
-		} catch (InterruptedException | SignRemovedException e) {
+		} catch (InterruptedException e) {
 			LOGGER.debug(e.getMessage(), e);
 		}
 	}
 
 	@Override
-	protected void doConfigure(Context context) throws Exception {
+	protected void doConfigure(Course context) throws Exception {
 		this.sign = (TelnetSign) ScrollUtils.forSign((Course) context, TelnetSign.class);
 		host = sign.getHost();
 		port = sign.getPort();
