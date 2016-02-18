@@ -15,6 +15,7 @@ import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.aleiye.lassock.live.conf.Context;
 import com.aleiye.lassock.model.Mushroom;
 import com.aleiye.lassock.util.ConfigUtils;
 
@@ -78,6 +79,12 @@ public class FileDownBasket extends AbstractBasket {
 			return m.group(1);
 		}
 		return s;
+	}
+
+	@Override
+	public void configure(Context context) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -15,7 +15,6 @@ import com.aleiye.lassock.live.bazaar.Bazaar;
 import com.aleiye.lassock.live.bazaar.BazaarFactory;
 import com.aleiye.lassock.live.bazaar.BazaarRunner;
 import com.aleiye.lassock.live.bazaar.DefaultBazaarFactory;
-import com.aleiye.lassock.live.hill.DefaultHill;
 import com.aleiye.lassock.live.hill.Hill;
 import com.aleiye.lassock.logging.Logging;
 import com.aleiye.lassock.util.ConfigUtils;
@@ -56,9 +55,9 @@ public class LiveContainer extends Logging implements Destroyable {
 	public void initialize() throws Exception {
 		loadBaskets();
 
-//		hill = (Hill) new DefaultHill();
-//		hill.setBaskets(baskets);
-//		hill.initialize();
+		// hill = (Hill) new DefaultHill();
+		// hill.setBaskets(baskets);
+		// hill.initialize();
 		hill = new HillMirror();
 		hill.setBaskets(baskets);
 		hill.initialize();

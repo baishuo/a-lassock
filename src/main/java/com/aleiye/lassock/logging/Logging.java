@@ -4,7 +4,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Created by ywt on 15/5/9.
+ * logger
+ * 
+ * @author ruibing.zhao
+ * @since 2016年2月18日
+ * @version 1.0
  */
 public class Logging {
 

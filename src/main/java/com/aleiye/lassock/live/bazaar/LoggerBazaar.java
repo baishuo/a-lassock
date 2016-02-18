@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.aleiye.lassock.live.basket.Basket;
+import com.aleiye.lassock.live.conf.Context;
 import com.aleiye.lassock.model.Mushroom;
 
 public class LoggerBazaar extends AbstractBazaar {
@@ -38,5 +39,10 @@ public class LoggerBazaar extends AbstractBazaar {
 				// runner
 			}
 		} catch (Exception ex) {}
+	}
+
+	@Override
+	public void configure(Context context) {
+		//
 	}
 }

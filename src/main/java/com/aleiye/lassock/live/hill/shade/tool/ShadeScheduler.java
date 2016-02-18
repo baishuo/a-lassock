@@ -24,9 +24,10 @@ import com.aleiye.lassock.live.hill.Sign;
 
 /**
  * 任务管理
- * zmh
  * 
- * @2013-10-09 下午2:42:09
+ * @author ruibing.zhao
+ * @since 2016年2月18日
+ * @version 1.0
  */
 public class ShadeScheduler {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ShadeScheduler.class);

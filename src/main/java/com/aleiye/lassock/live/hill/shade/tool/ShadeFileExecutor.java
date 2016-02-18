@@ -18,10 +18,10 @@ public class ShadeFileExecutor {
 		hill1 = new TextHill();
 		try {
 			hill1.initialize();
+			lifecycleState = LifecycleState.START;
 		} catch (Exception e) {
-			e.printStackTrace();
+			lifecycleState = LifecycleState.ERROR;
 		}
-		lifecycleState = LifecycleState.START;
 	}
 
 	public static void shutdown() {

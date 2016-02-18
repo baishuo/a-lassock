@@ -1,6 +1,6 @@
 package com.aleiye.lassock.live.basket;
 
-import com.aleiye.lassock.model.GeneralMushroom;
+import com.aleiye.lassock.model.Mushroom;
 
 /**
  * 缓存队列列车(竹篮列)
@@ -14,21 +14,21 @@ public interface BasketTrain extends Basket {
 	 * 编号存储
 	 * 
 	 * @param index
-	 * @param generalMushroom
+	 * @param mushroom
 	 */
-	void push(int index, GeneralMushroom generalMushroom);
+	void push(int index, Mushroom mushroom);
 
 	/**
 	 * 标识存储
 	 * 
 	 * @param key
-	 * @param generalMushroom
+	 * @param mushroom
 	 */
-	void push(String key, GeneralMushroom generalMushroom);
+	void push(String key, Mushroom mushroom);
 
-	GeneralMushroom poll();
+	Mushroom poll();
 
 	Integer[] getAliveQueueIndex();
 
-	GeneralMushroom take(int index);
+	Mushroom take(int index);
 }
