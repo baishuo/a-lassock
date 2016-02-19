@@ -63,8 +63,8 @@ public class FileShade extends TextShade {
 		GeneralMushroom mr = new GeneralMushroom();
 		mr.setBody(content);
 		mr.getHeaders().put("path", this.sign.getPath());
-		mr.getHeaders().put("soffset", this.bx);
-		mr.getHeaders().put("eoffset", this.dx);
+		mr.getHeaders().put("soffset", String.valueOf(this.bx));
+		mr.getHeaders().put("eoffset", String.valueOf(this.dx));
 		putMushroom(mr);
 		MarkUtil.mark(this.sign.getId(), this.dx);
 	}
