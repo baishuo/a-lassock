@@ -1,8 +1,5 @@
 package com.aleiye.lassock.live.bazaar;
 
-import java.util.List;
-import java.util.Map;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,16 +20,7 @@ public class LoggerBazaar extends AbstractBazaar {
 
 			if (event != null) {
 				if (logger.isInfoEnabled()) {
-					if (event.getBody() instanceof byte[]) {
-						logger.info("Event: " + new String((byte[]) event.getBody()));
-					} else if (event.getBody() instanceof Map) {
-						logger.info("Event: " + event.getBody().toString());
-					} else if (event.getBody() instanceof List) {
-						List<Map<String, Object>> list = (List<Map<String, Object>>) event.getBody();
-						for (Map<String, Object> map : list) {
-							logger.info("Event: " + map.toString());
-						}
-					}
+					logger.info("Event: " + new String((byte[]) event.getBody()));
 				}
 			} else {
 				// No event found, request back-off semantics from the sink

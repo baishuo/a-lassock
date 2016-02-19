@@ -15,6 +15,7 @@ import com.aleiye.lassock.util.SigarUtils;
 public class Sistem {
 	private Sistem() {}
 
+	private static final String lassockName;
 	// 本机主机名
 	private static final String host;
 	// 本机IP
@@ -62,14 +63,25 @@ public class Sistem {
 			mac = mac0;
 		}
 
-		String name = System.getProperty("os.name");
-		if (name.indexOf("Windows") > -1) {
+		// 获取名称
+		String name = null;
+		try {
+			name = ConfigUtils.getConfig().getString("system.name");
+		} catch (Exception e) {
+			;
+		}
+		if (StringUtils.isBlank(name))
+			lassockName = "lassock_" + host;
+		else
+			lassockName = name;
+		String osName = System.getProperty("os.name");
+		if (osName.indexOf("Windows") > -1) {
 			osType = OSType.WINDOWS;
-		} else if (name.indexOf("Linux") > -1) {
+		} else if (osName.indexOf("Linux") > -1) {
 			osType = OSType.LINUX;
-		} else if (name.indexOf("Mac") > -1) {
+		} else if (osName.indexOf("Mac") > -1) {
 			osType = OSType.MAC;
-		} else if (name.indexOf("Unix") > -1) {
+		} else if (osName.indexOf("Unix") > -1) {
 			osType = OSType.UNIX;
 		} else {
 			osType = OSType.OTHER;
@@ -105,5 +117,9 @@ public class Sistem {
 
 	public static String getMac() {
 		return mac;
+	}
+
+	public static String getLassockname() {
+		return lassockName;
 	}
 }

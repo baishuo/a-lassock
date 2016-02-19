@@ -11,7 +11,8 @@ import org.snmp4j.Target;
 import org.snmp4j.smi.VariableBinding;
 
 import com.aleiye.lassock.live.scroll.Course;
-import com.aleiye.lassock.model.GeneralMushroom;
+import com.aleiye.lassock.model.Mushroom;
+import com.aleiye.lassock.model.MushroomBuilder;
 
 /**
  * MEMORY
@@ -50,8 +51,6 @@ public class SnmpMemoryShade extends SnmpStandardShade {
 			throw new Exception("Can't read value with " + usedOid + " or " + withOid);
 		}
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("A_logtype", this.sign.getSubType());
-		map.put("host", this.sign.getHost());
 		long memoryUsed = usedVariable.getVariable().toLong();
 		map.put("memoryUsed", memoryUsed);
 		long memoryFree = 0, memoryTotal = 0;
@@ -67,14 +66,9 @@ public class SnmpMemoryShade extends SnmpStandardShade {
 		double memoryFreeRate = (double) memoryFree / memoryTotal * 100;
 		Double mfr = Double.valueOf(df.format(memoryFreeRate));
 		map.put("memoryFreeRate", mfr);
-		StringBuffer buffer = new StringBuffer();
-		buffer.append(memoryUsed)// 使用
-				.append(",").append(memoryFree).append(",").append(mfr);
-		map.put("A_message", buffer.toString());
 		// 附加属性添加到采集
-		map.putAll(this.sign.getValues());
-		GeneralMushroom generalMushroom = new GeneralMushroom();
-		generalMushroom.setBody(map);
+		Mushroom generalMushroom = MushroomBuilder.withBody(map, null);
+		generalMushroom.getHeaders().put("target", this.sign.getHost());
 		putMushroom(sign, generalMushroom);
 	}
 

@@ -11,9 +11,9 @@ import org.snmp4j.PDU;
 import org.snmp4j.Snmp;
 import org.snmp4j.Target;
 
-import com.aleiye.lassock.live.conf.Context;
 import com.aleiye.lassock.live.scroll.Course;
-import com.aleiye.lassock.model.GeneralMushroom;
+import com.aleiye.lassock.model.Mushroom;
+import com.aleiye.lassock.model.MushroomBuilder;
 
 public class SnmpFlowShade extends SnmpStandardShade {
 	private static final Logger LOGGER = LoggerFactory.getLogger(SnmpFlowShade.class);
@@ -85,9 +85,6 @@ public class SnmpFlowShade extends SnmpStandardShade {
 			String linkip = portIpMap.get(port);
 			// 日志内容(时间戳，设备IP，端口号，LINKIP，当前OID，每秒速率in，分钟总和in，当前流量in，上一次流量in，当前OID，每秒速率out，分钟总和out，当前流量out，上一次流量out)
 			Map<String, Object> map = new HashMap<String, Object>();
-			map.put("A_logtype", this.sign.getSubType());
-			map.put("host", this.sign.getHost());
-
 			map.put("port", flowData.getPort());
 			map.put("linkIP", linkip);
 
@@ -100,24 +97,8 @@ public class SnmpFlowShade extends SnmpStandardShade {
 			map.put("outPeriodFlow", outFlowData.getPeriodFlow());
 			map.put("outFlow", outFlowData.getFlow());
 			map.put("outLastFlow", outFlowData.getLastFlow());
-
-			StringBuffer buffer = new StringBuffer();
-			buffer.append(port) // 端口
-					.append(",").append(linkip) // linkIP
-					.append(",").append(flowData.getSecSpeed()) // 接收速率
-					.append(",").append(flowData.getPeriodFlow()) // 周期流量
-					.append(",").append(flowData.getFlow())// 当前流量
-					.append(",").append(flowData.getLastFlow())// 前流量
-
-					.append(",").append(outFlowData.getSecSpeed()) // 接收速率
-					.append(",").append(outFlowData.getPeriodFlow()) // 周期流量
-					.append(",").append(outFlowData.getFlow())// 当前流量
-					.append(",").append(outFlowData.getLastFlow())// 前流量
-			;
-			map.putAll(sign.getValues());
-			GeneralMushroom generalMushroom = new GeneralMushroom();
-			map.put("A_message", buffer.toString());
-			generalMushroom.setBody(map);
+			Mushroom generalMushroom = MushroomBuilder.withBody(map, null);
+			generalMushroom.getHeaders().put("target", this.sign.getHost());
 			putMushroom(sign, generalMushroom);
 		}
 	}

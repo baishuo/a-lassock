@@ -11,7 +11,8 @@ import org.snmp4j.Target;
 import org.snmp4j.smi.VariableBinding;
 
 import com.aleiye.lassock.live.scroll.Course;
-import com.aleiye.lassock.model.GeneralMushroom;
+import com.aleiye.lassock.model.Mushroom;
+import com.aleiye.lassock.model.MushroomBuilder;
 
 /**
  * SNMP 温度采集
@@ -33,13 +34,13 @@ public class SnmpTemperatureShade extends SnmpStandardShade {
 					+ temperatureOid);
 			return;
 		}
-
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("A_logtype", this.sign.getSubType());
 		map.put("host", this.sign.getHost());
 		map.put("temperature", vt1OutletTemperature.getVariable().toString());
-		GeneralMushroom generalMushroom = new GeneralMushroom();
-		generalMushroom.setBody(map);
+		Mushroom generalMushroom = MushroomBuilder.withBody(map, null);
+		generalMushroom.getHeaders().put("target", this.sign.getHost());
+		generalMushroom.getHeaders().put("target", this.sign.getHost());
 		putMushroom(sign, generalMushroom);
 	}
 

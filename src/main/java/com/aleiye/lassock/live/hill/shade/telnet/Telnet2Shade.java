@@ -11,7 +11,8 @@ import org.apache.log4j.Logger;
 import com.aleiye.lassock.live.hill.Sign;
 import com.aleiye.lassock.live.hill.shade.AbstractPollableShade;
 import com.aleiye.lassock.live.scroll.Course;
-import com.aleiye.lassock.model.GeneralMushroom;
+import com.aleiye.lassock.model.Mushroom;
+import com.aleiye.lassock.model.MushroomBuilder;
 import com.aleiye.lassock.util.ScrollUtils;
 
 public class Telnet2Shade extends AbstractPollableShade {
@@ -140,9 +141,8 @@ public class Telnet2Shade extends AbstractPollableShade {
 	}
 
 	public void apply(List<Map<String, String>> input) {
-		GeneralMushroom generalMushroom = new GeneralMushroom();
-		generalMushroom.setBody(input);
-		generalMushroom.getHeaders().put("host", sign.getHost());
+		Mushroom generalMushroom = MushroomBuilder.withBody(input, null);
+		generalMushroom.getHeaders().put("target", this.sign.getHost());
 		try {
 			putMushroom(sign, generalMushroom);
 		} catch (InterruptedException e) {

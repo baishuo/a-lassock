@@ -15,7 +15,8 @@ import com.aleiye.lassock.dbcs.DBManager;
 import com.aleiye.lassock.live.hill.Sign;
 import com.aleiye.lassock.live.hill.shade.AbstractPollableShade;
 import com.aleiye.lassock.live.scroll.Course;
-import com.aleiye.lassock.model.GeneralMushroom;
+import com.aleiye.lassock.model.Mushroom;
+import com.aleiye.lassock.model.MushroomBuilder;
 import com.aleiye.lassock.util.ScrollUtils;
 
 /**
@@ -45,7 +46,6 @@ public class JdbcShade extends AbstractPollableShade {
 		ResultSetMetaData rsmd = rs.getMetaData();
 		int conut = rsmd.getColumnCount();
 		List<Map<String, Object>> rsall = new ArrayList<Map<String, Object>>();
-		String symbol = String.valueOf(System.currentTimeMillis());
 		while (rs.next()) {
 			Map<String, Object> row = new HashMap<String, Object>(conut);
 			for (int i = 1; i < conut + 1; i++) {
@@ -58,11 +58,9 @@ public class JdbcShade extends AbstractPollableShade {
 			rsall.add(row);
 		}
 		con.close();
-		GeneralMushroom generalMushroom = new GeneralMushroom();
-		generalMushroom.setBody(rsall);
-		generalMushroom.getHeaders().put("size", rsall.size());
-		generalMushroom.getHeaders().put("symbol", symbol);
-		putMushroom(sign, generalMushroom);
+		Mushroom mushroom = MushroomBuilder.withBody(rsall, null);
+		mushroom.getHeaders().put("size", String.valueOf(rsall.size()));
+		putMushroom(sign, mushroom);
 	}
 
 	@Override

@@ -11,14 +11,15 @@ import java.util.Map;
  */
 public interface Mushroom {
 	// 返回采集环境相关信息
-	public Map<String, Object> getHeaders();
+	public Map<String, String> getHeaders();
 
-	// public void setHeaders(Map<String, String> headers);
+	public void setHeaders(Map<String, String> headers);
+
 	// 采集内容
-	public Object getBody();
+	public byte[] getBody();
 
 	// 设置采集内容
-	public void setBody(Object body);
+	public void setBody(byte[] body);
 
 	// 采集任务下发自带值获取
 	public Map<String, String> getOriginalValues();

@@ -10,9 +10,9 @@ import org.snmp4j.Snmp;
 import org.snmp4j.Target;
 import org.snmp4j.smi.VariableBinding;
 
-import com.aleiye.lassock.live.conf.Context;
 import com.aleiye.lassock.live.scroll.Course;
-import com.aleiye.lassock.model.GeneralMushroom;
+import com.aleiye.lassock.model.Mushroom;
+import com.aleiye.lassock.model.MushroomBuilder;
 
 /**
  * CPU 使用获取
@@ -34,15 +34,10 @@ public class SnmpCpuShade extends SnmpStandardShade {
 			return;
 		}
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("A_logtype", this.sign.getSubType());
-		map.put("host", this.sign.getHost());
 		map.put("cpuLoad", cpmCPUTotal1min.getVariable().toString());
-		StringBuffer buffer = new StringBuffer();
-		buffer.append(cpmCPUTotal1min.getVariable().toString());// 前流量
-		map.put("A_message", buffer.toString());
-		map.putAll(sign.getValues());
-		GeneralMushroom generalMushroom = new GeneralMushroom();
-		generalMushroom.setBody(map);
+		// body
+		Mushroom generalMushroom = MushroomBuilder.withBody(map, null);
+		generalMushroom.getHeaders().put("target", this.sign.getHost());
 		putMushroom(sign, generalMushroom);
 	}
 
