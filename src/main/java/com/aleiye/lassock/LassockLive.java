@@ -47,11 +47,10 @@ public class LassockLive extends Logging {
 				container.initialize();
 
 				logInfo("Lassock live was started!");
-
 				// 挂钩Live
 				liveness.lisen(container.live());
 				startupComplete.compareAndSet(false, true);
-				logInfo("startup completed");
+				logInfo("Lassock startup completed");
 			}
 		} catch (Exception e) {
 			logError("Fatal error during LassockLive startup. Prepare to shutdown");
@@ -64,7 +63,7 @@ public class LassockLive extends Logging {
 	public void shutdown() throws IOException {
 		try {
 			if (startupComplete.compareAndSet(true, false)) {
-				isShuttingDown.set(false);
+				isShuttingDown.set(true);
 				// 配置监听关闭
 				CloseableUtils.closeQuietly(liveness);
 				// 关闭采集生涯
