@@ -26,7 +26,7 @@ import com.aleiye.lassock.util.AkkaUtils;
  * @since 2016年2月22日
  * @version 1.0
  */
-public class DefultMonitor extends NamedLifecycle implements Monitor {
+public class DefaultMonitor extends NamedLifecycle implements Monitor {
 	private boolean enabled = false;
 	private String host;
 	private int port;
@@ -44,7 +44,7 @@ public class DefultMonitor extends NamedLifecycle implements Monitor {
 
 	private Timer timer;
 
-	public DefultMonitor(Live live) {
+	public DefaultMonitor(Live live) {
 		this.live = live;
 	}
 

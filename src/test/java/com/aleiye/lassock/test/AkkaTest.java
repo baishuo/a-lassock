@@ -14,7 +14,7 @@ import akka.event.Logging;
 import akka.event.LoggingAdapter;
 
 import com.aleiye.lassock.live.Live;
-import com.aleiye.lassock.monitor.DefultMonitor.StatusActor;
+import com.aleiye.lassock.monitor.DefaultMonitor.StatusActor;
 import com.aleiye.lassock.util.AkkaUtils;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;

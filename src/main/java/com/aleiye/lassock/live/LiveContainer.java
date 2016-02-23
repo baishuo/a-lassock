@@ -14,7 +14,7 @@ import com.aleiye.lassock.live.bazaar.BazaarRunner;
 import com.aleiye.lassock.live.bazaar.DefaultBazaarFactory;
 import com.aleiye.lassock.live.hill.Hill;
 import com.aleiye.lassock.logging.Logging;
-import com.aleiye.lassock.monitor.DefultMonitor;
+import com.aleiye.lassock.monitor.DefaultMonitor;
 import com.aleiye.lassock.monitor.Monitor;
 import com.aleiye.lassock.util.ConfigUtils;
 import com.aleiye.lassock.util.DestroyableUtils;
@@ -61,7 +61,7 @@ public class LiveContainer extends Logging implements Destroyable {
 
 		loadBazaars();
 
-		Monitor monitor = new DefultMonitor(hill);
+		Monitor monitor = new DefaultMonitor(hill);
 		monitor.configure(ConfigUtils.getContext("monitor"));
 		monitor.setName("lassock-monitor");
 		monitor.start();
