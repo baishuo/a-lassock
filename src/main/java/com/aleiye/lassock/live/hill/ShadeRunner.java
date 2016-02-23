@@ -1,5 +1,6 @@
 package com.aleiye.lassock.live.hill;
 
+import com.aleiye.lassock.api.Course.RunType;
 import com.aleiye.lassock.lifecycle.LifecycleAware;
 import com.aleiye.lassock.live.hill.shade.EventDrivenShadeRunner;
 import com.aleiye.lassock.live.hill.shade.PollableShadeRunner;
@@ -7,7 +8,6 @@ import com.aleiye.lassock.live.hill.shade.QuartzGroupShadeRunner;
 import com.aleiye.lassock.live.hill.shade.QuartzShadeRunner;
 import com.aleiye.lassock.live.hill.shade.ScheduleShadeRunner;
 import com.aleiye.lassock.live.hill.shade.TimerShadeRunner;
-import com.aleiye.lassock.live.scroll.Course.RunType;
 
 abstract public class ShadeRunner implements LifecycleAware {
 	private Shade shade;

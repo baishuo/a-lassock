@@ -22,7 +22,7 @@ public class AkkaUtils {
         buffer.append("|akka.remote.netty.tcp.port=").append(port);
         buffer.append("|akka.remote.netty.tcp.tcp-nodelay = on");
         Config akkaConfig = ConfigFactory.parseString(stripMargin(buffer.toString(), '|'));
-        return ActorSystem.create(systemName, akkaConfig);
+		return ActorSystem.create(systemName, akkaConfig);
     }
 
     public static String stripMargin(String configStr, char marginChar) {

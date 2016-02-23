@@ -1,6 +1,6 @@
 package com.aleiye.lassock.live;
 
-import com.aleiye.lassock.live.scroll.Course;
+import com.aleiye.lassock.api.Course;
 
 /**
  * 通报,其实组件通过该接口获取课程相关信息

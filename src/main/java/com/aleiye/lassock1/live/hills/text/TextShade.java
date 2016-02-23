@@ -35,6 +35,7 @@ public abstract class TextShade extends AbstractShade<TextSign> implements Runna
 			this.pickPolic.pick(this);
 		} catch (IOException e) {
 			this.setStat(Stat.ERR);
+			this.intelligence.setErrorCount(this.intelligence.getErrorCount() + 1);
 		} catch (InterruptedException e) {
 			;
 		} catch (SignRemovedException e) {

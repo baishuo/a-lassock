@@ -11,10 +11,11 @@ import java.util.Map;
 
 import javax.sql.DataSource;
 
+import com.aleiye.lassock.api.Course;
 import com.aleiye.lassock.dbcs.DBManager;
 import com.aleiye.lassock.live.hill.Sign;
 import com.aleiye.lassock.live.hill.shade.AbstractPollableShade;
-import com.aleiye.lassock.live.scroll.Course;
+import com.aleiye.lassock.model.GeneralMushroom;
 import com.aleiye.lassock.model.Mushroom;
 import com.aleiye.lassock.model.MushroomBuilder;
 import com.aleiye.lassock.util.ScrollUtils;

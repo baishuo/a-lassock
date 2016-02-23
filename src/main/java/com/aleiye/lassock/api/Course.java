@@ -1,4 +1,4 @@
-package com.aleiye.lassock.live.scroll;
+package com.aleiye.lassock.api;
 
 import java.util.HashMap;
 
@@ -13,9 +13,6 @@ import com.aleiye.lassock.live.conf.ValueStation;
  * @version 2.1.2
  */
 public class Course extends ValueStation implements Cloneable {
-	// 课程唯一标识
-	@Required
-	private String id;
 	@Required
 	// 课程名称
 	private String name;
@@ -46,14 +43,6 @@ public class Course extends ValueStation implements Cloneable {
 
 	public void setGroupName(String groupName) {
 		this.groupName = groupName;
-	}
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
 	}
 
 	public String getType() {

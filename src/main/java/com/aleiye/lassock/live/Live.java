@@ -2,7 +2,8 @@ package com.aleiye.lassock.live;
 
 import java.util.List;
 
-import com.aleiye.lassock.live.scroll.Course;
+import com.aleiye.lassock.api.Course;
+import com.aleiye.lassock.api.Intelligence;
 
 /**
  * 生涯
@@ -32,4 +33,6 @@ public interface Live {
 	void modify(Course course) throws Exception;
 
 	void remove(Course course) throws Exception;
+
+	List<Intelligence> getIntelligences();
 }

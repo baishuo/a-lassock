@@ -21,6 +21,7 @@ public class LoggerBazaar extends AbstractBazaar {
 			if (event != null) {
 				if (logger.isInfoEnabled()) {
 					logger.info("Event: " + new String((byte[]) event.getBody()));
+					event.incrementCompleteCount();
 				}
 			} else {
 				// No event found, request back-off semantics from the sink

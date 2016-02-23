@@ -16,6 +16,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.aleiye.lassock.api.Course;
 import com.aleiye.lassock.live.basket.Basket;
 import com.aleiye.lassock.live.conf.Context;
 import com.aleiye.lassock.live.exception.CourseException;
@@ -23,7 +24,6 @@ import com.aleiye.lassock.live.exception.SignException;
 import com.aleiye.lassock.live.hill.Sign;
 import com.aleiye.lassock.live.hill.shade.AbstractEventDrivenShade;
 import com.aleiye.lassock.live.scroll.Const;
-import com.aleiye.lassock.live.scroll.Course;
 import com.aleiye.lassock.util.CloseableUtils;
 import com.aleiye.lassock1.live.hills.AbstractShade;
 import com.aleiye.lassock1.live.hills.Shade;

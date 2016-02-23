@@ -3,8 +3,10 @@ package com.aleiye.lassock.live.hill.shade;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.aleiye.lassock.api.Course;
+import com.aleiye.lassock.api.Intelligence;
+import com.aleiye.lassock.api.ShadeStatus;
 import com.aleiye.lassock.lifecycle.LifecycleState;
-import com.aleiye.lassock.live.scroll.Course;
 import com.aleiye.lassock.util.LogUtils;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Throwables;
@@ -26,7 +28,11 @@ public abstract class BasicShadeSemantics extends AbstractShade {
 				exception = null;
 				setLifecycleState(LifecycleState.IDLE);
 				doConfigure(course);
+				this.intelligence = new Intelligence(this.name);
+				this.intelligence.setType(course.getType());
+				this.intelligence.setSubType(course.getSubType());
 			} catch (Exception e) {
+				this.intelligence.setStatus(ShadeStatus.ERROR);
 				exception = e;
 				LogUtils.error(course.getName() + "configure exception:" + e.getMessage());
 				setLifecycleState(LifecycleState.ERROR);

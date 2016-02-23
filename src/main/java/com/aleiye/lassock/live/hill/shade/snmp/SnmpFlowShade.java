@@ -11,7 +11,7 @@ import org.snmp4j.PDU;
 import org.snmp4j.Snmp;
 import org.snmp4j.Target;
 
-import com.aleiye.lassock.live.scroll.Course;
+import com.aleiye.lassock.api.Course;
 import com.aleiye.lassock.model.Mushroom;
 import com.aleiye.lassock.model.MushroomBuilder;
 

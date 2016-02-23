@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.aleiye.event.protobuf.AleiyeEvent;
+import com.aleiye.lassock.lifecycle.LifecycleState;
 import com.aleiye.lassock.live.conf.Context;
 import com.aleiye.lassock.model.Mushroom;
 import com.aleiye.lassock.util.ConfigUtils;
@@ -70,7 +71,7 @@ public class KafkaBazaar extends AbstractBazaar {
 
 	@Override
 	public void configure(Context context) {
-		String zkConnect = context.getString("connecthost");
+		String zkConnect = context.getString("zkhost");
 		RetryUntilElapsed retryPolicy = new RetryUntilElapsed(3000, Integer.MAX_VALUE);
 		client = CuratorFactory.createFramework(zkConnect, retryPolicy);
 		client.start();
@@ -78,13 +79,12 @@ public class KafkaBazaar extends AbstractBazaar {
 			client.blockUntilConnected();
 			curator = CuratorFactory.create(client);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			this.lifecycleState = LifecycleState.ERROR;
+			throw new IllegalArgumentException("Config for bazaar with name:" + this.name);
 		}
 	}
 
 	public void start() {
-
 		try {
 			if (!curator.exists(KAFKA_TOPIC_DEF_PATH)) {
 				curator.createNode(KAFKA_TOPIC_DEF_PATH, "C_0".getBytes());
@@ -109,6 +109,7 @@ public class KafkaBazaar extends AbstractBazaar {
 			});
 			Thread.sleep(10 * 1000);
 			createProducer();
+			super.start();
 		} catch (Exception e) {
 			_LOG.error("get system kafka define error", e);
 			System.exit(1);
@@ -155,6 +156,7 @@ public class KafkaBazaar extends AbstractBazaar {
 		} catch (IOException e) {
 			_LOG.error("close nodeCache error", e);
 		}
+		super.stop();
 	}
 
 	@Override

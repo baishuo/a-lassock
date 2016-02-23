@@ -12,6 +12,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.aleiye.lassock.api.Course;
+import com.aleiye.lassock.api.Intelligence;
 import com.aleiye.lassock.common.able.Configurable;
 import com.aleiye.lassock.lifecycle.LifecycleState;
 import com.aleiye.lassock.live.basket.Basket;
@@ -20,7 +22,6 @@ import com.aleiye.lassock.live.exception.SignException;
 import com.aleiye.lassock.live.hill.shade.tool.ShadeExecutor;
 import com.aleiye.lassock.live.hill.shade.tool.ShadeFileExecutor;
 import com.aleiye.lassock.live.hill.shade.tool.ShadeScheduler;
-import com.aleiye.lassock.live.scroll.Course;
 import com.aleiye.lassock.util.ScrollUtils;
 
 /**
@@ -102,7 +103,7 @@ public class DefaultHill implements Hill {
 			Map.Entry<String, Course> entry = it.next();
 			Course c = entry.getValue();
 			if (c.getType().equals(type)) {
-				ShadeRunner runner = shades.get(c.getId());
+				ShadeRunner runner = shades.get(c.getName());
 				if (runner != null)
 					runner.stop();
 				it.remove();
@@ -118,7 +119,7 @@ public class DefaultHill implements Hill {
 			Map.Entry<String, Course> entry = it.next();
 			Course c = entry.getValue();
 			if (c.getType().equals(type) && c.getSubType().equals(subType)) {
-				ShadeRunner runner = shades.get(c.getId());
+				ShadeRunner runner = shades.get(c.getName());
 				if (runner != null)
 					runner.stop();
 				it.remove();
@@ -146,16 +147,16 @@ public class DefaultHill implements Hill {
 			shade.setBasket(baskets.get(bn));
 			ShadeRunner runner = ShadeRunner.forSource(shade);
 			runner.start();
-			shades.put(course.getId(), runner);
+			shades.put(course.getName(), runner);
 		}
-		courses.put(course.getId(), course);
+		courses.put(course.getName(), course);
 	}
 
 	@Override
 	public synchronized void remove(Course course) throws Exception {
-		Course existsCourse = courses.remove(course.getId());
+		Course existsCourse = courses.remove(course.getName());
 		if (existsCourse != null) {
-			ShadeRunner runner = shades.get(existsCourse.getId());
+			ShadeRunner runner = shades.get(existsCourse.getName());
 			if (runner != null)
 				runner.stop();
 		}
@@ -214,5 +215,14 @@ public class DefaultHill implements Hill {
 		ShadeScheduler.shutdown(true);
 		ShadeFileExecutor.shutdown();
 		destroyed.set(true);
+	}
+
+	@Override
+	public synchronized List<Intelligence> getIntelligences() {
+		List<Intelligence> intelligences = new ArrayList<Intelligence>();
+		for (ShadeRunner runner : shades.values()) {
+			intelligences.add(runner.getShade().getIntelligence());
+		}
+		return intelligences;
 	}
 }

@@ -2,6 +2,8 @@ package com.aleiye.lassock1.live.hills;
 
 import java.io.Closeable;
 
+import com.aleiye.lassock.api.Intelligence;
+
 /**
  * 采集子源
  * (子源，它存在于<tt>Course</tt> 配置生成的容器[<tt>Hill</tt>]中)
@@ -31,4 +33,6 @@ public interface Shade extends Closeable {
 	 * @return
 	 */
 	boolean isOpen();
+
+	Intelligence getIntelligence();
 }

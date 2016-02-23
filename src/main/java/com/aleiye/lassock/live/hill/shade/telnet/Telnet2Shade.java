@@ -8,9 +8,9 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
+import com.aleiye.lassock.api.Course;
 import com.aleiye.lassock.live.hill.Sign;
 import com.aleiye.lassock.live.hill.shade.AbstractPollableShade;
-import com.aleiye.lassock.live.scroll.Course;
 import com.aleiye.lassock.model.Mushroom;
 import com.aleiye.lassock.model.MushroomBuilder;
 import com.aleiye.lassock.util.ScrollUtils;

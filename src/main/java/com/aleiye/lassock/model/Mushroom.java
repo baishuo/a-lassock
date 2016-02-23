@@ -2,6 +2,8 @@ package com.aleiye.lassock.model;
 
 import java.util.Map;
 
+import com.aleiye.lassock.api.Intelligence;
+
 /**
  * 采集产出接口
  * 
@@ -26,4 +28,9 @@ public interface Mushroom {
 
 	// 设置采集任务下发自带值获取
 	public void setOriginalValues(Map<String, String> values);
+
+	public void incrementCompleteCount();
+
+	public void incrementFailedCount();
+
 }

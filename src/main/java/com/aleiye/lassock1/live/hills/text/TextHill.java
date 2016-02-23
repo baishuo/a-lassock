@@ -18,11 +18,12 @@ import java.util.concurrent.TimeUnit;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 
+import com.aleiye.lassock.api.Course;
+import com.aleiye.lassock.live.basket.Basket;
 import com.aleiye.lassock.live.exception.CourseException;
 import com.aleiye.lassock.live.exception.SignException;
 import com.aleiye.lassock.live.mark.Marker;
 import com.aleiye.lassock.live.scroll.Const;
-import com.aleiye.lassock.live.scroll.Course;
 import com.aleiye.lassock.util.ClassUtils;
 import com.aleiye.lassock.util.CloseableUtils;
 import com.aleiye.lassock.util.ConfigUtils;
@@ -154,7 +155,7 @@ public class TextHill extends AbstractHill<TextSign, TextShade> {
 										}
 										if (count >= prentChangedReadCount) {
 											shade.getSign().disassociate(s);
-											List<TextSign> runits = details.get(course.getId());
+											List<TextSign> runits = details.get(course.getName());
 											for (int i = 0; i < runits.size(); i++) {
 												TextSign u = runits.get(i);
 												if (u.getId().equals(shade.getSign().getId())) {
@@ -341,6 +342,7 @@ public class TextHill extends AbstractHill<TextSign, TextShade> {
 	Marker<Long> marker = null;
 	Timer timer;
 	boolean markerEnabled = false;
+
 	@Override
 	public void initialize() throws Exception {
 		// 初始化执行线程
@@ -379,7 +381,7 @@ public class TextHill extends AbstractHill<TextSign, TextShade> {
 			List<TextSign> unitList = new ArrayList<TextSign>();
 			synchronized (courseLock) {
 				for (Course course : courses.values()) {
-					List<TextSign> rfu = details.get(course.getId());
+					List<TextSign> rfu = details.get(course.getName());
 					if (rfu == null) {
 						rfu = new ArrayList<TextSign>();
 					}
@@ -393,10 +395,10 @@ public class TextHill extends AbstractHill<TextSign, TextShade> {
 					// 新旧差值
 					SetView<TextSign> addUnits = Sets.difference(newUnits, oldUnits);
 					for (TextSign unit : addUnits) {
-						unit.associate(course.getId());
+						unit.associate(course.getName());
 						unitList.add(unit);
 					}
-					details.put(course.getId(), units);
+					details.put(course.getName(), units);
 				}
 				// 添加差值Unit
 				for (TextSign unit : unitList) {
@@ -439,6 +441,7 @@ public class TextHill extends AbstractHill<TextSign, TextShade> {
 			sign.setSubType(course.getSubType());
 			sign.setNodeId(FileGeter.getFileKey(file, bfa));
 			sign.setId(course.getType() + ":" + sign.getNodeId());
+			sign.setName(sign.getId());
 			sign.setCt(bfa.creationTime().toMillis());
 			sign.setLmt(bfa.lastModifiedTime().toMillis());
 			sign.setPath(file.getPath());
@@ -449,7 +452,14 @@ public class TextHill extends AbstractHill<TextSign, TextShade> {
 
 	@Override
 	protected TextShade creatShade(TextSign sign) {
-		FileShade fs = new FileShade(sign, this.basket);
+		Basket defaultBasket = baskets.get("_DEFUALT");
+		Basket basket = defaultBasket;
+		if (StringUtils.isNotBlank(sign.getBasketName())) {
+			if (baskets.containsKey(sign.getBasketName())) {
+				basket = baskets.get(sign.getBasketName());
+			}
+		}
+		FileShade fs = new FileShade(sign, basket);
 		long offset = MarkUtil.getMark(sign.getId());
 		fs.seek(offset);
 		return fs;
@@ -491,11 +501,6 @@ public class TextHill extends AbstractHill<TextSign, TextShade> {
 		if (StringUtils.isBlank(course.getString(Const.text.DATA_INPUT_PATH))) {
 			throw new CourseException("Date input path no be null!");
 		}
-		// if
-		// (StringUtils.isBlank(course.getString(Const.text.PATH_FILTER_REGEX)))
-		// {
-		// throw new Exception("Dath filter regex no be null!");
-		// }
 	}
 
 	@Override
@@ -547,7 +552,7 @@ public class TextHill extends AbstractHill<TextSign, TextShade> {
 			}
 			emergency.clear();
 			idles.clear();
-			
+
 			// 定时关闭
 			if (timer != null) {
 				timer.cancel();
@@ -557,7 +562,24 @@ public class TextHill extends AbstractHill<TextSign, TextShade> {
 				CloseableUtils.closeQuietly(marker);
 			}
 			super.destroy();
-			
+
 		}
+	}
+
+	@Override
+	public void pause() {
+		executor.pause();
+	}
+
+	@Override
+	public void resume() {
+		executor.resume();
+
+	}
+
+	@Override
+	public boolean isPaused() {
+		return executor.isPaused();
+
 	}
 }

@@ -2,6 +2,7 @@ package com.aleiye.lassock1.live.hills;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import com.aleiye.lassock.api.Intelligence;
 import com.aleiye.lassock.live.basket.Basket;
 import com.aleiye.lassock.live.exception.SignRemovedException;
 import com.aleiye.lassock.live.hill.Sign;
@@ -25,6 +26,8 @@ public abstract class AbstractShade<T extends Sign> implements Shade {
 	// 开关
 	protected AtomicBoolean done = new AtomicBoolean(false);
 
+	protected Intelligence intelligence;
+
 	/**
 	 * 初始化必须绑定标识 和 输出对列
 	 * 
@@ -34,6 +37,7 @@ public abstract class AbstractShade<T extends Sign> implements Shade {
 	public AbstractShade(T sign, Basket basket) {
 		this.sign = sign;
 		this.basket = basket;
+		intelligence = new Intelligence(sign.getCourseIds());
 	}
 
 	/**
@@ -46,7 +50,10 @@ public abstract class AbstractShade<T extends Sign> implements Shade {
 	protected void putMushroom(GeneralMushroom generalMushroom) throws InterruptedException, SignRemovedException {
 		// 判断关联课程是否为空
 		generalMushroom.setOriginalValues(sign.getValues());
+		((GeneralMushroom) generalMushroom).setIntelligence(this.intelligence);
 		basket.push(generalMushroom);
+		// 每次事件产生 增1
+		this.intelligence.setAcceptedCount(this.intelligence.getAcceptedCount() + 1);
 		// MonitorHelper.setPicked(sign.getKey(), cid.split(","),
 		// sign.getType(), sign.getDescription(),
 		// mushroom.getContent().length);
@@ -59,5 +66,10 @@ public abstract class AbstractShade<T extends Sign> implements Shade {
 
 	public T getSign() {
 		return sign;
+	}
+
+	@Override
+	public Intelligence getIntelligence() {
+		return intelligence;
 	}
 }

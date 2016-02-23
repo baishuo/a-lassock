@@ -1,5 +1,7 @@
 package com.aleiye.lassock.live.scroll;
 
+import com.aleiye.lassock.api.Course;
+
 /**
  * 该常量类保存课程表{@link Course}所需固定属性key
  * 
@@ -88,20 +90,17 @@ public class Const {
 		public static final String USERNAME = "username";
 		// 密码
 		public static final String PASSWORD = "password";
-		
+
 		public static final String JUMPED = "jumped";
 
 		public static final String PREPARE_COMMAND = "prepareCommand";
 		// 执行命令
 		public static final String COMMANDS = "commands";
 		// 品牌
-		public static final String BRAND = "brand";
 		// 设备类型（DevType:交换机、路由器、防火墙、服务器、其它）
 		public static final String DEVICETYPE = "deviceType";
 		// 设备层级（核心、汇聚、接入）
 		public static final String DEVICE_FLOOR = "deviceFloor";
-
-		public static final String PERIOD = "period";
 	}
 
 	public static class jdbc {

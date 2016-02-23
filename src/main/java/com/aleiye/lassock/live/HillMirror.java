@@ -3,17 +3,18 @@ package com.aleiye.lassock.live;
 import java.util.List;
 import java.util.Map;
 
+import com.aleiye.lassock.api.Course;
+import com.aleiye.lassock.api.Course.RunType;
+import com.aleiye.lassock.api.Intelligence;
 import com.aleiye.lassock.live.basket.Basket;
 import com.aleiye.lassock.live.hill.DefaultHill;
 import com.aleiye.lassock.live.hill.Hill;
-import com.aleiye.lassock.live.scroll.Course;
-import com.aleiye.lassock.live.scroll.Course.RunType;
 import com.aleiye.lassock.util.DestroyableUtils;
 import com.aleiye.lassock1.live.hills.Hill1;
 import com.aleiye.lassock1.live.hills.text.TextHill;
 
 /**
- * 
+ * hill镜子类，用于共存旧版Hill和新版hill
  * 
  * @author ruibing.zhao
  * @since 2016年2月16日
@@ -31,13 +32,14 @@ public class HillMirror implements Hill {
 	@Override
 	public void resume() {
 		hill.resume();
+		hill1.resume();
 
 	}
 
 	@Override
 	public void pause() {
+		hill1.pause();
 		hill.pause();
-
 	}
 
 	@Override
@@ -71,7 +73,6 @@ public class HillMirror implements Hill {
 	@Override
 	public void clean(String type, String subType) {
 		hill.clean(type, subType);
-
 	}
 
 	@Override
@@ -114,13 +115,20 @@ public class HillMirror implements Hill {
 		hill.initialize();
 
 		hill1 = new TextHill();
-		hill1.setBasket(baskets.get("simple"));
+		hill1.setBaskets(baskets);
 		hill1.initialize();
 	}
 
 	@Override
 	public void setBaskets(Map<String, Basket> baskets) {
 		this.baskets = baskets;
+	}
+
+	@Override
+	public List<Intelligence> getIntelligences() {
+		List<Intelligence> list = hill.getIntelligences();
+		list.addAll(hill1.getIntelligences());
+		return list;
 	}
 
 }

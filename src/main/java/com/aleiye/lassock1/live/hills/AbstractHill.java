@@ -1,15 +1,17 @@
 package com.aleiye.lassock1.live.hills;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import com.aleiye.lassock.api.Course;
+import com.aleiye.lassock.api.Intelligence;
 import com.aleiye.lassock.live.basket.Basket;
 import com.aleiye.lassock.live.exception.CourseException;
 import com.aleiye.lassock.live.exception.SignException;
 import com.aleiye.lassock.live.hill.Sign;
-import com.aleiye.lassock.live.scroll.Course;
 import com.aleiye.lassock.logging.Logging;
 import com.aleiye.lassock.util.CloseableUtils;
 
@@ -24,11 +26,11 @@ public abstract class AbstractHill<T extends Sign, S extends AbstractShade<T>> e
 	// 是否消毁
 	protected final AtomicBoolean destroyed = new AtomicBoolean(false);
 	// 输出对列
-	protected Basket basket;
+	protected Map<String, Basket> baskets;
 
 	// 输出注入
-	public void setBasket(Basket basket) {
-		this.basket = basket;
+	public void setBaskets(Map<String, Basket> baskets) {
+		this.baskets = baskets;
 	}
 
 	@Override
@@ -94,10 +96,10 @@ public abstract class AbstractHill<T extends Sign, S extends AbstractShade<T>> e
 		// 锁课程
 		synchronized (courseLock) {
 			// 课程表里不存在当前课程
-			if (!courses.containsKey(course.getId())) {
+			if (!courses.containsKey(course.getName())) {
 				// try {
 				// 存放课程
-				courses.put(course.getId(), course);
+				courses.put(course.getName(), course);
 				afterAddCourse(course);
 
 				// } catch (CourseException e) {
@@ -117,7 +119,7 @@ public abstract class AbstractHill<T extends Sign, S extends AbstractShade<T>> e
 		// 制作采集清单
 		List<T> signs = makeDetails(course);
 		for (T sign : signs) {
-			sign.associate(course.getId());
+			sign.associate(course.getName());
 			try {
 				addSign(sign);
 			} catch (SignException s) {
@@ -125,7 +127,7 @@ public abstract class AbstractHill<T extends Sign, S extends AbstractShade<T>> e
 				logError(s.getMessage());
 			}
 		}
-		details.put(course.getId(), signs);
+		details.put(course.getName(), signs);
 	}
 
 	/**
@@ -143,7 +145,7 @@ public abstract class AbstractHill<T extends Sign, S extends AbstractShade<T>> e
 	 * @param t
 	 */
 	protected void addSign(T t) throws SignException, CourseException {
-		String key = t.getId();
+		String key = t.getName();
 		synchronized (signLock) {
 			// 已存在相同单元,关联课程ID
 			if (signs.containsKey(key)) {
@@ -170,7 +172,7 @@ public abstract class AbstractHill<T extends Sign, S extends AbstractShade<T>> e
 				if (s != null) {
 					shades.put(key, s);
 					signs.put(key, t);
-					logInfo("Add sign:" + t.getId());
+					logInfo("Add sign:" + t.getName());
 				}
 			}
 		}
@@ -209,14 +211,14 @@ public abstract class AbstractHill<T extends Sign, S extends AbstractShade<T>> e
 	@Override
 	public void removeCourse(Course course) throws Exception {
 		synchronized (courseLock) {
-			Course existsCourse = courses.remove(course.getId());
+			Course existsCourse = courses.remove(course.getName());
 			if (existsCourse != null) {
-				List<T> list = details.remove(course.getId());
+				List<T> list = details.remove(course.getName());
 				if (list != null && list.size() > 0) {
 					synchronized (signLock) {
 						for (T sign : list) {
-							T removed = this.signs.get(sign.getId());
-							removed.disassociate(course.getId());
+							T removed = this.signs.get(sign.getName());
+							removed.disassociate(course.getName());
 							if (removed.associateSize() == 0)
 								removeSign(removed);
 						}
@@ -224,7 +226,7 @@ public abstract class AbstractHill<T extends Sign, S extends AbstractShade<T>> e
 				}
 			}
 			// else {
-			// throw new Exception("Course:" + course.getId() +
+			// throw new Exception("Course:" + course.getName() +
 			// " don't exist!");
 			// }
 		}
@@ -237,13 +239,13 @@ public abstract class AbstractHill<T extends Sign, S extends AbstractShade<T>> e
 	 * @param t
 	 */
 	protected void removeSign(T t) {
-		String key = t.getId();
+		String key = t.getName();
 		synchronized (signLock) {
 			if (signs.containsKey(key)) {
 				T removed = signs.remove(key);
 				removed.setRemoved(true);
 				removeShade(removed);
-				logInfo(this.getClass().getSimpleName() + "/Sign:" + t.getId() + " was removed!");
+				logInfo(this.getClass().getSimpleName() + "/Sign:" + t.getName() + " was removed!");
 			}
 		}
 	}
@@ -253,7 +255,7 @@ public abstract class AbstractHill<T extends Sign, S extends AbstractShade<T>> e
 	 * @param t
 	 */
 	private void removeShade(T t) {
-		S s = shades.remove(t.getId());
+		S s = shades.remove(t.getName());
 		if (s != null) {
 			CloseableUtils.closeQuietly(s);
 			afterRemoveShade(s);
@@ -276,10 +278,10 @@ public abstract class AbstractHill<T extends Sign, S extends AbstractShade<T>> e
 	public void modifyCourse(Course course) throws Exception {
 		validateCourse(course);
 		synchronized (courseLock) {
-			Course exist = courses.get(course.getId());
+			Course exist = courses.get(course.getName());
 			// if (exist == null) {
 			// // 课程不存在的移除是非法的
-			// throw new Exception("Course:" + course.getId() +
+			// throw new Exception("Course:" + course.getName() +
 			// " don't exist!");
 			// }
 			if (exist != null) {
@@ -313,4 +315,16 @@ public abstract class AbstractHill<T extends Sign, S extends AbstractShade<T>> e
 	 * @return
 	 */
 	protected abstract void validateCourse(Course course) throws Exception;
+
+	@Override
+	public List<Intelligence> getIntelligences() {
+		List<Intelligence> list = new ArrayList<Intelligence>();
+		synchronized (courseLock) {
+			for (Shade shade : shades.values()) {
+				list.add(shade.getIntelligence());
+			}
+		}
+
+		return list;
+	}
 }

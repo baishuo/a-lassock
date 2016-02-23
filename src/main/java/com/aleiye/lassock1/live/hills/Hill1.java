@@ -1,10 +1,12 @@
 package com.aleiye.lassock1.live.hills;
 
 import java.util.List;
+import java.util.Map;
 
+import com.aleiye.lassock.api.Course;
+import com.aleiye.lassock.api.Intelligence;
 import com.aleiye.lassock.common.able.Destroyable;
 import com.aleiye.lassock.live.basket.Basket;
-import com.aleiye.lassock.live.scroll.Course;
 
 /**
  * 采集源接口
@@ -17,7 +19,7 @@ public interface Hill1 extends Destroyable {
 
 	void initialize() throws Exception;
 
-	public void setBasket(Basket basket);
+	public void setBaskets(Map<String, Basket> basket);
 
 	// 增加课程
 	void addCourse(Course course) throws Exception;
@@ -29,6 +31,16 @@ public interface Hill1 extends Destroyable {
 	void modifyCourse(Course course) throws Exception;
 
 	// 移除课程
+
 	void removeCourse(Course course) throws Exception;
 
+	// 暂停
+	void pause();
+
+	// 恢复
+	void resume();
+
+	boolean isPaused();
+
+	List<Intelligence> getIntelligences();
 }

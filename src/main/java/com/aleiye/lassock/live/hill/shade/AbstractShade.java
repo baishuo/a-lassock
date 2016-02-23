@@ -1,9 +1,11 @@
 package com.aleiye.lassock.live.hill.shade;
 
+import com.aleiye.lassock.api.Intelligence;
 import com.aleiye.lassock.live.NamedLifecycle;
 import com.aleiye.lassock.live.basket.Basket;
 import com.aleiye.lassock.live.hill.Shade;
 import com.aleiye.lassock.live.hill.Sign;
+import com.aleiye.lassock.model.GeneralMushroom;
 import com.aleiye.lassock.model.Mushroom;
 import com.google.common.base.Preconditions;
 
@@ -17,6 +19,8 @@ import com.google.common.base.Preconditions;
 public abstract class AbstractShade extends NamedLifecycle implements Shade {
 	// 传输缓存对列
 	private Basket basket;
+
+	protected Intelligence intelligence;
 
 	@Override
 	public synchronized void start() {
@@ -40,8 +44,12 @@ public abstract class AbstractShade extends NamedLifecycle implements Shade {
 		// }
 		// generalMushroom.setEnconde(sign.getEncoding());
 		// generalMushroom.setSignId(sign.getId());
+
 		generalMushroom.setOriginalValues(sign.getValues());
+		((GeneralMushroom) generalMushroom).setIntelligence(this.intelligence);
 		basket.push(generalMushroom);
+		// 每次事件产生 增1
+		this.intelligence.setAcceptedCount(this.intelligence.getAcceptedCount() + 1);
 	}
 
 	@Override
@@ -52,5 +60,10 @@ public abstract class AbstractShade extends NamedLifecycle implements Shade {
 	@Override
 	public void setBasket(Basket basket) {
 		this.basket = basket;
+	}
+
+	@Override
+	public Intelligence getIntelligence() {
+		return intelligence;
 	}
 }

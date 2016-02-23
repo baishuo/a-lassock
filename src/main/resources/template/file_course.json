@@ -1,12 +1,13 @@
 {
 	"courses":[
 		{
+			"name":"file",	
 			"type":"file",
 			"basketName":"simple",
 			"runType":"TEXT",
 			"discription" : "直接登录采集",
 			"parameters":{
-				"inputPath":"/Users/asuroslove/git/a-lassock/src/main/resources/template/template.json"
+				"inputPath":"/Users/asuroslove/git/a-lassock/src/main/resources/template/"
 			}
 		}
 	]

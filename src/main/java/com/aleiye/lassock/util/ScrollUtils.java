@@ -8,8 +8,8 @@ import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 
 import com.aleiye.lassock.annotation.Required;
+import com.aleiye.lassock.api.Course;
 import com.aleiye.lassock.live.hill.Sign;
-import com.aleiye.lassock.live.scroll.Course;
 
 public class ScrollUtils {
 	public static Sign forSign(Course course, Class<? extends Sign> clazz) throws Exception {
@@ -17,7 +17,8 @@ public class ScrollUtils {
 		JSONObject jo = JSONObject.fromObject(course);
 		jo.putAll(course.getParameters());
 		sign = JsonProvider.adaptMapper.readValue(jo.toString(), clazz);
-		sign.associate(((Course) course).getId());
+		sign.setId(course.getName());
+		sign.associate(((Course) course).getName());
 		return sign;
 	}
 

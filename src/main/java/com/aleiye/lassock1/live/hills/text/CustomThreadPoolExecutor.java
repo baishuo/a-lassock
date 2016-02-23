@@ -49,10 +49,13 @@ public class CustomThreadPoolExecutor extends ThreadPoolExecutor {
 			exeQeue = new LinkedBlockingQueue<Runnable>(QUEUE_SIZE);
 		}
 		// if (StringUtils.isBlank(REJECTED)) {
-		// return new CustomThreadPoolExecutor(POOL_SIZE, MAX_SIZE, KEEP_ALIVE_TIME, TimeUnit.MILLISECONDS, exeQeue);
+		// return new CustomThreadPoolExecutor(POOL_SIZE, MAX_SIZE,
+		// KEEP_ALIVE_TIME, TimeUnit.MILLISECONDS, exeQeue);
 		// } else {
-		// RejectedExecutionHandler handler = ClassUtils.<RejectedExecutionHandler> newInstance(REJECTED);
-		// return new CustomThreadPoolExecutor(POOL_SIZE, MAX_SIZE, KEEP_ALIVE_TIME, TimeUnit.MILLISECONDS, exeQeue,
+		// RejectedExecutionHandler handler =
+		// ClassUtils.<RejectedExecutionHandler> newInstance(REJECTED);
+		// return new CustomThreadPoolExecutor(POOL_SIZE, MAX_SIZE,
+		// KEEP_ALIVE_TIME, TimeUnit.MILLISECONDS, exeQeue,
 		// handler);
 		// }
 		return new CustomThreadPoolExecutor(POOL_SIZE, MAX_SIZE, KEEP_ALIVE_TIME, TimeUnit.MILLISECONDS, exeQeue,
@@ -122,6 +125,10 @@ public class CustomThreadPoolExecutor extends ThreadPoolExecutor {
 		} finally {
 			pauseLock.unlock();
 		}
+	}
+
+	public boolean isPaused() {
+		return paused.get();
 	}
 
 	// 恢复

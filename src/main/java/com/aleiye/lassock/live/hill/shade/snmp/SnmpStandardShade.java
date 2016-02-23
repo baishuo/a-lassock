@@ -28,9 +28,9 @@ import org.snmp4j.smi.VariableBinding;
 import org.snmp4j.transport.DefaultTcpTransportMapping;
 import org.snmp4j.transport.DefaultUdpTransportMapping;
 
+import com.aleiye.lassock.api.Course;
 import com.aleiye.lassock.lang.Sistem;
 import com.aleiye.lassock.live.scroll.Const;
-import com.aleiye.lassock.live.scroll.Course;
 import com.aleiye.lassock.model.GeneralMushroom;
 import com.aleiye.lassock.util.ScrollUtils;
 
@@ -75,6 +75,7 @@ public class SnmpStandardShade extends SnmpShade {
 			// 循环OID
 			for (int i = 0; i < recVBs.size(); i++) {
 				GeneralMushroom mr = new GeneralMushroom();
+				mr.setIntelligence(this.intelligence);
 				VariableBinding recVB = recVBs.elementAt(i);
 				StringBuffer sb = new StringBuffer();
 				sb.append(System.currentTimeMillis());

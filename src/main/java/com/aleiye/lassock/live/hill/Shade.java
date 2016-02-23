@@ -1,5 +1,6 @@
 package com.aleiye.lassock.live.hill;
 
+import com.aleiye.lassock.api.Intelligence;
 import com.aleiye.lassock.common.NamedComponent;
 import com.aleiye.lassock.lifecycle.LifecycleAware;
 import com.aleiye.lassock.live.CourseConfigurable;
@@ -26,4 +27,6 @@ public interface Shade extends LifecycleAware, NamedComponent, CourseConfigurabl
 	public Basket getBasket();
 
 	public Sign getSign();
+
+	public Intelligence getIntelligence();
 }

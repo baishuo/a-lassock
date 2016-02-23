@@ -5,10 +5,10 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.aleiye.lassock.api.Course;
+import com.aleiye.lassock.api.Course.RunType;
 import com.aleiye.lassock.live.conf.ValueStation;
 import com.aleiye.lassock.live.hill.shade.AbstractShade;
-import com.aleiye.lassock.live.scroll.Course;
-import com.aleiye.lassock.live.scroll.Course.RunType;
 
 /**
  * 采集标识 <br>
@@ -41,6 +41,8 @@ public class Sign extends ValueStation {
 	private boolean removed = false;
 	// 是否丢失
 	private boolean lost = false;
+
+	private String basketName;
 
 	// 关联课程配置ID列表
 	private List<String> courseIdList = new ArrayList<String>();
@@ -90,7 +92,7 @@ public class Sign extends ValueStation {
 			courseIds = StringUtils.join(courseIdList, JOIN_CHAR);
 		}
 	}
-	
+
 	public List<String> getCourseIdList() {
 		return courseIdList;
 	}
@@ -197,5 +199,13 @@ public class Sign extends ValueStation {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getBasketName() {
+		return basketName;
+	}
+
+	public void setBasketName(String basketName) {
+		this.basketName = basketName;
 	}
 }

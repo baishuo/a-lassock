@@ -8,6 +8,7 @@ import java.nio.channels.FileChannel;
 
 import org.apache.commons.io.IOUtils;
 
+import com.aleiye.lassock.api.ShadeStatus;
 import com.aleiye.lassock.live.basket.Basket;
 import com.aleiye.lassock.live.exception.SignRemovedException;
 import com.aleiye.lassock.model.GeneralMushroom;
@@ -57,15 +58,20 @@ public class FileShade extends TextShade {
 
 	public FileShade(TextSign unit, Basket basket) {
 		super(unit, basket);
+		this.intelligence.put("file", this.sign.getPath());
+		this.intelligence.setType(unit.getType());
+		this.intelligence.setSubType(unit.getSubType());
 	}
 
 	private void makeMushroom(byte[] content) throws SignRemovedException, InterruptedException {
 		GeneralMushroom mr = new GeneralMushroom();
+		mr.setIntelligence(this.intelligence);
 		mr.setBody(content);
 		mr.getHeaders().put("path", this.sign.getPath());
 		mr.getHeaders().put("soffset", String.valueOf(this.bx));
 		mr.getHeaders().put("eoffset", String.valueOf(this.dx));
 		putMushroom(mr);
+		this.intelligence.put("offset", this.si);
 		MarkUtil.mark(this.sign.getId(), this.dx);
 	}
 
@@ -76,6 +82,7 @@ public class FileShade extends TextShade {
 		if (offset > 0) {
 			this.si = offset;
 			this.dx = si;
+			this.intelligence.put("offset", this.si);
 		}
 	}
 
@@ -245,6 +252,7 @@ public class FileShade extends TextShade {
 		// 是否读到尾
 		if (this.si == this.di) {
 			this.setStat(Stat.END);
+			this.intelligence.setStatus(ShadeStatus.END);
 			return false;
 		}
 		return true;
@@ -296,6 +304,19 @@ public class FileShade extends TextShade {
 			}
 		}
 		this.setStat(stat);
+		switch (stat) {
+		case NORMAL:
+			this.intelligence.setStatus(ShadeStatus.NORMAL);
+			break;
+		case END:
+			this.intelligence.setStatus(ShadeStatus.END);
+			break;
+		case ERR:
+			this.intelligence.setStatus(ShadeStatus.ERROR);
+			break;
+		default:
+			break;
+		}
 		return this.getStat();
 	}
 
