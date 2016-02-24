@@ -3,6 +3,7 @@ package com.aleiye.lassock.test;
 import java.io.IOException;
 
 import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -45,8 +46,8 @@ public class AkkaServer {
 		LoggingAdapter log = Logging.getLogger(getContext().system(), this);
 
 		public void onReceive(Object message) throws Exception {
-			JSONArray array = JSONArray.fromObject(message);
-			System.out.println(array.toString());
+			JSONObject obj = JSONObject.fromObject(message);
+			System.out.println(obj.toString());
 		}
 	}
 

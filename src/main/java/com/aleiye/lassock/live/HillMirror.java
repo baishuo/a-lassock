@@ -6,6 +6,8 @@ import java.util.Map;
 import com.aleiye.lassock.api.Course;
 import com.aleiye.lassock.api.Course.RunType;
 import com.aleiye.lassock.api.Intelligence;
+import com.aleiye.lassock.api.LassockState;
+import com.aleiye.lassock.api.LassockState.RunState;
 import com.aleiye.lassock.live.basket.Basket;
 import com.aleiye.lassock.live.hill.DefaultHill;
 import com.aleiye.lassock.live.hill.Hill;
@@ -29,17 +31,20 @@ public class HillMirror implements Hill {
 
 	private Hill hill;
 
+	protected LassockState state;
+
 	@Override
 	public void resume() {
 		hill.resume();
 		hill1.resume();
-
+		state.setState(RunState.RUNNING);
 	}
 
 	@Override
 	public void pause() {
 		hill1.pause();
 		hill.pause();
+		state.setState(RunState.PAUSED);
 	}
 
 	@Override
@@ -50,37 +55,35 @@ public class HillMirror implements Hill {
 	@Override
 	public void refresh(List<Course> curriculum) throws Exception {
 		for (Course course : curriculum) {
-			if (course.getRunType() == RunType.TEXT)
-				hill1.addCourse(course);
-			else
-				hill.add(course);
+			add(course);
 		}
 
 	}
 
+//	@Override
+//	public void clean() {
+//		hill.clean();
+//
+//	}
+//
+//	@Override
+//	public void clean(String type) {
+//		hill.clean(type);
+//
+//	}
+//
+//	@Override
+//	public void clean(String type, String subType) {
+//		hill.clean(type, subType);
+//	}
+
 	@Override
-	public void clean() {
-		hill.clean();
-
-	}
-
-	@Override
-	public void clean(String type) {
-		hill.clean(type);
-
-	}
-
-	@Override
-	public void clean(String type, String subType) {
-		hill.clean(type, subType);
-	}
-
-	@Override
-	public void add(Course course) throws Exception {
+	public synchronized void add(Course course) throws Exception {
 		if (course.getRunType() == RunType.TEXT)
 			hill1.addCourse(course);
 		else
 			hill.add(course);
+		state.setScrollCount(state.getScrollCount() + 1);
 
 	}
 
@@ -94,11 +97,12 @@ public class HillMirror implements Hill {
 	}
 
 	@Override
-	public void remove(Course course) throws Exception {
+	public synchronized void remove(Course course) throws Exception {
 		if (course.getRunType() == RunType.TEXT)
 			hill1.removeCourse(course);
 		else
 			hill.remove(course);
+		state.setScrollCount(state.getScrollCount() - 1);
 
 	}
 
@@ -106,6 +110,7 @@ public class HillMirror implements Hill {
 	public void destroy() throws Exception {
 		DestroyableUtils.destroyQuietly(hill);
 		DestroyableUtils.destroyQuietly(hill1);
+		state.setState(RunState.SHUTDOWN);
 	}
 
 	@Override
@@ -117,6 +122,9 @@ public class HillMirror implements Hill {
 		hill1 = new TextHill();
 		hill1.setBaskets(baskets);
 		hill1.initialize();
+
+		state = new LassockState();
+		state.setState(RunState.RUNNING);
 	}
 
 	@Override
@@ -131,4 +139,8 @@ public class HillMirror implements Hill {
 		return list;
 	}
 
+	@Override
+	public LassockState getState() {
+		return state;
+	}
 }

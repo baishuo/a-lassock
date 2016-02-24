@@ -2,8 +2,6 @@ package com.aleiye.lassock.model;
 
 import java.util.Map;
 
-import com.aleiye.lassock.api.Intelligence;
-
 /**
  * 采集产出接口
  * 

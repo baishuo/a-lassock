@@ -13,8 +13,6 @@ import akka.actor.UntypedActor;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
 
-import com.aleiye.lassock.live.Live;
-import com.aleiye.lassock.monitor.DefaultMonitor.StatusActor;
 import com.aleiye.lassock.util.AkkaUtils;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
@@ -22,6 +20,8 @@ import com.typesafe.config.ConfigFactory;
 public class AkkaTest {
 	@Test
 	public void testParse() throws Exception {
+		String host = "10.0.1.35";
+		int port = 9983;
 		StringBuffer buffer = new StringBuffer();
 		buffer.append("|akka.daemonic = on");
 		buffer.append("|akka.loggers = [\"akka.event.slf4j.Slf4jLogger\"]");
@@ -29,10 +29,8 @@ public class AkkaTest {
 		buffer.append("|akka.daemonic = on");
 		buffer.append("|akka.actor.provider=\"akka.remote.RemoteActorRefProvider\"");
 		buffer.append("|akka.remote.netty.tcp.transport-class = \"akka.remote.transport.netty.NettyTransport\"");
-		// TODO
-		buffer.append("|akka.remote.netty.tcp.hostname=\"").append("10.0.1.35").append("\"");
-		// TODO
-		buffer.append("|akka.remote.netty.tcp.port=").append(9982);
+		buffer.append("|akka.remote.netty.tcp.hostname=\"").append(host).append("\"");
+		buffer.append("|akka.remote.netty.tcp.port=").append(port);
 		buffer.append("|akka.remote.netty.tcp.tcp-nodelay = on");
 		Config akkaConfig = ConfigFactory.parseString(stripMargin(buffer.toString(), '|'));
 		ActorSystem system = ActorSystem.create("collectorMonitor", akkaConfig);

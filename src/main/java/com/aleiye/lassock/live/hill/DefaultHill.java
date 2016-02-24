@@ -2,7 +2,6 @@ package com.aleiye.lassock.live.hill;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -14,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import com.aleiye.lassock.api.Course;
 import com.aleiye.lassock.api.Intelligence;
+import com.aleiye.lassock.api.LassockState;
 import com.aleiye.lassock.common.able.Configurable;
 import com.aleiye.lassock.lifecycle.LifecycleState;
 import com.aleiye.lassock.live.basket.Basket;
@@ -82,50 +82,50 @@ public class DefaultHill implements Hill {
 		}
 	}
 
-	@Override
-	public synchronized void clean() {
-		// 关闭所有Shade
-		for (ShadeRunner shade : shades.values()) {
-			if (shade.getLifecycleState() == LifecycleState.START)
-				shade.stop();
-		}
-		// 清空Shade
-		shades.clear();
-		// 清空课程
-		courses.clear();
-	}
-
-	@Override
-	public synchronized void clean(String type) {
-		// 关闭 某type Shade
-		Iterator<Map.Entry<String, Course>> it = courses.entrySet().iterator();
-		while (it.hasNext()) {
-			Map.Entry<String, Course> entry = it.next();
-			Course c = entry.getValue();
-			if (c.getType().equals(type)) {
-				ShadeRunner runner = shades.get(c.getName());
-				if (runner != null)
-					runner.stop();
-				it.remove();
-			}
-		}
-	}
-
-	@Override
-	public synchronized void clean(String type, String subType) {
-		// 关闭type subType Shade
-		Iterator<Map.Entry<String, Course>> it = courses.entrySet().iterator();
-		while (it.hasNext()) {
-			Map.Entry<String, Course> entry = it.next();
-			Course c = entry.getValue();
-			if (c.getType().equals(type) && c.getSubType().equals(subType)) {
-				ShadeRunner runner = shades.get(c.getName());
-				if (runner != null)
-					runner.stop();
-				it.remove();
-			}
-		}
-	}
+	// @Override
+	// public synchronized void clean() {
+	// // 关闭所有Shade
+	// for (ShadeRunner shade : shades.values()) {
+	// if (shade.getLifecycleState() == LifecycleState.START)
+	// shade.stop();
+	// }
+	// // 清空Shade
+	// shades.clear();
+	// // 清空课程
+	// courses.clear();
+	// }
+	//
+	// @Override
+	// public synchronized void clean(String type) {
+	// // 关闭 某type Shade
+	// Iterator<Map.Entry<String, Course>> it = courses.entrySet().iterator();
+	// while (it.hasNext()) {
+	// Map.Entry<String, Course> entry = it.next();
+	// Course c = entry.getValue();
+	// if (c.getType().equals(type)) {
+	// ShadeRunner runner = shades.get(c.getName());
+	// if (runner != null)
+	// runner.stop();
+	// it.remove();
+	// }
+	// }
+	// }
+	//
+	// @Override
+	// public synchronized void clean(String type, String subType) {
+	// // 关闭type subType Shade
+	// Iterator<Map.Entry<String, Course>> it = courses.entrySet().iterator();
+	// while (it.hasNext()) {
+	// Map.Entry<String, Course> entry = it.next();
+	// Course c = entry.getValue();
+	// if (c.getType().equals(type) && c.getSubType().equals(subType)) {
+	// ShadeRunner runner = shades.get(c.getName());
+	// if (runner != null)
+	// runner.stop();
+	// it.remove();
+	// }
+	// }
+	// }
 
 	@Override
 	public synchronized void add(Course course) throws Exception {
@@ -209,7 +209,17 @@ public class DefaultHill implements Hill {
 
 	public synchronized void destroy() {
 		if (!destroyed.get()) {
-			this.clean();
+			// this.clean();
+			// 关闭type subType Shade
+			// // 关闭所有Shade
+			// for (ShadeRunner shade : shades.values()) {
+			// if (shade.getLifecycleState() == LifecycleState.START)
+			// shade.stop();
+			// }
+			// // 清空Shade
+			// shades.clear();
+			// // 清空课程
+			// courses.clear();
 		}
 		ShadeExecutor.shutdown();
 		ShadeScheduler.shutdown(true);
@@ -224,5 +234,11 @@ public class DefaultHill implements Hill {
 			intelligences.add(runner.getShade().getIntelligence());
 		}
 		return intelligences;
+	}
+
+	@Override
+	public LassockState getState() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

@@ -13,6 +13,7 @@ import akka.event.Logging;
 import akka.event.LoggingAdapter;
 
 import com.aleiye.lassock.api.Intelligence;
+import com.aleiye.lassock.api.LassockState;
 import com.aleiye.lassock.lang.Sistem;
 import com.aleiye.lassock.live.Live;
 import com.aleiye.lassock.live.NamedLifecycle;
@@ -28,10 +29,12 @@ import com.aleiye.lassock.util.AkkaUtils;
  */
 public class DefaultMonitor extends NamedLifecycle implements Monitor {
 	private boolean enabled = false;
+
 	private String host;
 	private int port;
 	private String sysName;
-	private static final int period = 10000;
+
+	private int period;
 
 	private Live live;
 	ActorSystem actorSystem;
@@ -53,6 +56,7 @@ public class DefaultMonitor extends NamedLifecycle implements Monitor {
 		enabled = context.getBoolean("enabled", false);
 		host = context.getString("ip", Sistem.getIp());
 		port = context.getInteger("port", 9981);
+		period = context.getInteger("period", 5000);
 		sysName = context.getString("sysname", "lassock");
 		target = new Context(context.getSubProperties("target."));
 		timer = new Timer("timer-monitor");
@@ -79,10 +83,12 @@ public class DefaultMonitor extends NamedLifecycle implements Monitor {
 					@Override
 					public void run() {
 						List<Intelligence> is = live.getIntelligences();
-						selection.tell(is, ActorRef.noSender());
+						LassockState state = live.getState();
+						state.setIntelligences(is);
+						selection.tell(state, ActorRef.noSender());
 					}
 				};
-				timer.schedule(tt, 3000, period);
+				timer.schedule(tt, period, period);
 			}
 		}
 		super.start();
@@ -90,6 +96,8 @@ public class DefaultMonitor extends NamedLifecycle implements Monitor {
 
 	@Override
 	public synchronized void stop() {
+		timer.cancel();
+		selection.tell(live.getState(), ActorRef.noSender());
 		greeter = null;
 		actorSystem.shutdown();
 		super.stop();
@@ -111,7 +119,7 @@ public class DefaultMonitor extends NamedLifecycle implements Monitor {
 		}
 
 		public void onReceive(Object message) throws Exception {
-			getSender().tell(Boolean.valueOf(!live.isPaused()), getSender());
+			getSender().tell(live.getState(), getSender());
 		}
 	}
 }

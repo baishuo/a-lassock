@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.aleiye.lassock.api.Course;
 import com.aleiye.lassock.api.Intelligence;
+import com.aleiye.lassock.api.LassockState;
 
 /**
  * 生涯
@@ -22,11 +23,11 @@ public interface Live {
 	@Deprecated
 	void refresh(List<Course> curriculum) throws Exception;
 
-	void clean();
-
-	void clean(String type);
-
-	void clean(String type, String subType);
+//	void clean();
+//
+//	void clean(String type);
+//
+//	void clean(String type, String subType);
 
 	void add(Course course) throws Exception;
 
@@ -35,4 +36,6 @@ public interface Live {
 	void remove(Course course) throws Exception;
 
 	List<Intelligence> getIntelligences();
+
+	LassockState getState();
 }

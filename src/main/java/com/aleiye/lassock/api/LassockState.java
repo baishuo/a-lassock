@@ -1,6 +1,7 @@
 package com.aleiye.lassock.api;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 
@@ -14,6 +15,8 @@ public class LassockState implements Serializable {
 	// 采集器当前状态
 	private RunState state;
 	private long scrollCount;
+
+	private List<Intelligence> intelligences;
 
 	public RunState getState() {
 		return state;
@@ -32,7 +35,15 @@ public class LassockState implements Serializable {
 	}
 
 	public static enum RunState {
-		RUNNING, SHUTDOWN, PASED
+		RUNNING, SHUTDOWN, PAUSED
+	}
+
+	public List<Intelligence> getIntelligences() {
+		return intelligences;
+	}
+
+	public void setIntelligences(List<Intelligence> intelligences) {
+		this.intelligences = intelligences;
 	}
 
 }

@@ -1,11 +1,9 @@
 package com.aleiye.lassock.live.exception;
 
-/**
- * Created by ywt on 15/6/26.
- */
-public class BazaarException extends Exception{
+public class BazaarException extends Exception {
+	private static final long serialVersionUID = 1L;
 
-    public BazaarException(String msg){
-        super(msg);
-    }
+	public BazaarException(String msg) {
+		super(msg);
+	}
 }

@@ -138,10 +138,10 @@ public class LiveContainer extends Logging implements Destroyable {
 
 	@Override
 	public void destroy() {
-		// 关闭监控
-		monitor.stop();
 		// 采集关闭
 		DestroyableUtils.destroyQuietly(hill);
+		// 关闭监控
+		monitor.stop();
 		// 集市关闭
 		for (BazaarRunner br : bazaarRunners.values()) {
 			br.stop();

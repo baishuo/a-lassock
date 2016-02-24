@@ -75,7 +75,6 @@ public class SnmpStandardShade extends SnmpShade {
 			// 循环OID
 			for (int i = 0; i < recVBs.size(); i++) {
 				GeneralMushroom mr = new GeneralMushroom();
-				mr.setIntelligence(this.intelligence);
 				VariableBinding recVB = recVBs.elementAt(i);
 				StringBuffer sb = new StringBuffer();
 				sb.append(System.currentTimeMillis());
