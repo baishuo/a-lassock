@@ -2,7 +2,7 @@
 PRG="${0}"
 PRGDIR=`dirname ${PRG}`
 CURRENT_HOME=`cd "${PRGDIR}/.." > /dev/null;pwd `
-pidfile=${CURRENT_HOME}"/raker.pid"
+pidfile=${CURRENT_HOME}"/lassock.pid"
 
 TestPid () {
     if [ -f ${pidfile} ] ; then
@@ -20,7 +20,7 @@ TestPid
 
 devName=`hostname`
 
-nohup java -cp ${CURRENT_HOME}/lib/*:${CURRENT_HOME}/conf/*:${CURRENT_HOME}/raker.jar com.aleiye.lassock.Lassock ${devName} >> ${CURRENT_HOME}/logs/run.log 2>&1 &
+nohup java -cp ${CURRENT_HOME}/conf/*:${CURRENT_HOME}/lassock.jar com.aleiye.lassock.Lassock ${devName} >> ${CURRENT_HOME}/logs/run.log 2>&1 &
 
 echo $! > ${pidfile}
 

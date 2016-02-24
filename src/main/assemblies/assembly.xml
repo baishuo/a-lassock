@@ -1,19 +1,19 @@
 <?xml version="1.0"?>
 <assembly>
-    <id>plugin</id>
-    <formats>
-        <format>tar.gz</format>
-    </formats>
-    <includeBaseDirectory>true</includeBaseDirectory>
-    <fileSets>
-    	<fileSet>
+	<id>plugin</id>
+	<formats>
+		<format>tar.gz</format>
+	</formats>
+	<includeBaseDirectory>true</includeBaseDirectory>
+	<fileSets>
+		<fileSet>
 			<directory>target/</directory>
 			<includes>
 				<include>*.jar</include>
 			</includes>
 			<outputDirectory>/</outputDirectory>
-    	</fileSet>
-    	<fileSet>
+		</fileSet>
+		<fileSet>
 			<directory></directory>
 			<fileMode>0644</fileMode>
 			<includes>
@@ -22,16 +22,17 @@
 			</includes>
 			<outputDirectory></outputDirectory>
 		</fileSet>
-	     <fileSet>
-	          <directory>bin</directory>
-	          <outputDirectory>/bin</outputDirectory>
-	    </fileSet>
-	    <fileSet>
+		<fileSet>
+			<directory>bin</directory>
+			<outputDirectory>/bin</outputDirectory>
+		</fileSet>
+		<fileSet>
 			<directory>src/main/resources</directory>
 			<outputDirectory>/conf</outputDirectory>
 			<includes>
 				<include>**/*</include>
 			</includes>
+			<excludes></excludes>
 		</fileSet>
 		<fileSet>
 			<directory>src/main/assemblies</directory>
@@ -40,11 +41,14 @@
 				<exclude>*</exclude>
 			</excludes>
 		</fileSet>
-    </fileSets>
-    <dependencySets>
-        <dependencySet>
-            <outputDirectory>/lib</outputDirectory>
-            <scope>runtime</scope>
-        </dependencySet>
-    </dependencySets>
+	</fileSets>
+	<dependencySets>
+		<dependencySet>
+			<outputDirectory>/lib</outputDirectory>
+			<scope>runtime</scope>
+			<!-- <excludes>
+				<exclude>com.aleiye:lassock*</exclude>
+			</excludes> -->
+		</dependencySet>
+	</dependencySets>
 </assembly>
