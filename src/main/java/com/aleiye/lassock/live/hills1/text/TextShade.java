@@ -1,10 +1,10 @@
-package com.aleiye.lassock1.live.hills.text;
+package com.aleiye.lassock.live.hills1.text;
 
 import java.io.IOException;
 
 import com.aleiye.lassock.live.basket.Basket;
 import com.aleiye.lassock.live.exception.SignRemovedException;
-import com.aleiye.lassock1.live.hills.AbstractShade;
+import com.aleiye.lassock.live.hills1.AbstractShade;
 
 /**
  * 事件驱动

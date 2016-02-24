@@ -23,12 +23,12 @@ import com.aleiye.lassock.live.exception.CourseException;
 import com.aleiye.lassock.live.exception.SignException;
 import com.aleiye.lassock.live.hill.Sign;
 import com.aleiye.lassock.live.hill.shade.AbstractEventDrivenShade;
+import com.aleiye.lassock.live.hills1.AbstractShade;
+import com.aleiye.lassock.live.hills1.Shade;
+import com.aleiye.lassock.live.hills1.text.TextSign;
+import com.aleiye.lassock.live.hills1.text.TextShade.Stat;
 import com.aleiye.lassock.live.scroll.Const;
 import com.aleiye.lassock.util.CloseableUtils;
-import com.aleiye.lassock1.live.hills.AbstractShade;
-import com.aleiye.lassock1.live.hills.Shade;
-import com.aleiye.lassock1.live.hills.text.TextSign;
-import com.aleiye.lassock1.live.hills.text.TextShade.Stat;
 import com.google.common.collect.Sets;
 import com.google.common.collect.Sets.SetView;
 

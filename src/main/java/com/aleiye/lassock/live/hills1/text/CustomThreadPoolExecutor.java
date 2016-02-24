@@ -1,4 +1,4 @@
-package com.aleiye.lassock1.live.hills.text;
+package com.aleiye.lassock.live.hills1.text;
 
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
@@ -10,8 +10,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
+import com.aleiye.lassock.live.hills1.text.TextShade.Stat;
 import com.aleiye.lassock.util.ConfigUtils;
-import com.aleiye.lassock1.live.hills.text.TextShade.Stat;
 import com.typesafe.config.Config;
 
 /**

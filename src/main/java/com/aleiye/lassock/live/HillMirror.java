@@ -11,9 +11,9 @@ import com.aleiye.lassock.api.LassockState.RunState;
 import com.aleiye.lassock.live.basket.Basket;
 import com.aleiye.lassock.live.hill.DefaultHill;
 import com.aleiye.lassock.live.hill.Hill;
+import com.aleiye.lassock.live.hills1.Hill1;
+import com.aleiye.lassock.live.hills1.text.TextHill;
 import com.aleiye.lassock.util.DestroyableUtils;
-import com.aleiye.lassock1.live.hills.Hill1;
-import com.aleiye.lassock1.live.hills.text.TextHill;
 
 /**
  * hill镜子类，用于共存旧版Hill和新版hill

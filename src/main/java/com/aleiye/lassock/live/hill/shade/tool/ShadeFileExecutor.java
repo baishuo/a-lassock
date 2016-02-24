@@ -1,9 +1,9 @@
 package com.aleiye.lassock.live.hill.shade.tool;
 
 import com.aleiye.lassock.lifecycle.LifecycleState;
+import com.aleiye.lassock.live.hills1.Hill1;
+import com.aleiye.lassock.live.hills1.text.TextHill;
 import com.aleiye.lassock.util.DestroyableUtils;
-import com.aleiye.lassock1.live.hills.Hill1;
-import com.aleiye.lassock1.live.hills.text.TextHill;
 
 public class ShadeFileExecutor {
 
