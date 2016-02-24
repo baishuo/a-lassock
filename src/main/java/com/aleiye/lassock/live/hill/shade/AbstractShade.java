@@ -22,6 +22,10 @@ public abstract class AbstractShade extends NamedLifecycle implements Shade {
 
 	protected Intelligence intelligence;
 
+	public AbstractShade() {
+		this.intelligence = new Intelligence(this.name);
+	}
+
 	@Override
 	public synchronized void start() {
 		Preconditions.checkState(basket != null, "No basket processor configured");

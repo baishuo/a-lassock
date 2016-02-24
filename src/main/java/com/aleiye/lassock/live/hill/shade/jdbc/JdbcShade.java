@@ -78,6 +78,5 @@ public class JdbcShade extends AbstractPollableShade {
 	@Override
 	public void doConfigure(Course course) throws Exception {
 		this.sign = (JdbcSign) ScrollUtils.forSign(course, JdbcSign.class);
-
 	}
 }

@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import com.aleiye.lassock.cache.Liveness;
 import com.aleiye.lassock.live.LiveContainer;
+import com.aleiye.lassock.liveness.Liveness;
 import com.aleiye.lassock.logging.Logging;
 import com.aleiye.lassock.util.CloseableUtils;
 import com.aleiye.lassock.util.ConfigUtils;

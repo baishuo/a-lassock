@@ -14,13 +14,11 @@ import org.slf4j.LoggerFactory;
 import com.aleiye.lassock.api.Course;
 import com.aleiye.lassock.api.Intelligence;
 import com.aleiye.lassock.api.LassockState;
-import com.aleiye.lassock.common.able.Configurable;
 import com.aleiye.lassock.lifecycle.LifecycleState;
 import com.aleiye.lassock.live.basket.Basket;
 import com.aleiye.lassock.live.exception.CourseException;
 import com.aleiye.lassock.live.exception.SignException;
 import com.aleiye.lassock.live.hill.shade.tool.ShadeExecutor;
-import com.aleiye.lassock.live.hill.shade.tool.ShadeFileExecutor;
 import com.aleiye.lassock.live.hill.shade.tool.ShadeScheduler;
 import com.aleiye.lassock.util.ScrollUtils;
 
@@ -56,7 +54,7 @@ public class DefaultHill implements Hill {
 	public void initialize() throws Exception {
 		ShadeExecutor.start();
 		ShadeScheduler.start();
-		ShadeFileExecutor.start();
+		// ShadeFileExecutor.start();
 	}
 
 	/**
@@ -82,72 +80,30 @@ public class DefaultHill implements Hill {
 		}
 	}
 
-	// @Override
-	// public synchronized void clean() {
-	// // 关闭所有Shade
-	// for (ShadeRunner shade : shades.values()) {
-	// if (shade.getLifecycleState() == LifecycleState.START)
-	// shade.stop();
-	// }
-	// // 清空Shade
-	// shades.clear();
-	// // 清空课程
-	// courses.clear();
-	// }
-	//
-	// @Override
-	// public synchronized void clean(String type) {
-	// // 关闭 某type Shade
-	// Iterator<Map.Entry<String, Course>> it = courses.entrySet().iterator();
-	// while (it.hasNext()) {
-	// Map.Entry<String, Course> entry = it.next();
-	// Course c = entry.getValue();
-	// if (c.getType().equals(type)) {
-	// ShadeRunner runner = shades.get(c.getName());
-	// if (runner != null)
-	// runner.stop();
-	// it.remove();
-	// }
-	// }
-	// }
-	//
-	// @Override
-	// public synchronized void clean(String type, String subType) {
-	// // 关闭type subType Shade
-	// Iterator<Map.Entry<String, Course>> it = courses.entrySet().iterator();
-	// while (it.hasNext()) {
-	// Map.Entry<String, Course> entry = it.next();
-	// Course c = entry.getValue();
-	// if (c.getType().equals(type) && c.getSubType().equals(subType)) {
-	// ShadeRunner runner = shades.get(c.getName());
-	// if (runner != null)
-	// runner.stop();
-	// it.remove();
-	// }
-	// }
-	// }
-
 	@Override
 	public synchronized void add(Course course) throws Exception {
 		ScrollUtils.validate(course);
 		if (!this.paused.get()) {
-			String type = course.getType();
-			String subType = course.getSubType();
-			if (StringUtils.isNotBlank(subType)) {
-				type = type + "_" + subType;
+			try {
+				String type = course.getType();
+				String subType = course.getSubType();
+				if (StringUtils.isNotBlank(subType)) {
+					type = type + "_" + subType;
+				}
+				Shade shade = factory.create(course.getName(), type);
+				shade.configure(course);
+				String bn = "_DEFAULT";
+				if (StringUtils.isNotBlank(course.getBasketName())) {
+					bn = course.getBasketName();
+				}
+				shade.setBasket(baskets.get(bn));
+				ShadeRunner runner = ShadeRunner.forSource(shade);
+				runner.start();
+				shades.put(course.getName(), runner);
+			} catch (Exception e) {
+
 			}
-			Shade shade = factory.create(course.getName(), type);
-			if (shade instanceof Configurable) {
-				((Configurable) shade).configure(course);
-			}
-			String bn = "_DEFAULT";
-			if (StringUtils.isNotBlank(course.getBasketName())) {
-				bn = course.getBasketName();
-			}
-			shade.setBasket(baskets.get(bn));
-			ShadeRunner runner = ShadeRunner.forSource(shade);
-			runner.start();
-			shades.put(course.getName(), runner);
+
 		}
 		courses.put(course.getName(), course);
 	}
@@ -223,7 +179,7 @@ public class DefaultHill implements Hill {
 		}
 		ShadeExecutor.shutdown();
 		ShadeScheduler.shutdown(true);
-		ShadeFileExecutor.shutdown();
+		// ShadeFileExecutor.shutdown();
 		destroyed.set(true);
 	}
 

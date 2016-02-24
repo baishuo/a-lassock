@@ -46,9 +46,9 @@ public class SyslogTCPShade extends SyslogShade {
 					ip = Sistem.getIp();
 				}
 				GeneralMushroom mr = new GeneralMushroom();
+				mr.setBody(data.array());
 				mr.getHeaders().put("sender", address.getAddress().getHostName());
 				mr.getHeaders().put("ip", ip);
-				mr.setBody(data.array());
 				putMushroom(sign, mr);
 			}
 		}
@@ -99,14 +99,12 @@ public class SyslogTCPShade extends SyslogShade {
 	@Override
 	protected void doStop() throws Exception {
 		LOGGER.info("Syslog TCP/" + this.sign.getPort() + " shade stopping...");
-		synchronized (this) {
-			channelGroup.remove(this.serverChannel);
-			if (null != bossGroup) {
-				bossGroup.shutdownGracefully();
-			}
-			if (null != workerGroup) {
-				workerGroup.shutdownGracefully();
-			}
+		channelGroup.remove(this.serverChannel);
+		if (null != bossGroup) {
+			bossGroup.shutdownGracefully();
+		}
+		if (null != workerGroup) {
+			workerGroup.shutdownGracefully();
 		}
 		LOGGER.info("Syslog TCP/" + this.sign.getPort() + " shade stoped!");
 	}

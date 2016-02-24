@@ -70,7 +70,7 @@ public class LiveContainer extends Logging implements Destroyable {
 	private void loadBaskets() throws Exception {
 		baskets = new HashMap<String, Basket>();
 		Basket defualt = new MemoryQueueBasket();
-		defualt.setName("_DEFUALT");
+		defualt.setName("_DEFAULT");
 		baskets.put(defualt.getName(), defualt);
 		BasketFactory factory = new DefaultBasketFactory();
 		// 加载自定义扩展采集源
@@ -94,7 +94,7 @@ public class LiveContainer extends Logging implements Destroyable {
 		BazaarFactory factory = new DefaultBazaarFactory();
 		// 加载自定义扩展采集源
 		Config config = ConfigUtils.getConfig().getConfig("live.bazaars");
-		Basket defaultBasket = baskets.get("_DEFUALT");
+		Basket defaultBasket = baskets.get("_DEFAULT");
 		for (int i = 0; i < Integer.MAX_VALUE; i++) {
 			String key = "bazaar" + i;
 			if (!containsKey(config, key)) {

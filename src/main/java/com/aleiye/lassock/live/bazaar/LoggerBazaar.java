@@ -1,5 +1,7 @@
 package com.aleiye.lassock.live.bazaar;
 
+import net.sf.json.JSONObject;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,11 +23,9 @@ public class LoggerBazaar extends AbstractBazaar {
 			if (event != null) {
 				if (logger.isInfoEnabled()) {
 					logger.info("Event: " + new String((byte[]) event.getBody()));
+					logger.info(JSONObject.fromObject(event.getHeaders()).toString());
 					event.incrementCompleteCount();
 				}
-			} else {
-				// No event found, request back-off semantics from the sink
-				// runner
 			}
 		} catch (Exception ex) {}
 	}
