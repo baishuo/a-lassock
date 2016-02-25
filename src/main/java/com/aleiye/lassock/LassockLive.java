@@ -22,7 +22,7 @@ public class LassockLive extends Logging {
 	private AtomicBoolean isShuttingDown = new AtomicBoolean(false);
 	private AtomicBoolean isStartingUp = new AtomicBoolean(false);
 	// 线程同步工具
-	CountDownLatch shutdownLatch = new CountDownLatch(1);
+	private CountDownLatch shutdownLatch = new CountDownLatch(1);
 	// 课程配置监听器
 	private Liveness liveness;
 	// 采集生涯
@@ -30,53 +30,51 @@ public class LassockLive extends Logging {
 
 	public void startup() throws Exception {
 		try {
-			logInfo("Lassock live starting......");
+			logInfo("Lassock starting......");
 			if (isShuttingDown.get())
 				throw new IllegalStateException("Aleiye lassock is still shutting down, cannot re-start!");
 			if (startupComplete.get())
 				return;
 			boolean canStartup = isStartingUp.compareAndSet(false, true);
 			if (canStartup) {
-				// 创建 Live
+				// Live 初始化
+				logInfo("Initializing live!");
 				container = new LiveContainer(ConfigUtils.getConfig());
 				container.initialize();
-				logInfo("Lassock live was started!");
-				// 创建 liveness;
+				logInfo("Live was initialized!");
+
+				// liveness初始化;
 				LivenessConfiguration lc = new LivenessConfiguration(ConfigUtils.getContext("liveness"));
 				liveness = lc.getInstance();
 				// 挂钩Live
 				liveness.setLive(container.live());
 				liveness.start();
+
 				startupComplete.compareAndSet(false, true);
 				logInfo("Lassock startup completed");
 			}
 		} catch (Exception e) {
 			logError("Fatal error during LassockLive startup. Prepare to shutdown");
-			isStartingUp.set(false);
 			shutdown();
+			isStartingUp.set(false);
 			throw e;
 		}
 	}
 
 	public void shutdown() throws Exception {
-		try {
-			if (startupComplete.compareAndSet(true, false)) {
-				isShuttingDown.set(true);
-				// 配置监听关闭
-				liveness.stop();
-				// 关闭采集生涯
-				DestroyableUtils.destroyQuietly(container);
-				isStartingUp.set(false);
-				// 减持执行线程
-				shutdownLatch.countDown();
-				logInfo("shut down completed");
-			} else {
-				logInfo("lassock has been shutdown");
-			}
-		} catch (Exception e) {
-			logError("Fatal error during LassockLive shutdown.", e);
-			isShuttingDown.set(false);
+		if (startupComplete.compareAndSet(true, false)) {
+			// 配置监听关闭
+			liveness.stop();
+			// 关闭采集生涯
+			DestroyableUtils.destroyQuietly(container);
+			isStartingUp.set(false);
+			// 减持执行线程
+			shutdownLatch.countDown();
+			logInfo("shut down completed");
+		} else {
+			logInfo("lassock has been shutdown");
 		}
+		isShuttingDown.set(true);
 	}
 
 	public void awaitShutdown() throws InterruptedException {

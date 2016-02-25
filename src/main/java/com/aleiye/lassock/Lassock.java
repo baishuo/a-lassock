@@ -15,16 +15,11 @@ public class Lassock {
 	private static Logger _LOG = LoggerFactory.getLogger(Lassock.class);
 
 	public static void main(String[] args) {
-
-		_LOG.info("Running Lassock");
 		try {
-			// live
+			// Startable
 			final LassockStartable startable = new LassockStartable();
 			// 开启
 			startable.startup();
-
-			_LOG.info("Lassock was startup!");
-
 			Runtime.getRuntime().addShutdownHook(new Thread() {
 				@Override
 				public void run() {
@@ -36,8 +31,7 @@ public class Lassock {
 
 			System.exit(0);
 		} catch (Exception e) {
-			_LOG.error(e.getMessage(), e);
-			_LOG.error("Lassock startup failure!");
+			_LOG.error("Lassock startup failure!", e);
 			System.exit(1);
 		}
 	}
