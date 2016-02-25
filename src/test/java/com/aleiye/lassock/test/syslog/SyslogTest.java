@@ -43,7 +43,7 @@ public class SyslogTest {
 					LOG_INFO：情报信息，正常的系统消息，比如骚扰报告，带宽数据等，不需要处理。
 					LOG_DEBUG：包含详细的开发情报的信息，通常只在调试一个程序时使用。
 				 */
-				syslog.log(0, URLDecoder.decode(buffer.toString(), "utf-8"));
+				syslog.log(0, URLDecoder.decode(buffer.toString(), "GBK"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -12,8 +12,8 @@ import org.snmp4j.Snmp;
 import org.snmp4j.Target;
 
 import com.aleiye.lassock.api.Course;
-import com.aleiye.lassock.model.Mushroom;
-import com.aleiye.lassock.model.MushroomBuilder;
+import com.aleiye.lassock.live.model.Mushroom;
+import com.aleiye.lassock.live.model.MushroomBuilder;
 
 public class SnmpFlowShade extends SnmpStandardShade {
 	private static final Logger LOGGER = LoggerFactory.getLogger(SnmpFlowShade.class);

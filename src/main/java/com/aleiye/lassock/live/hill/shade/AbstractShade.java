@@ -5,8 +5,8 @@ import com.aleiye.lassock.live.NamedLifecycle;
 import com.aleiye.lassock.live.basket.Basket;
 import com.aleiye.lassock.live.hill.Shade;
 import com.aleiye.lassock.live.hill.Sign;
-import com.aleiye.lassock.model.GeneralMushroom;
-import com.aleiye.lassock.model.Mushroom;
+import com.aleiye.lassock.live.model.GeneralMushroom;
+import com.aleiye.lassock.live.model.Mushroom;
 import com.google.common.base.Preconditions;
 
 /**

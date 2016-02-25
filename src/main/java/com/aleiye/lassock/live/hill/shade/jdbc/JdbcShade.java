@@ -14,8 +14,8 @@ import java.util.Map;
 import com.aleiye.lassock.api.Course;
 import com.aleiye.lassock.live.hill.Sign;
 import com.aleiye.lassock.live.hill.shade.AbstractPollableShade;
-import com.aleiye.lassock.model.Mushroom;
-import com.aleiye.lassock.model.MushroomBuilder;
+import com.aleiye.lassock.live.model.Mushroom;
+import com.aleiye.lassock.live.model.MushroomBuilder;
 import com.aleiye.lassock.util.ScrollUtils;
 
 /**

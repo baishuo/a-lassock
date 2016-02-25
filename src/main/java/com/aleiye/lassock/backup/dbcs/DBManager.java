@@ -1,9 +1,6 @@
-package com.aleiye.lassock.dbcs;
+package com.aleiye.lassock.backup.dbcs;
 
 import java.beans.PropertyVetoException;
-import java.io.File;
-import java.io.FileInputStream;
-import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.sql.DataSource;
@@ -11,9 +8,7 @@ import javax.sql.DataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.aleiye.lassock.util.ConfigUtils;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
-import com.typesafe.config.Config;
 
 /**
  * DB collection 管理

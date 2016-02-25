@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
 import com.aleiye.event.protobuf.AleiyeEvent;
 import com.aleiye.lassock.lifecycle.LifecycleState;
 import com.aleiye.lassock.live.conf.Context;
-import com.aleiye.lassock.model.Mushroom;
+import com.aleiye.lassock.live.model.Mushroom;
 import com.aleiye.lassock.util.ConfigUtils;
 import com.aleiye.zkclient.standard.CuratorClient;
 import com.aleiye.zkclient.standard.CuratorFactory;
@@ -71,7 +71,7 @@ public class KafkaBazaar extends AbstractBazaar {
 
 	@Override
 	public void configure(Context context) {
-		String zkConnect = context.getString("zkhost");
+		String zkConnect = ConfigUtils.getConfig().getString("remote. zookeeper.url");
 		RetryUntilElapsed retryPolicy = new RetryUntilElapsed(3000, Integer.MAX_VALUE);
 		client = CuratorFactory.createFramework(zkConnect, retryPolicy);
 		client.start();

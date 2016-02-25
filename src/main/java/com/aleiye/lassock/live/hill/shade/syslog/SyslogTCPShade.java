@@ -18,7 +18,7 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 
 import com.aleiye.lassock.lang.Sistem;
-import com.aleiye.lassock.model.GeneralMushroom;
+import com.aleiye.lassock.live.model.GeneralMushroom;
 
 /**
  * Syslog TCP采集器

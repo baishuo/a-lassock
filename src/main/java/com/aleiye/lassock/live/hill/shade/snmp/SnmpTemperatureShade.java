@@ -11,8 +11,8 @@ import org.snmp4j.Target;
 import org.snmp4j.smi.VariableBinding;
 
 import com.aleiye.lassock.api.Course;
-import com.aleiye.lassock.model.Mushroom;
-import com.aleiye.lassock.model.MushroomBuilder;
+import com.aleiye.lassock.live.model.Mushroom;
+import com.aleiye.lassock.live.model.MushroomBuilder;
 
 /**
  * SNMP 温度采集

@@ -28,7 +28,7 @@ import org.snmp4j.util.ThreadPool;
 import com.aleiye.lassock.api.Course;
 import com.aleiye.lassock.lang.Sistem;
 import com.aleiye.lassock.live.hill.shade.AbstractEventDrivenShade;
-import com.aleiye.lassock.model.GeneralMushroom;
+import com.aleiye.lassock.live.model.GeneralMushroom;
 import com.aleiye.lassock.util.ScrollUtils;
 
 /**

@@ -1,6 +1,6 @@
 package com.aleiye.lassock.live.interceptor;
 
-import com.aleiye.lassock.model.Mushroom;
+import com.aleiye.lassock.live.model.Mushroom;
 import com.google.common.base.Preconditions;
 
 import java.util.Iterator;

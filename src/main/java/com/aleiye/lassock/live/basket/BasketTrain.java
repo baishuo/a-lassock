@@ -1,6 +1,6 @@
 package com.aleiye.lassock.live.basket;
 
-import com.aleiye.lassock.model.Mushroom;
+import com.aleiye.lassock.live.model.Mushroom;
 
 /**
  * 缓存队列列车(竹篮列)

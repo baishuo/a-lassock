@@ -1,4 +1,4 @@
-package com.aleiye.lassock.dbcs;
+package com.aleiye.lassock.backup.dbcs;
 
 /**
  * DataSource初使化属性

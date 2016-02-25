@@ -1,4 +1,4 @@
-package com.aleiye.lassock.model;
+package com.aleiye.lassock.live.model;
 
 import java.nio.charset.Charset;
 import java.util.HashMap;

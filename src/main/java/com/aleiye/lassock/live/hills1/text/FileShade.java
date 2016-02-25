@@ -11,7 +11,7 @@ import org.apache.commons.io.IOUtils;
 import com.aleiye.lassock.api.ShadeStatus;
 import com.aleiye.lassock.live.basket.Basket;
 import com.aleiye.lassock.live.exception.SignRemovedException;
-import com.aleiye.lassock.model.GeneralMushroom;
+import com.aleiye.lassock.live.model.GeneralMushroom;
 import com.aleiye.lassock.util.MarkUtil;
 
 /**

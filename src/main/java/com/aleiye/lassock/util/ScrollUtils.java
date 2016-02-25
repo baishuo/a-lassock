@@ -7,8 +7,8 @@ import net.sf.json.JSONObject;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.aleiye.lassock.annotation.Required;
 import com.aleiye.lassock.api.Course;
+import com.aleiye.lassock.live.annotation.Required;
 import com.aleiye.lassock.live.hill.Sign;
 
 public class ScrollUtils {

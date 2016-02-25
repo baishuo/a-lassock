@@ -6,7 +6,7 @@ import com.aleiye.lassock.api.Intelligence;
 import com.aleiye.lassock.live.basket.Basket;
 import com.aleiye.lassock.live.exception.SignRemovedException;
 import com.aleiye.lassock.live.hill.Sign;
-import com.aleiye.lassock.model.GeneralMushroom;
+import com.aleiye.lassock.live.model.GeneralMushroom;
 
 /**
  * 抽像采集子源

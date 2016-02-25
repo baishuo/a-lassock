@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import com.aleiye.lassock.live.basket.Basket;
 import com.aleiye.lassock.live.conf.Context;
-import com.aleiye.lassock.model.Mushroom;
+import com.aleiye.lassock.live.model.Mushroom;
 
 public class LoggerBazaar extends AbstractBazaar {
 	private static final Logger logger = LoggerFactory.getLogger(LoggerBazaar.class);
