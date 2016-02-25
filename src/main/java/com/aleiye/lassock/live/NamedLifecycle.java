@@ -1,8 +1,7 @@
 package com.aleiye.lassock.live;
 
 import com.aleiye.lassock.common.NamedComponent;
-import com.aleiye.lassock.lifecycle.LifecycleAware;
-import com.aleiye.lassock.lifecycle.LifecycleState;
+import com.aleiye.lassock.lifecycle.AbstractLifecycleAware;
 
 /**
  * 名称和生命周期抽像
@@ -11,7 +10,7 @@ import com.aleiye.lassock.lifecycle.LifecycleState;
  * @since 2016年2月18日
  * @version 1.0
  */
-public abstract class NamedLifecycle implements LifecycleAware, NamedComponent {
+public abstract class NamedLifecycle extends AbstractLifecycleAware implements NamedComponent {
 	// 名称
 	protected String name;
 
@@ -23,42 +22,6 @@ public abstract class NamedLifecycle implements LifecycleAware, NamedComponent {
 	@Override
 	public synchronized String getName() {
 		return name;
-	}
-
-	// 状态
-	protected LifecycleState lifecycleState;
-
-	public NamedLifecycle() {
-		lifecycleState = LifecycleState.IDLE;
-	}
-
-	protected synchronized void setLifecycleState(LifecycleState lifecycleState) {
-		this.lifecycleState = lifecycleState;
-	}
-
-	protected boolean isStarted() {
-		return getLifecycleState() == LifecycleState.START;
-	}
-
-	protected void assertStarted() {
-		if (!isStarted()) {
-			throw new IllegalStateException("Lifecycle was started!");
-		}
-	}
-
-	@Override
-	public synchronized void start() {
-		lifecycleState = LifecycleState.START;
-	}
-
-	@Override
-	public synchronized void stop() {
-		lifecycleState = LifecycleState.STOP;
-	}
-
-	@Override
-	public synchronized LifecycleState getLifecycleState() {
-		return lifecycleState;
 	}
 
 	public String toString() {

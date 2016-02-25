@@ -1,13 +1,12 @@
 package com.aleiye.lassock;
 
-import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.aleiye.lassock.live.LiveContainer;
 import com.aleiye.lassock.liveness.Liveness;
+import com.aleiye.lassock.liveness.LivenessConfiguration;
 import com.aleiye.lassock.logging.Logging;
-import com.aleiye.lassock.util.CloseableUtils;
 import com.aleiye.lassock.util.ConfigUtils;
 import com.aleiye.lassock.util.DestroyableUtils;
 
@@ -38,17 +37,16 @@ public class LassockLive extends Logging {
 				return;
 			boolean canStartup = isStartingUp.compareAndSet(false, true);
 			if (canStartup) {
-				// 创建 liveness;
-				Class<?> livenessClass = Class.forName(ConfigUtils.getConfig().getString("liveness.class"));
-				liveness = (Liveness) livenessClass.newInstance();
-				liveness.initialize();
 				// 创建 Live
 				container = new LiveContainer(ConfigUtils.getConfig());
 				container.initialize();
-
 				logInfo("Lassock live was started!");
+				// 创建 liveness;
+				LivenessConfiguration lc = new LivenessConfiguration(ConfigUtils.getContext("liveness"));
+				liveness = lc.getInstance();
 				// 挂钩Live
-				liveness.lisen(container.live());
+				liveness.setLive(container.live());
+				liveness.start();
 				startupComplete.compareAndSet(false, true);
 				logInfo("Lassock startup completed");
 			}
@@ -60,15 +58,14 @@ public class LassockLive extends Logging {
 		}
 	}
 
-	public void shutdown() throws IOException {
+	public void shutdown() throws Exception {
 		try {
 			if (startupComplete.compareAndSet(true, false)) {
 				isShuttingDown.set(true);
 				// 配置监听关闭
-				CloseableUtils.closeQuietly(liveness);
+				liveness.stop();
 				// 关闭采集生涯
 				DestroyableUtils.destroyQuietly(container);
-
 				isStartingUp.set(false);
 				// 减持执行线程
 				shutdownLatch.countDown();
