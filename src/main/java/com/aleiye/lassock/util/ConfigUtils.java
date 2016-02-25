@@ -38,6 +38,11 @@ public class ConfigUtils {
 		return prop;
 	}
 
+	/**
+	 * 将tapesafe转换为Context
+	 * @param config
+	 * @return
+	 */
 	public static Context toContext(Config config) {
 		Context contxt = new Context();
 		if (config != null)
