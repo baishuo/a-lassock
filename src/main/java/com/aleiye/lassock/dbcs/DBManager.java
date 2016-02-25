@@ -37,53 +37,53 @@ public class DBManager {
 
 	private static ConcurrentHashMap<String, ComboPooledDataSource> dataSources;
 
-	static {
-		dataSources = new ConcurrentHashMap<String, ComboPooledDataSource>();
-		Properties prop = new Properties();
-
-		File file = new File("properties/c3p0-config.properties");
-		try {
-			if (file.exists()) {
-				FileInputStream fis;
-
-				fis = new FileInputStream(file);
-				prop.load(fis);
-				minPoolSize = Integer.parseInt(prop.getProperty("c3p0.minPoolSize"));
-				maxPoolSize = Integer.parseInt(prop.getProperty("c3p0.maxPoolSize"));
-				initialPoolSize = Integer.parseInt(prop.getProperty("c3p0.initialPoolSize"));
-				maxIdleTime = Integer.parseInt(prop.getProperty("c3p0.maxIdleTime"));
-				acquireIncrement = Integer.parseInt(prop.getProperty("c3p0.acquireIncrement"));
-				maxStatements = Integer.parseInt(prop.getProperty("c3p0.maxStatements"));
-				idleConnectionTestPeriod = Integer.parseInt(prop.getProperty("c3p0.idleConnectionTestPeriod"));
-				acquireRetryAttempts = Integer.parseInt(prop.getProperty("c3p0.acquireRetryAttempts"));
-				breakAfterAcquireFailure = Boolean.parseBoolean(prop.getProperty("c3p0.breakAfterAcquireFailure"));
-				testConnectionOnCheckin = Boolean.parseBoolean(prop.getProperty("c3p0.testConnectionOnCheckin"));
-
-			}
-			// 加载自定义扩展采集源
-			Config config = ConfigUtils.getConfig().getConfig("datasource");
-			for (int i = 0; i < Integer.MAX_VALUE; i++) {
-				Config dbconfig;
-				try {
-					dbconfig = config.getConfig("db" + i);
-				} catch (Exception e) {
-					break;
-				}
-				CollectionBean bean = new CollectionBean();
-				bean.setName(dbconfig.getString("name"));
-				bean.setDriverClass(dbconfig.getString("driver"));
-				bean.setUrl(dbconfig.getString("url"));
-				bean.setUser(dbconfig.getString("user"));
-				bean.setPassword(dbconfig.getString("password"));
-				registerCollection(bean);
-			}
-
-		} catch (Exception e) {
-			LOGGER.error("c3p0-config read Failed!");
-			LOGGER.debug("", e);
-			System.exit(1);
-		}
-	}
+//	static {
+//		dataSources = new ConcurrentHashMap<String, ComboPooledDataSource>();
+//		Properties prop = new Properties();
+//
+//		File file = new File("properties/c3p0-config.properties");
+//		try {
+//			if (file.exists()) {
+//				FileInputStream fis;
+//
+//				fis = new FileInputStream(file);
+//				prop.load(fis);
+//				minPoolSize = Integer.parseInt(prop.getProperty("c3p0.minPoolSize"));
+//				maxPoolSize = Integer.parseInt(prop.getProperty("c3p0.maxPoolSize"));
+//				initialPoolSize = Integer.parseInt(prop.getProperty("c3p0.initialPoolSize"));
+//				maxIdleTime = Integer.parseInt(prop.getProperty("c3p0.maxIdleTime"));
+//				acquireIncrement = Integer.parseInt(prop.getProperty("c3p0.acquireIncrement"));
+//				maxStatements = Integer.parseInt(prop.getProperty("c3p0.maxStatements"));
+//				idleConnectionTestPeriod = Integer.parseInt(prop.getProperty("c3p0.idleConnectionTestPeriod"));
+//				acquireRetryAttempts = Integer.parseInt(prop.getProperty("c3p0.acquireRetryAttempts"));
+//				breakAfterAcquireFailure = Boolean.parseBoolean(prop.getProperty("c3p0.breakAfterAcquireFailure"));
+//				testConnectionOnCheckin = Boolean.parseBoolean(prop.getProperty("c3p0.testConnectionOnCheckin"));
+//
+//			}
+//			// 加载自定义扩展采集源
+//			Config config = ConfigUtils.getConfig().getConfig("datasource");
+//			for (int i = 0; i < Integer.MAX_VALUE; i++) {
+//				Config dbconfig;
+//				try {
+//					dbconfig = config.getConfig("db" + i);
+//				} catch (Exception e) {
+//					break;
+//				}
+//				CollectionBean bean = new CollectionBean();
+//				bean.setName(dbconfig.getString("name"));
+//				bean.setDriverClass(dbconfig.getString("driver"));
+//				bean.setUrl(dbconfig.getString("url"));
+//				bean.setUser(dbconfig.getString("user"));
+//				bean.setPassword(dbconfig.getString("password"));
+//				registerCollection(bean);
+//			}
+//
+//		} catch (Exception e) {
+//			LOGGER.error("c3p0-config read Failed!");
+//			LOGGER.debug("", e);
+//			System.exit(1);
+//		}
+//	}
 
 	public static void registerCollection(CollectionBean bean) {
 		ComboPooledDataSource dataSource = new ComboPooledDataSource(bean.getName());

@@ -10,6 +10,10 @@ import com.aleiye.lassock.live.hill.Sign;
  * @version 2.1.2
  */
 public class JdbcSign extends Sign {
+	private String driver;
+	private String url;
+	private String username;
+	private String password;
 	// 数据源
 	private String dataSource;
 	// 要采集的表
@@ -34,5 +38,37 @@ public class JdbcSign extends Sign {
 
 	public void setSql(String sql) {
 		this.sql = sql;
+	}
+
+	public String getDriver() {
+		return driver;
+	}
+
+	public void setDriver(String driver) {
+		this.driver = driver;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 }

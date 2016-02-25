@@ -1,6 +1,7 @@
 package com.aleiye.lassock.live.hill.shade.snmp;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.Vector;
 
 import org.apache.commons.lang3.StringUtils;
@@ -29,9 +30,9 @@ import org.snmp4j.transport.DefaultTcpTransportMapping;
 import org.snmp4j.transport.DefaultUdpTransportMapping;
 
 import com.aleiye.lassock.api.Course;
-import com.aleiye.lassock.lang.Sistem;
 import com.aleiye.lassock.live.scroll.Const;
-import com.aleiye.lassock.model.GeneralMushroom;
+import com.aleiye.lassock.model.Mushroom;
+import com.aleiye.lassock.model.MushroomBuilder;
 import com.aleiye.lassock.util.ScrollUtils;
 
 /**
@@ -60,7 +61,7 @@ public class SnmpStandardShade extends SnmpShade {
 	// 同步异步
 	private boolean syn = false;
 
-	private boolean keeped = false;
+	// private boolean keeped = false;
 
 	/**
 	 * SNMP 响应处理
@@ -72,27 +73,15 @@ public class SnmpStandardShade extends SnmpShade {
 			// 获取接收的OID信息
 			@SuppressWarnings("unchecked")
 			Vector<? extends VariableBinding> recVBs = event.getResponse().getVariableBindings();
-			// 循环OID
-			for (int i = 0; i < recVBs.size(); i++) {
-				GeneralMushroom mr = new GeneralMushroom();
-				VariableBinding recVB = recVBs.elementAt(i);
-				StringBuffer sb = new StringBuffer();
-				sb.append(System.currentTimeMillis());
-				sb.append(" ");
-				sb.append(Sistem.getHost());
-				sb.append(" ");
-				sb.append(this.sign.getHost());
-				sb.append(" ");
-				sb.append(recVB.getOid().toString());
-				sb.append(" ");
-				sb.append(recVB.getVariable().toString());
-				byte[] baos = sb.toString().getBytes();
-				mr.setBody(baos);
-				try {
-					putMushroom(sign, mr);
-				} catch (Exception e) {
-					return;
-				}
+			Map<String, String> geting = toMap(recVBs);
+
+			Mushroom mr = MushroomBuilder.withBody(geting, null);
+			mr.getHeaders().put("target", this.sign.getHost());
+
+			try {
+				putMushroom(sign, mr);
+			} catch (Exception e) {
+				return;
 			}
 		}
 	}
@@ -166,7 +155,7 @@ public class SnmpStandardShade extends SnmpShade {
 		// 目标对象相关设置
 		target.setAddress(targetAddress);
 		// 采集超时
-		// target.setTimeout(timeout);
+		target.setTimeout(timeout);
 		// 超时重试次数
 		target.setRetries(retries);
 

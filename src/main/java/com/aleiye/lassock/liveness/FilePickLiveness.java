@@ -3,15 +3,11 @@ package com.aleiye.lassock.liveness;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
-import org.apache.commons.lang.StringUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import com.aleiye.lassock.api.Course;
 import com.aleiye.lassock.live.Live;
-import com.aleiye.lassock.live.scroll.Const;
 import com.aleiye.lassock.util.ConfigUtils;
 import com.aleiye.lassock.util.JsonProvider;
 

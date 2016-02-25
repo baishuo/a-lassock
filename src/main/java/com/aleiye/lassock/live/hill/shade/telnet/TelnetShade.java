@@ -229,7 +229,11 @@ public class TelnetShade extends AbstractPollableShade {
 		username = sign.getUsername();
 		password = sign.getPassword();
 		prepareCommand = sign.getPrepareCommand();
-		commands = sign.getCommands();
+		if (StringUtils.isNotBlank(sign.getCommands())) {
+			commands = sign.getCommands().split(";");
+		} else {
+			throw new Exception("No command");
+		}
 		millis = sign.getWaitMillis();
 	}
 

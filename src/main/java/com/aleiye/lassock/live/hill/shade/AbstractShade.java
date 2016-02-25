@@ -50,6 +50,8 @@ public abstract class AbstractShade extends NamedLifecycle implements Shade {
 		// generalMushroom.setSignId(sign.getId());
 
 		generalMushroom.setOriginalValues(sign.getValues());
+		generalMushroom.getHeaders().put("type", sign.getType());
+		generalMushroom.getHeaders().put("subType", sign.getSubType());
 		((GeneralMushroom) generalMushroom).setIntelligence(this.intelligence);
 		basket.push(generalMushroom);
 		// 每次事件产生 增1
