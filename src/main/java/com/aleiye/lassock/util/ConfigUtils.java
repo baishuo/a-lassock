@@ -50,7 +50,7 @@ public class ConfigUtils {
 				String value = entry.getValue().unwrapped().toString();
 				if (CEUtil.match(value)) {
 					try {
-						value = config.getString(CEUtil.getKey(value));
+						value = ConfigUtils.config.getString(CEUtil.getKey(value));
 					} catch (Exception e) {
 						value = "";
 					}

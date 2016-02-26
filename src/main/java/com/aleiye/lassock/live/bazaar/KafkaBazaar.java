@@ -11,6 +11,7 @@ import kafka.producer.ProducerClosedException;
 import kafka.producer.ProducerConfig;
 
 import org.apache.curator.framework.CuratorFramework;
+import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.framework.recipes.cache.PathChildrenCache;
 import org.apache.curator.framework.recipes.cache.PathChildrenCacheEvent;
 import org.apache.curator.framework.recipes.cache.PathChildrenCacheListener;
@@ -71,9 +72,12 @@ public class KafkaBazaar extends AbstractBazaar {
 
 	@Override
 	public void configure(Context context) {
-		String zkConnect = ConfigUtils.getConfig().getString("remote. zookeeper.url");
+		String zkConnect = context.getString("zkhost");
 		RetryUntilElapsed retryPolicy = new RetryUntilElapsed(3000, Integer.MAX_VALUE);
-		client = CuratorFactory.createFramework(zkConnect, retryPolicy);
+		// client = CuratorFactory.createFramework(zkConnect, retryPolicy);
+		CuratorFrameworkFactory.Builder zkBuilder = CuratorFrameworkFactory.builder().connectString(zkConnect)
+				.retryPolicy(retryPolicy);
+		client = zkBuilder.build();
 		client.start();
 		try {
 			client.blockUntilConnected();
