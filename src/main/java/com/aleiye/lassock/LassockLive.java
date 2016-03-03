@@ -29,6 +29,8 @@ public class LassockLive extends Logging {
 	private Liveness liveness;
 	// 采集生涯
 	private LiveContainer container;
+	/** 监控器*/
+	private Monitor monitor;
 
 	public void startup() throws Exception {
 		try {
@@ -51,7 +53,7 @@ public class LassockLive extends Logging {
 				liveness = lc.getInstance();
 				liveness.start();
 				// 监控
-				Monitor monitor = new DefaultMonitor(container.live());
+				monitor = new DefaultMonitor(container.live());
 				monitor.configure(ConfigUtils.getContext("monitor"));
 				monitor.setName("lassock-monitor");
 				monitor.start();
@@ -73,6 +75,8 @@ public class LassockLive extends Logging {
 			liveness.stop();
 			// 关闭采集生涯
 			DestroyableUtils.destroyQuietly(container);
+			// 关闭监控
+			monitor.stop();
 			isStartingUp.set(false);
 			// 减持执行线程
 			shutdownLatch.countDown();

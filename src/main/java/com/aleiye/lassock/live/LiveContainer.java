@@ -32,9 +32,6 @@ public class LiveContainer extends Logging implements Destroyable {
 	private Map<String, Basket> baskets;
 	/**采集管理*/
 	private Hill hill;
-	/** 监控器*/
-	private Monitor monitor;
-
 	/** 集市*/
 	private Map<String, BazaarRunner> bazaarRunners;
 
@@ -132,8 +129,6 @@ public class LiveContainer extends Logging implements Destroyable {
 	public void destroy() {
 		// 采集关闭
 		DestroyableUtils.destroyQuietly(hill);
-		// 关闭监控
-		monitor.stop();
 		// 集市关闭
 		for (BazaarRunner br : bazaarRunners.values()) {
 			br.stop();
