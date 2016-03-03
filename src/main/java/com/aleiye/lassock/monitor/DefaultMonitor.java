@@ -39,7 +39,7 @@ public class DefaultMonitor extends NamedLifecycle implements Monitor {
 	private Live live;
 	ActorSystem actorSystem;
 
-	ActorRef greeter;
+	ActorRef state;
 	//
 	Context target;
 	// 目标
@@ -69,13 +69,19 @@ public class DefaultMonitor extends NamedLifecycle implements Monitor {
 			// 开启AKKA
 			actorSystem = AkkaUtils.createActorSystem(host, port, sysName);
 			// status 状态服务
-			greeter = actorSystem.actorOf(Props.create(StatusActor.class, live), "state");
-
+			state = actorSystem.actorOf(Props.create(StatusActor.class, live), "state");
 			if (target.getBoolean("enabled")) {
 				String targetHost = target.getString("host");
 				int targetPort = target.getInteger("port");
 				String targetName = target.getString("sysname");
-				String targetActorName = target.getString("actorname");
+				String targetRegName = target.getString("registername");
+				String targetActorName = target.getString("monitorname");
+				// 注册
+				ActorSelection regSelection = actorSystem.actorSelection(AkkaUtils.getRemoteActorPath(targetHost,
+						targetPort, targetName, targetRegName));
+				regSelection.tell(Sistem.getInformation(), ActorRef.noSender());
+
+				// 任务监控
 				selection = actorSystem.actorSelection(AkkaUtils.getRemoteActorPath(targetHost, targetPort, targetName,
 						targetActorName));
 
@@ -98,7 +104,7 @@ public class DefaultMonitor extends NamedLifecycle implements Monitor {
 	public synchronized void stop() {
 		timer.cancel();
 		selection.tell(live.getState(), ActorRef.noSender());
-		greeter = null;
+		state = null;
 		actorSystem.shutdown();
 		super.stop();
 	}
