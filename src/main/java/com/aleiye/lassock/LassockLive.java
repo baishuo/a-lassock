@@ -4,6 +4,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.aleiye.lassock.live.LiveContainer;
+import com.aleiye.lassock.live.conf.Context;
 import com.aleiye.lassock.liveness.Liveness;
 import com.aleiye.lassock.liveness.LivenessConfiguration;
 import com.aleiye.lassock.logging.Logging;
@@ -48,8 +49,8 @@ public class LassockLive extends Logging {
 				logInfo("Live was initialized!");
 
 				// liveness初始化;
-				LivenessConfiguration lc = new LivenessConfiguration(ConfigUtils.getContext("liveness"),
-						container.live());
+				Context livenessContext = ConfigUtils.getContext("liveness");
+				LivenessConfiguration lc = new LivenessConfiguration(livenessContext, container.live());
 				liveness = lc.getInstance();
 				liveness.start();
 				// 监控
