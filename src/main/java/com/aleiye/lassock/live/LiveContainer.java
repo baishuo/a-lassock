@@ -14,7 +14,6 @@ import com.aleiye.lassock.live.bazaar.BazaarRunner;
 import com.aleiye.lassock.live.bazaar.DefaultBazaarFactory;
 import com.aleiye.lassock.live.hill.Hill;
 import com.aleiye.lassock.logging.Logging;
-import com.aleiye.lassock.monitor.DefaultMonitor;
 import com.aleiye.lassock.monitor.Monitor;
 import com.aleiye.lassock.util.ConfigUtils;
 import com.aleiye.lassock.util.DestroyableUtils;
@@ -48,23 +47,16 @@ public class LiveContainer extends Logging implements Destroyable {
 	 * @throws Exception
 	 */
 	public void initialize() throws Exception {
+		// 加载队列
 		loadBaskets();
 
-		// hill = (Hill) new DefaultHill();
-		// hill.setBaskets(baskets);
-		// hill.initialize();
+		// 加载采集源
 		hill = new HillMirror();
 		hill.setBaskets(baskets);
 		hill.initialize();
-		// 采集图管理初始化
-		// hillsMap = new HillsMap(basketMap);
 
+		// 加载消费商
 		loadBazaars();
-
-		Monitor monitor = new DefaultMonitor(hill);
-		monitor.configure(ConfigUtils.getContext("monitor"));
-		monitor.setName("lassock-monitor");
-		monitor.start();
 	}
 
 	private void loadBaskets() throws Exception {

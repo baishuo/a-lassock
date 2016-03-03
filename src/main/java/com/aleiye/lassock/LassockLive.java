@@ -7,6 +7,8 @@ import com.aleiye.lassock.live.LiveContainer;
 import com.aleiye.lassock.liveness.Liveness;
 import com.aleiye.lassock.liveness.LivenessConfiguration;
 import com.aleiye.lassock.logging.Logging;
+import com.aleiye.lassock.monitor.DefaultMonitor;
+import com.aleiye.lassock.monitor.Monitor;
 import com.aleiye.lassock.util.ConfigUtils;
 import com.aleiye.lassock.util.DestroyableUtils;
 
@@ -44,11 +46,15 @@ public class LassockLive extends Logging {
 				logInfo("Live was initialized!");
 
 				// liveness初始化;
-				LivenessConfiguration lc = new LivenessConfiguration(ConfigUtils.getContext("liveness"));
+				LivenessConfiguration lc = new LivenessConfiguration(ConfigUtils.getContext("liveness"),
+						container.live());
 				liveness = lc.getInstance();
-				// 挂钩Live
-				liveness.setLive(container.live());
 				liveness.start();
+				// 监控
+				Monitor monitor = new DefaultMonitor(container.live());
+				monitor.configure(ConfigUtils.getContext("monitor"));
+				monitor.setName("lassock-monitor");
+				monitor.start();
 
 				startupComplete.compareAndSet(false, true);
 				logInfo("Lassock startup completed");

@@ -1,5 +1,6 @@
 package com.aleiye.lassock.liveness;
 
+import com.aleiye.lassock.live.Live;
 import com.aleiye.lassock.live.conf.Context;
 
 /**
@@ -11,9 +12,11 @@ import com.aleiye.lassock.live.conf.Context;
  */
 public class LivenessConfiguration {
 	private final Context context;
+	private final Live live;
 
-	public LivenessConfiguration(Context context) {
+	public LivenessConfiguration(Context context, Live live) {
 		this.context = context;
+		this.live = live;
 	}
 
 	/**
@@ -24,6 +27,8 @@ public class LivenessConfiguration {
 	public Liveness getInstance() throws Exception {
 		Class<?> livenessClass = Class.forName(context.getString("class"));
 		Liveness liveness = (Liveness) livenessClass.newInstance();
+		// 挂钩Live
+		liveness.setLive(live);
 		liveness.configure(context);
 		return liveness;
 	}
