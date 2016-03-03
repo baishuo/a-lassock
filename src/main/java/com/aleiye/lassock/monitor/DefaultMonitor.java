@@ -69,7 +69,7 @@ public class DefaultMonitor extends NamedLifecycle implements Monitor {
 			// 开启AKKA
 			actorSystem = AkkaUtils.createActorSystem(host, port, sysName);
 			// status 状态服务
-			greeter = actorSystem.actorOf(Props.create(StatusActor.class, live), "getStatus");
+			greeter = actorSystem.actorOf(Props.create(StatusActor.class, live), "state");
 
 			if (target.getBoolean("enabled")) {
 				String targetHost = target.getString("host");
