@@ -67,6 +67,7 @@ public class AkkaTest {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		system.shutdown();
 
 	}
 

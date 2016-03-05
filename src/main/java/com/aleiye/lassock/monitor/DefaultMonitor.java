@@ -13,8 +13,8 @@ import akka.event.Logging;
 import akka.event.LoggingAdapter;
 
 import com.aleiye.lassock.api.Intelligence;
+import com.aleiye.lassock.api.IntelligenceLetter;
 import com.aleiye.lassock.api.LassockState;
-import com.aleiye.lassock.api.LassockState.RunState;
 import com.aleiye.lassock.lang.Sistem;
 import com.aleiye.lassock.live.Live;
 import com.aleiye.lassock.live.NamedLifecycle;
@@ -88,10 +88,8 @@ public class DefaultMonitor extends NamedLifecycle implements Monitor {
 					public void run() {
 						List<Intelligence> is = live.getIntelligences();
 						LassockState state = live.getState();
-						state.setMac(Sistem.getMac());
-						state.setIntelligences(is);
-						state.setState(live.isPaused() ? RunState.PAUSED : RunState.RUNNING);
-						selection.tell(state, ActorRef.noSender());
+						IntelligenceLetter letter = new IntelligenceLetter(state, is);
+						selection.tell(letter, ActorRef.noSender());
 					}
 				};
 
@@ -135,6 +133,7 @@ public class DefaultMonitor extends NamedLifecycle implements Monitor {
 						live.resume();
 				}
 			}
+			// 返回状态
 			getSender().tell(live.getState(), getSender());
 		}
 	}

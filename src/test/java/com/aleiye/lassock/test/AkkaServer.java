@@ -28,13 +28,13 @@ public class AkkaServer {
 		buffer.append("|akka.actor.provider=\"akka.remote.RemoteActorRefProvider\"");
 		buffer.append("|akka.remote.netty.tcp.transport-class = \"akka.remote.transport.netty.NettyTransport\"");
 		// TODO
-		buffer.append("|akka.remote.netty.tcp.hostname=\"").append("10.0.1.35").append("\"");
+		buffer.append("|akka.remote.netty.tcp.hostname=\"").append("10.0.1.117").append("\"");
 		// TODO
 		buffer.append("|akka.remote.netty.tcp.port=").append(9982);
 		buffer.append("|akka.remote.netty.tcp.tcp-nodelay = on");
 		Config akkaConfig = ConfigFactory.parseString(stripMargin(buffer.toString(), '|'));
-		ActorSystem system = ActorSystem.create("collectorMonitor", akkaConfig);
-		ActorRef greeter = system.actorOf(Props.create(MonitorActor.class), "monitor");
+		ActorSystem system = ActorSystem.create("lassockMonitor", akkaConfig);
+		ActorRef greeter = system.actorOf(Props.create(MonitorActor.class), "intelligence");
 		try {
 			char i = (char) System.in.read();
 		} catch (IOException e) {

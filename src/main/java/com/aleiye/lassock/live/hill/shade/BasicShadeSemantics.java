@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import com.aleiye.lassock.api.Course;
 import com.aleiye.lassock.api.Intelligence;
-import com.aleiye.lassock.api.ShadeStatus;
+import com.aleiye.lassock.api.Intelligence.ShadeState;
 import com.aleiye.lassock.lifecycle.LifecycleState;
 import com.aleiye.lassock.util.LogUtils;
 import com.google.common.base.Preconditions;
@@ -27,7 +27,7 @@ public abstract class BasicShadeSemantics extends AbstractShade {
 			this.intelligence.setType(course.getType());
 			this.intelligence.setSubType(course.getSubType());
 		} catch (Exception e) {
-			this.intelligence.setStatus(ShadeStatus.ERROR);
+			this.intelligence.setState(ShadeState.ERROR);
 			exception = e;
 			LogUtils.error(course.getName() + "configure exception:" + e.getMessage());
 			setLifecycleState(LifecycleState.ERROR);

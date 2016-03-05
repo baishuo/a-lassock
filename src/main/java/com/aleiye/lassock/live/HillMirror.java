@@ -8,6 +8,7 @@ import com.aleiye.lassock.api.Course.RunType;
 import com.aleiye.lassock.api.Intelligence;
 import com.aleiye.lassock.api.LassockState;
 import com.aleiye.lassock.api.LassockState.RunState;
+import com.aleiye.lassock.lang.Sistem;
 import com.aleiye.lassock.live.basket.Basket;
 import com.aleiye.lassock.live.hill.DefaultHill;
 import com.aleiye.lassock.live.hill.Hill;
@@ -60,22 +61,22 @@ public class HillMirror implements Hill {
 
 	}
 
-//	@Override
-//	public void clean() {
-//		hill.clean();
-//
-//	}
-//
-//	@Override
-//	public void clean(String type) {
-//		hill.clean(type);
-//
-//	}
-//
-//	@Override
-//	public void clean(String type, String subType) {
-//		hill.clean(type, subType);
-//	}
+	// @Override
+	// public void clean() {
+	// hill.clean();
+	//
+	// }
+	//
+	// @Override
+	// public void clean(String type) {
+	// hill.clean(type);
+	//
+	// }
+	//
+	// @Override
+	// public void clean(String type, String subType) {
+	// hill.clean(type, subType);
+	// }
 
 	@Override
 	public synchronized void add(Course course) throws Exception {
@@ -124,7 +125,7 @@ public class HillMirror implements Hill {
 		hill1.initialize();
 
 		state = new LassockState();
-		state.setState(RunState.RUNNING);
+		state.setInformation(Sistem.getInformation());
 	}
 
 	@Override
