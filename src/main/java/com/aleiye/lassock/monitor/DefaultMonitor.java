@@ -14,6 +14,7 @@ import akka.event.LoggingAdapter;
 
 import com.aleiye.lassock.api.Intelligence;
 import com.aleiye.lassock.api.LassockState;
+import com.aleiye.lassock.api.LassockState.RunState;
 import com.aleiye.lassock.lang.Sistem;
 import com.aleiye.lassock.live.Live;
 import com.aleiye.lassock.live.NamedLifecycle;
@@ -29,23 +30,20 @@ import com.aleiye.lassock.util.AkkaUtils;
  */
 public class DefaultMonitor extends NamedLifecycle implements Monitor {
 	private boolean enabled = false;
-
 	private String host;
 	private int port;
-	private String sysName;
+	private String systemName;
 
-	private int period;
+	private ActorSystem actorSystem;
 
-	private Live live;
-	ActorSystem actorSystem;
-
-	ActorRef state;
-	//
-	Context target;
+	// 监控情报发送配置
+	private Context target;
 	// 目标
-	ActorSelection selection;
+	private ActorSelection selection;
 
 	private Timer timer;
+
+	private Live live;
 
 	public DefaultMonitor(Live live) {
 		this.live = live;
@@ -54,28 +52,28 @@ public class DefaultMonitor extends NamedLifecycle implements Monitor {
 	@Override
 	public void configure(Context context) {
 		enabled = context.getBoolean("enabled", false);
-		host = context.getString("ip", Sistem.getIp());
+		host = context.getString("host", Sistem.getIp());
 		port = context.getInteger("port", 9981);
-		period = context.getInteger("period", 5000);
-		sysName = context.getString("sysname", "lassock");
+		systemName = context.getString("systemname", "lassock");
 		target = new Context(context.getSubProperties("target."));
-		timer = new Timer("timer-monitor");
 	}
 
 	@Override
 	public synchronized void start() {
-		// 情报发送
+		// 是否开启监控服务
 		if (enabled) {
-			// 开启AKKA
-			actorSystem = AkkaUtils.createActorSystem(host, port, sysName);
-			// status 状态服务
-			state = actorSystem.actorOf(Props.create(StatusActor.class, live), "state");
+			// 开启AKKA服务
+			actorSystem = AkkaUtils.createActorSystem(host, port, systemName);
+			// state 状态服务
+			actorSystem.actorOf(Props.create(StatusActor.class, live), "state");
 			if (target.getBoolean("enabled")) {
+				timer = new Timer("timer-monitor");
 				String targetHost = target.getString("host");
 				int targetPort = target.getInteger("port");
-				String targetName = target.getString("sysname");
+				String targetName = target.getString("systemname");
 				String targetRegName = target.getString("registername");
 				String targetActorName = target.getString("monitorname");
+				int period = target.getInteger("period", 5000);
 				// 注册
 				ActorSelection regSelection = actorSystem.actorSelection(AkkaUtils.getRemoteActorPath(targetHost,
 						targetPort, targetName, targetRegName));
@@ -90,10 +88,13 @@ public class DefaultMonitor extends NamedLifecycle implements Monitor {
 					public void run() {
 						List<Intelligence> is = live.getIntelligences();
 						LassockState state = live.getState();
+						state.setMac(Sistem.getMac());
 						state.setIntelligences(is);
+						state.setState(live.isPaused() ? RunState.PAUSED : RunState.RUNNING);
 						selection.tell(state, ActorRef.noSender());
 					}
 				};
+
 				timer.schedule(tt, period, period);
 			}
 		}
@@ -102,15 +103,15 @@ public class DefaultMonitor extends NamedLifecycle implements Monitor {
 
 	@Override
 	public synchronized void stop() {
-		timer.cancel();
+		if (timer != null)
+			timer.cancel();
 		selection.tell(live.getState(), ActorRef.noSender());
-		state = null;
 		actorSystem.shutdown();
 		super.stop();
 	}
 
 	/**
-	 * 状态获了Actor
+	 * 状态操作Actor
 	 * 
 	 * @author ruibing.zhao
 	 * @since 2016年2月22日
@@ -125,6 +126,15 @@ public class DefaultMonitor extends NamedLifecycle implements Monitor {
 		}
 
 		public void onReceive(Object message) throws Exception {
+			if (message instanceof Boolean) {
+				if ((Boolean) message) {
+					if (!live.isPaused())
+						live.pause();
+				} else {
+					if (live.isPaused())
+						live.resume();
+				}
+			}
 			getSender().tell(live.getState(), getSender());
 		}
 	}
