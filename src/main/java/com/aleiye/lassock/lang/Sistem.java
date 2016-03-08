@@ -30,19 +30,25 @@ public class Sistem {
 
 	private static final OSType osType;
 
+	private static final int port;
+
 	private static final Map<String, Object> header;
 
 	static {
 		Context system = ConfigUtils.getContext("system");
-		// 获取HOST
-		String host0 = system.getString("host");
-		host = StringUtils.isNotBlank(host0) ? host0 : SigarUtils.getHostsNameBySigar();
 		// 获取IP
 		String ip0 = system.getString("ip");
 		ip = StringUtils.isNotBlank(ip0) ? ip0 : SigarUtils.getIPBySigar();
+		// 获取HOST
+		String host0 = system.getString("host");
+		host0 = StringUtils.isNotBlank(host0) ? host0 : SigarUtils.getHostsNameBySigar();
+		host = "localhost".equals(host0) ? ip : host0;
 		// 获取MAC
 		String mac0 = system.getString("mac");
 		mac = StringUtils.isNotBlank(mac0) ? mac0 : SigarUtils.getMacBySigar();
+
+		port = system.getInteger("port", 9981);
+
 		// 获取名称
 		String name0 = system.getString("name");
 		name = StringUtils.isNotBlank(name0) ? name0 : "lassock_" + host;
@@ -68,6 +74,7 @@ public class Sistem {
 		info.setHost(host);
 		info.setIp(ip);
 		info.setMac(mac);
+		info.setPort(port);
 		for (Entry<String, Object> entry : header.entrySet()) {
 			info.put(entry.getKey(), entry.getValue().toString());
 		}
@@ -111,5 +118,9 @@ public class Sistem {
 
 	public static Map<String, Object> getHeader() {
 		return header;
+	}
+
+	public static int getPort() {
+		return port;
 	}
 }

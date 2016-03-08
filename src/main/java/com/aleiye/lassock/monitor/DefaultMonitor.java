@@ -14,6 +14,7 @@ import akka.event.LoggingAdapter;
 
 import com.aleiye.lassock.api.Intelligence;
 import com.aleiye.lassock.api.IntelligenceLetter;
+import com.aleiye.lassock.api.LassockInformation;
 import com.aleiye.lassock.api.LassockState;
 import com.aleiye.lassock.lang.Sistem;
 import com.aleiye.lassock.live.Live;
@@ -52,9 +53,9 @@ public class DefaultMonitor extends NamedLifecycle implements Monitor {
 	@Override
 	public void configure(Context context) {
 		enabled = context.getBoolean("enabled", false);
-		host = context.getString("host", Sistem.getIp());
-		port = context.getInteger("port", 9981);
-		systemName = context.getString("systemname", "lassock");
+		systemName = Sistem.getLassockname();
+		host = Sistem.getHost();
+		port = context.getInteger("port", Sistem.getPort());
 		target = new Context(context.getSubProperties("target."));
 	}
 
@@ -77,7 +78,8 @@ public class DefaultMonitor extends NamedLifecycle implements Monitor {
 				// 注册
 				ActorSelection regSelection = actorSystem.actorSelection(AkkaUtils.getRemoteActorPath(targetHost,
 						targetPort, targetName, targetRegName));
-				regSelection.tell(Sistem.getInformation(), ActorRef.noSender());
+				LassockInformation info = Sistem.getInformation();
+				regSelection.tell(info, ActorRef.noSender());
 
 				// 任务监控
 				selection = actorSystem.actorSelection(AkkaUtils.getRemoteActorPath(targetHost, targetPort, targetName,

@@ -42,26 +42,26 @@ public class HelloFuture {
 	}
 
 	public static void main(String args[]) throws Exception {
-		// System.out.println(Thread.currentThread().getName());
-		// ActorSystem system = ActorSystem.create("mySystem");
-		// ActorRef a = system.actorOf(Props.create(A.class), "helloWorld");
-		// Timeout timeout = new Timeout(Duration.create(5, "seconds"));
-		// Future<Object> future = Patterns.ask(a, "are you ready?", timeout);
-		//
-		// // This will cause the current thread to block and wait for the
-		// UntypedActor to ‘complete’
-		// // the Future with it’s reply.
-		// // 在这里会阻塞到 Await.result 方法上，但这会导致性能的损失。
-		// String result = (String) Await.result(future, timeout.duration());
-		// System.out.println(result);
-		ActorSystem system = ActorSystem.create("mySystem");
-		// 注册
-		ActorSelection regSelection = system.actorSelection(AkkaUtils.getRemoteActorPath("10.0.1.117", 9981,
-				"lassockMonitor", "state"));
-		Timeout timeout = new Timeout(Duration.create(5, "seconds"));
-		Future<Object> future = Patterns.ask(regSelection, "are you ready?", timeout);
-		Object result = Await.result(future, timeout.duration());
-		System.out.println(JSONObject.fromObject(result).toString());
+		 System.out.println(Thread.currentThread().getName());
+		 ActorSystem system = ActorSystem.create("mySystem-a.a.a.");
+		 ActorRef a = system.actorOf(Props.create(A.class), "helloWorld");
+		 Timeout timeout = new Timeout(Duration.create(5, "seconds"));
+		 Future<Object> future = Patterns.ask(a, "are you ready?", timeout);
+		
+		 // This will cause the current thread to block and wait for the UntypedActor to ‘complete’
+		 // the Future with it’s reply.
+		 // 在这里会阻塞到 Await.result 方法上，但这会导致性能的损失。
+		 String result = (String) Await.result(future, timeout.duration());
+		 System.out.println(result);
+//		ActorSystem system = ActorSystem.create("mySystem");
+//		// 注册
+//		ActorSelection regSelection = system.actorSelection(AkkaUtils.getRemoteActorPath("10.0.1.117", 9981,
+//				"lassockMonitor", "state"));
+//		Timeout timeout = new Timeout(Duration.create(5, "seconds"));
+//		Future<Object> future = Patterns.ask(regSelection, "are you ready?", timeout);
+//		Object result = Await.result(future, timeout.duration());
+//		System.out.println(JSONObject.fromObject(result).toString());
+		 system.shutdown();
 	}
 
 }
