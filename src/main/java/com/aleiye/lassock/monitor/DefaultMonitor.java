@@ -136,7 +136,7 @@ public class DefaultMonitor extends NamedLifecycle implements Monitor {
 				}
 			}
 			// 返回状态
-			getSender().tell(live.getState(), getSender());
+			getSender().tell(live.getState(), ActorRef.noSender());
 		}
 	}
 }
