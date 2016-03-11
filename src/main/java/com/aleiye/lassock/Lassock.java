@@ -3,6 +3,8 @@ package com.aleiye.lassock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.aleiye.lassock.lang.Sistem;
+
 /**
  * Lassock启动程序
  * 
@@ -16,6 +18,8 @@ public class Lassock {
 
 	public static void main(String[] args) {
 		try {
+			// 采集器系统信息
+			Class.forName(Sistem.class.getName());
 			// Startable
 			final LassockStartable startable = new LassockStartable();
 			// 开启
