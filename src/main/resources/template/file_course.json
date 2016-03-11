@@ -50,6 +50,7 @@
 			"name":"snmptest",			
 			"discription":"流量采集",
 			"type":"snmp",
+			"subType":"MEMORY",
 			"runType":"SCHEDULE",
 			"period":"120000",
 			"parameters":{
