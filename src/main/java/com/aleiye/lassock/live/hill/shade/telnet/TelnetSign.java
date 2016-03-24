@@ -21,7 +21,7 @@ public class TelnetSign extends Sign {
 	// 准备命令
 	private String prepareCommand;
 	// 执行命令
-	private String[] commands;
+	private String commands;
 
 	private long waitMillis = 2000;
 
@@ -54,11 +54,11 @@ public class TelnetSign extends Sign {
 		this.password = password;
 	}
 
-	public String[] getCommands() {
+	public String getCommands() {
 		return commands;
 	}
 
-	public void setCommands(String[] commands) {
+	public void setCommands(String commands) {
 		this.commands = commands;
 	}
 

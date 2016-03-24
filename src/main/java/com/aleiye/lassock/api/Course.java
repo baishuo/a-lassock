@@ -2,7 +2,7 @@ package com.aleiye.lassock.api;
 
 import java.util.HashMap;
 
-import com.aleiye.lassock.annotation.Required;
+import com.aleiye.lassock.live.annotation.Required;
 import com.aleiye.lassock.live.conf.ValueStation;
 
 /**

@@ -19,15 +19,14 @@ public interface Live {
 	void pause();
 
 	boolean isPaused();
-
-	@Deprecated
+	
 	void refresh(List<Course> curriculum) throws Exception;
 
-//	void clean();
-//
-//	void clean(String type);
-//
-//	void clean(String type, String subType);
+	// void clean();
+	//
+	// void clean(String type);
+	//
+	// void clean(String type, String subType);
 
 	void add(Course course) throws Exception;
 

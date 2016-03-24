@@ -3,7 +3,7 @@ package com.aleiye.lassock.live.basket;
 import com.aleiye.lassock.common.NamedComponent;
 import com.aleiye.lassock.common.able.Configurable;
 import com.aleiye.lassock.lifecycle.LifecycleAware;
-import com.aleiye.lassock.model.Mushroom;
+import com.aleiye.lassock.live.model.Mushroom;
 
 /**
  * 采集缓存对列(竹篮)

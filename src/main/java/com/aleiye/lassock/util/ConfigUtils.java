@@ -11,11 +11,15 @@ import com.typesafe.config.ConfigValue;
 
 /**
  * 获取系统配置的主类
- * Created by ywt on 15/5/9.
+ * 
+ * @author ruibing.zhao
+ * @since 2016年2月25日
+ * @version 1.0
  */
 public class ConfigUtils {
-
 	private static Config config = ConfigFactory.load();
+
+	private ConfigUtils() {}
 
 	public static Config getConfig() {
 		return config;
@@ -34,11 +38,24 @@ public class ConfigUtils {
 		return prop;
 	}
 
+	/**
+	 * 将tapesafe转换为Context
+	 * @param config
+	 * @return
+	 */
 	public static Context toContext(Config config) {
 		Context contxt = new Context();
 		if (config != null)
 			for (Entry<String, ConfigValue> entry : config.entrySet()) {
-				contxt.put(entry.getKey(), entry.getValue().unwrapped().toString());
+				String value = entry.getValue().unwrapped().toString();
+				if (CEUtil.match(value)) {
+					try {
+						value = ConfigUtils.config.getString(CEUtil.getKey(value));
+					} catch (Exception e) {
+						value = "";
+					}
+				}
+				contxt.put(entry.getKey(), value);
 			}
 		return contxt;
 	}
@@ -54,7 +71,15 @@ public class ConfigUtils {
 			Config configVlaue = config.getConfig(keyPath);
 			if (configVlaue != null)
 				for (Entry<String, ConfigValue> entry : configVlaue.entrySet()) {
-					contxt.put(entry.getKey(), entry.getValue().unwrapped().toString());
+					String value = entry.getValue().unwrapped().toString();
+					if (CEUtil.match(value)) {
+						try {
+							value = config.getString(CEUtil.getKey(value));
+						} catch (Exception e) {
+							value = "";
+						}
+					}
+					contxt.put(entry.getKey(), value);
 				}
 		} catch (Exception e) {
 			;

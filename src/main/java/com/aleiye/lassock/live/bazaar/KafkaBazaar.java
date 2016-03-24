@@ -11,6 +11,7 @@ import kafka.producer.ProducerClosedException;
 import kafka.producer.ProducerConfig;
 
 import org.apache.curator.framework.CuratorFramework;
+import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.framework.recipes.cache.PathChildrenCache;
 import org.apache.curator.framework.recipes.cache.PathChildrenCacheEvent;
 import org.apache.curator.framework.recipes.cache.PathChildrenCacheListener;
@@ -21,7 +22,7 @@ import org.slf4j.LoggerFactory;
 import com.aleiye.event.protobuf.AleiyeEvent;
 import com.aleiye.lassock.lifecycle.LifecycleState;
 import com.aleiye.lassock.live.conf.Context;
-import com.aleiye.lassock.model.Mushroom;
+import com.aleiye.lassock.live.model.Mushroom;
 import com.aleiye.lassock.util.ConfigUtils;
 import com.aleiye.zkclient.standard.CuratorClient;
 import com.aleiye.zkclient.standard.CuratorFactory;
@@ -73,7 +74,10 @@ public class KafkaBazaar extends AbstractBazaar {
 	public void configure(Context context) {
 		String zkConnect = context.getString("zkhost");
 		RetryUntilElapsed retryPolicy = new RetryUntilElapsed(3000, Integer.MAX_VALUE);
-		client = CuratorFactory.createFramework(zkConnect, retryPolicy);
+		// client = CuratorFactory.createFramework(zkConnect, retryPolicy);
+		CuratorFrameworkFactory.Builder zkBuilder = CuratorFrameworkFactory.builder().connectString(zkConnect)
+				.retryPolicy(retryPolicy);
+		client = zkBuilder.build();
 		client.start();
 		try {
 			client.blockUntilConnected();

@@ -3,6 +3,8 @@ package com.aleiye.lassock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.aleiye.lassock.lang.Sistem;
+
 /**
  * Lassock启动程序
  * 
@@ -15,16 +17,13 @@ public class Lassock {
 	private static Logger _LOG = LoggerFactory.getLogger(Lassock.class);
 
 	public static void main(String[] args) {
-
-		_LOG.info("Running Lassock");
 		try {
-			// live
+			// 采集器系统信息
+			Class.forName(Sistem.class.getName());
+			// Startable
 			final LassockStartable startable = new LassockStartable();
 			// 开启
 			startable.startup();
-
-			_LOG.info("Lassock was startup!");
-
 			Runtime.getRuntime().addShutdownHook(new Thread() {
 				@Override
 				public void run() {
@@ -36,8 +35,7 @@ public class Lassock {
 
 			System.exit(0);
 		} catch (Exception e) {
-			_LOG.error(e.getMessage(), e);
-			_LOG.error("Lassock startup failure!");
+			_LOG.error("Lassock startup failure!", e);
 			System.exit(1);
 		}
 	}

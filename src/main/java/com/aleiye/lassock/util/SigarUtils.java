@@ -27,7 +27,7 @@ public class SigarUtils {
 			str = sigarPath + File.pathSeparator + str;
 			System.setProperty("java.library.path", str);
 		}
-		_LOG.info("java.library.path " + System.getProperty("java.library.path"));
+//		_LOG.info("java.library.path " + System.getProperty("java.library.path"));
 	}
 
 	public static Sigar getSigar() {

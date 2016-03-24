@@ -12,18 +12,18 @@ import java.net.*;
  */
 public class EncodeDetect {
 
-	static final int GB2312 = 0;
-	static final int GBK = 1;
-	static final int HZ = 2;
-	static final int BIG5 = 3;
-	static final int EUC_TW = 4;
-	static final int ISO_2022_CN = 5;
-	static final int UTF8 = 6;
-	static final int UNICODE = 7;
-	static final int ASCII = 8;
-	static final int OTHER = 9;
+	public static final int GB2312 = 0;
+	public static final int GBK = 1;
+	public static final int HZ = 2;
+	public static final int BIG5 = 3;
+	public static final int EUC_TW = 4;
+	public static final int ISO_2022_CN = 5;
+	public static final int UTF8 = 6;
+	public static final int UNICODE = 7;
+	public static final int ASCII = 8;
+	public static final int OTHER = 9;
 
-	static final int TOTAL_ENCODINGS = 10;
+	public static final int TOTAL_ENCODINGS = 10;
 
 	// Frequency tables to hold the GB, Big5, and EUC-TW character
 	// frequencies
@@ -69,27 +69,6 @@ public class EncodeDetect {
 
 		initialize_frequencies();
 	}
-
-//	public static void main(String argc[]) {
-//		EncodeDetect sinodetector;
-//		int result = OTHER;
-//
-//		argc = new String[1];
-//		//argc[0] = "c:\\chinesedata\\codeconvert\\voaunit.txt";
-//		argc[0] = "中文";
-//		sinodetector = new EncodeDetect();
-//		if (argc[0].startsWith("http://") == true) {
-//			try {
-//				result = sinodetector.detectEncoding(new URL(argc[0]));
-//			} catch (Exception e) {
-//				System.err.println("Bad URL " + e.toString());
-//			}
-//		} else {
-//			result = sinodetector.detectEncoding(new File(argc[0]));
-//			result = sinodetector.detectEncoding(argc[0].getBytes());
-//		}
-//		System.out.println(nicename[result]);
-//	}
 
 	/**
 	 * Function : detectEncoding

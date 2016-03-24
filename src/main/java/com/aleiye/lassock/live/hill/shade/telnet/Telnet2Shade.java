@@ -1,8 +1,6 @@
 package com.aleiye.lassock.live.hill.shade.telnet;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
@@ -11,8 +9,8 @@ import org.apache.log4j.Logger;
 import com.aleiye.lassock.api.Course;
 import com.aleiye.lassock.live.hill.Sign;
 import com.aleiye.lassock.live.hill.shade.AbstractPollableShade;
-import com.aleiye.lassock.model.Mushroom;
-import com.aleiye.lassock.model.MushroomBuilder;
+import com.aleiye.lassock.live.model.Mushroom;
+import com.aleiye.lassock.live.model.MushroomBuilder;
 import com.aleiye.lassock.util.ScrollUtils;
 
 public class Telnet2Shade extends AbstractPollableShade {
@@ -70,7 +68,7 @@ public class Telnet2Shade extends AbstractPollableShade {
 				}
 
 				// 连接最终采集设备
-				telnet.sendCommand(this.host);
+				telnet.sendCommand("telnet " + this.host + " " + this.port);
 			} else {
 				// 连接尝试并获取通道.
 				telnet.connect(host, port).sync();
@@ -102,16 +100,14 @@ public class Telnet2Shade extends AbstractPollableShade {
 			}
 			// ------------------------------------------------------------------------
 			// 执行命令
-			List<Map<String, String>> ret = new ArrayList<Map<String, String>>();
+			Map<String, String> contents = new HashMap<String, String>();
 			for (int i = 0; i < commands.length; i++) {
 				String s = telnet.sendCommandToEnd(commands[i]);
-				Map<String, String> contents = new HashMap<String, String>();
-				contents.put("result", s);
-				contents.put("command", commands[i]);
-				ret.add(contents);
+
+				contents.put(commands[i], s);
 			}
 			// ------------------------------------------------------------------------
-			apply(ret);
+			apply(contents);
 		} catch (Exception e) {
 			LOGGER.error("Telnet " + this.host + ":" + this.port + " failed!", e);
 		} finally {
@@ -140,7 +136,7 @@ public class Telnet2Shade extends AbstractPollableShade {
 		}
 	}
 
-	public void apply(List<Map<String, String>> input) {
+	public void apply(Map<String, String> input) {
 		Mushroom generalMushroom = MushroomBuilder.withBody(input, null);
 		generalMushroom.getHeaders().put("target", this.sign.getHost());
 		try {
@@ -159,7 +155,11 @@ public class Telnet2Shade extends AbstractPollableShade {
 		username = sign.getUsername();
 		password = sign.getPassword();
 		prepareCommand = sign.getPrepareCommand();
-		commands = sign.getCommands();
+		if (StringUtils.isNotBlank(sign.getCommands())) {
+			commands = sign.getCommands().split(";");
+		} else {
+			throw new Exception("No command");
+		}
 		jumped = sign.getJumped();
 	}
 

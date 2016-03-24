@@ -19,6 +19,7 @@ public abstract class AbstractPollableShade extends BasicShadeSemantics implemen
 		try {
 			doPick();
 		} catch (Exception e) {
+			this.intelligence.setErrorCount(this.intelligence.getErrorCount() + 1);
 			LogUtils.error(this.getName() + " pick Exception!\n" + e.getMessage());
 			throw e;
 		}

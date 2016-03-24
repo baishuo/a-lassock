@@ -7,8 +7,8 @@ import net.sf.json.JSONObject;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.aleiye.lassock.annotation.Required;
 import com.aleiye.lassock.api.Course;
+import com.aleiye.lassock.live.annotation.Required;
 import com.aleiye.lassock.live.hill.Sign;
 
 public class ScrollUtils {
@@ -28,7 +28,7 @@ public class ScrollUtils {
 			Required req = f.getAnnotation(Required.class);
 			if (req != null) {
 				String getMetName = pareGetName(f.getName());
-				Method method = cls.getMethod(getMetName, null);
+				Method method = cls.getMethod(getMetName);
 				Object value = method.invoke(obj, new Object[] {});
 				if (value == null) {
 					throw new Exception(obj.getClass().getSimpleName() + "-" + f.getName() + " is required!");
@@ -55,28 +55,4 @@ public class ScrollUtils {
 		String pro = "get" + fldname.substring(0, 1).toUpperCase() + fldname.substring(1);
 		return pro;
 	}
-
-	// public static void main(String args[]) {
-	// Course command = new Course();
-	// command.setId("101");
-	// command.setType("command");
-	// command.put(Const.command.HOST, "10.0.1.1");
-	// command.put(Const.command.PORT, "23");
-	// command.put(Const.command.UESRNAME, "admin");
-	// command.put(Const.command.PASSWORD, "yhxt@123");
-	// String[] commands = {
-	// "dis arp", "dis mac-address"
-	// };
-	// command.put(Const.command.PERIOD, "120000");
-	// command.put(Const.command.COMMANDS, commands);
-	// command.setRunType(RunType.TIMER);
-	//
-	// try {
-	// SnmpSign sign = (SnmpSign) forSign(command, SnmpSign.class);
-	// System.out.print(sign);
-	// } catch (Exception e) {
-	// // TODO Auto-generated catch block
-	// e.printStackTrace();
-	// }
-	// }
 }

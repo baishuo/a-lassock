@@ -7,7 +7,7 @@ import com.aleiye.lassock.common.able.Destroyable;
 import com.aleiye.lassock.common.able.Destroyables;
 
 /**
- * 
+ * Destroyable实用工具辅助
  * 
  * @author ruibing.zhao
  * @since 2015年5月28日

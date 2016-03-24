@@ -24,7 +24,7 @@ import com.aleiye.lassock.live.hill.shade.AbstractPollableShade;
  * @version 2.1.2
  */
 public abstract class SnmpShade extends AbstractPollableShade {
-//	private static final Logger LOGGER = Logger.getLogger(SnmpShade.class);
+	// private static final Logger LOGGER = Logger.getLogger(SnmpShade.class);
 
 	protected SnmpSign sign;
 
@@ -109,6 +109,20 @@ public abstract class SnmpShade extends AbstractPollableShade {
 				}
 				ret = vbs;
 				break;
+			}
+		}
+		return ret;
+	}
+
+	protected Map<String, String> toMap(Vector<? extends VariableBinding> revBindings) {
+		Map<String, String> ret = new HashMap<String, String>();
+		for (int i = 0; i < revBindings.size(); i++) {
+			VariableBinding vbs = revBindings.elementAt(i);
+			String value = vbs.getVariable().toString();
+			if (value.equals("noSuchInstance") || value.equals("noSuchObject")) {
+				ret.put(vbs.getOid().toString(), "");
+			} else {
+				ret.put(vbs.getOid().toString(), value);
 			}
 		}
 		return ret;

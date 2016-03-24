@@ -5,8 +5,8 @@ import com.aleiye.lassock.live.NamedLifecycle;
 import com.aleiye.lassock.live.basket.Basket;
 import com.aleiye.lassock.live.hill.Shade;
 import com.aleiye.lassock.live.hill.Sign;
-import com.aleiye.lassock.model.GeneralMushroom;
-import com.aleiye.lassock.model.Mushroom;
+import com.aleiye.lassock.live.model.GeneralMushroom;
+import com.aleiye.lassock.live.model.Mushroom;
 import com.google.common.base.Preconditions;
 
 /**
@@ -21,6 +21,10 @@ public abstract class AbstractShade extends NamedLifecycle implements Shade {
 	private Basket basket;
 
 	protected Intelligence intelligence;
+
+	public AbstractShade() {
+		this.intelligence = new Intelligence(this.name);
+	}
 
 	@Override
 	public synchronized void start() {
@@ -46,6 +50,8 @@ public abstract class AbstractShade extends NamedLifecycle implements Shade {
 		// generalMushroom.setSignId(sign.getId());
 
 		generalMushroom.setOriginalValues(sign.getValues());
+		generalMushroom.getHeaders().put("type", sign.getType());
+		generalMushroom.getHeaders().put("subType", sign.getSubType());
 		((GeneralMushroom) generalMushroom).setIntelligence(this.intelligence);
 		basket.push(generalMushroom);
 		// 每次事件产生 增1

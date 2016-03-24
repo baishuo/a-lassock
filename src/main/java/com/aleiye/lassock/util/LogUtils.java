@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
  */
 public class LogUtils {
 	private static final Logger LOGGER = LoggerFactory.getLogger("courseError");
-	private static final Logger INFO_LOGGER = LoggerFactory.getLogger("courseError");
 	public static void error(String msg) {
 		LOGGER.error(msg);
 	}

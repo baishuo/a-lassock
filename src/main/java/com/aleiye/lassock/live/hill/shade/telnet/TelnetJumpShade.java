@@ -32,8 +32,8 @@ import org.apache.log4j.Logger;
 import com.aleiye.lassock.api.Course;
 import com.aleiye.lassock.live.hill.Sign;
 import com.aleiye.lassock.live.hill.shade.AbstractPollableShade;
-import com.aleiye.lassock.model.Mushroom;
-import com.aleiye.lassock.model.MushroomBuilder;
+import com.aleiye.lassock.live.model.Mushroom;
+import com.aleiye.lassock.live.model.MushroomBuilder;
 import com.aleiye.lassock.util.ScrollUtils;
 
 public class TelnetJumpShade extends AbstractPollableShade {
@@ -245,7 +245,11 @@ public class TelnetJumpShade extends AbstractPollableShade {
 		username = sign.getUsername();
 		password = sign.getPassword();
 		prepareCommand = sign.getPrepareCommand();
-		commands = sign.getCommands();
+		if (StringUtils.isNotBlank(sign.getCommands())) {
+			commands = sign.getCommands().split(";");
+		} else {
+			throw new Exception("No command");
+		}
 		millis = sign.getWaitMillis();
 		jumped = sign.getJumped();
 	}

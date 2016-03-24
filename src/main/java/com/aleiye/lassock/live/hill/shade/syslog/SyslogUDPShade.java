@@ -18,7 +18,7 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 
 import com.aleiye.lassock.lang.Sistem;
-import com.aleiye.lassock.model.GeneralMushroom;
+import com.aleiye.lassock.live.model.GeneralMushroom;
 
 /**
  * UDP SYSLOG 采集源
@@ -76,17 +76,14 @@ public class SyslogUDPShade extends SyslogShade {
 				.bind(new InetSocketAddress(this.sign.getPort())).channel();
 		channelGroup.add(channel);
 		LOGGER.info("Syslog server UDP/" + this.sign.getPort() + " shade started!");
-
 	}
 
 	@Override
 	protected void doStop() throws Exception {
 		LOGGER.info("Syslog UDP/" + this.sign.getPort() + " stopping...");
-		synchronized (this) {
-			channelGroup.remove(this.serverChannel);
-			if (null != bossGroup) {
-				bossGroup.shutdownGracefully();
-			}
+		channelGroup.remove(this.serverChannel);
+		if (null != bossGroup) {
+			bossGroup.shutdownGracefully();
 		}
 		LOGGER.info("Syslog UDP/" + this.sign.getPort() + " stoped!");
 	}

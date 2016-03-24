@@ -1,13 +1,15 @@
 package com.aleiye.lassock;
 
-import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import com.aleiye.lassock.cache.Liveness;
 import com.aleiye.lassock.live.LiveContainer;
+import com.aleiye.lassock.live.conf.Context;
+import com.aleiye.lassock.liveness.Liveness;
+import com.aleiye.lassock.liveness.LivenessConfiguration;
 import com.aleiye.lassock.logging.Logging;
-import com.aleiye.lassock.util.CloseableUtils;
+import com.aleiye.lassock.monitor.DefaultMonitor;
+import com.aleiye.lassock.monitor.Monitor;
 import com.aleiye.lassock.util.ConfigUtils;
 import com.aleiye.lassock.util.DestroyableUtils;
 
@@ -23,63 +25,67 @@ public class LassockLive extends Logging {
 	private AtomicBoolean isShuttingDown = new AtomicBoolean(false);
 	private AtomicBoolean isStartingUp = new AtomicBoolean(false);
 	// 线程同步工具
-	CountDownLatch shutdownLatch = new CountDownLatch(1);
+	private CountDownLatch shutdownLatch = new CountDownLatch(1);
 	// 课程配置监听器
 	private Liveness liveness;
 	// 采集生涯
 	private LiveContainer container;
+	/** 监控器*/
+	private Monitor monitor;
 
 	public void startup() throws Exception {
 		try {
-			logInfo("Lassock live starting......");
+			logInfo("Lassock starting......");
 			if (isShuttingDown.get())
 				throw new IllegalStateException("Aleiye lassock is still shutting down, cannot re-start!");
 			if (startupComplete.get())
 				return;
 			boolean canStartup = isStartingUp.compareAndSet(false, true);
 			if (canStartup) {
-				// 创建 liveness;
-				Class<?> livenessClass = Class.forName(ConfigUtils.getConfig().getString("liveness.class"));
-				liveness = (Liveness) livenessClass.newInstance();
-				liveness.initialize();
-				// 创建 Live
+				// Live 初始化
+				logInfo("Initializing live!");
 				container = new LiveContainer(ConfigUtils.getConfig());
 				container.initialize();
+				logInfo("Live was initialized!");
 
-				logInfo("Lassock live was started!");
-				// 挂钩Live
-				liveness.lisen(container.live());
+				// liveness初始化;
+				Context livenessContext = ConfigUtils.getContext("liveness");
+				LivenessConfiguration lc = new LivenessConfiguration(livenessContext, container.live());
+				liveness = lc.getInstance();
+				liveness.start();
+				// 监控
+				monitor = new DefaultMonitor(container.live());
+				monitor.configure(ConfigUtils.getContext("monitor"));
+				monitor.setName("lassock-monitor");
+				monitor.start();
+
 				startupComplete.compareAndSet(false, true);
 				logInfo("Lassock startup completed");
 			}
 		} catch (Exception e) {
 			logError("Fatal error during LassockLive startup. Prepare to shutdown");
-			isStartingUp.set(false);
 			shutdown();
+			isStartingUp.set(false);
 			throw e;
 		}
 	}
 
-	public void shutdown() throws IOException {
-		try {
-			if (startupComplete.compareAndSet(true, false)) {
-				isShuttingDown.set(true);
-				// 配置监听关闭
-				CloseableUtils.closeQuietly(liveness);
-				// 关闭采集生涯
-				DestroyableUtils.destroyQuietly(container);
-
-				isStartingUp.set(false);
-				// 减持执行线程
-				shutdownLatch.countDown();
-				logInfo("shut down completed");
-			} else {
-				logInfo("lassock has been shutdown");
-			}
-		} catch (Exception e) {
-			logError("Fatal error during LassockLive shutdown.", e);
-			isShuttingDown.set(false);
+	public void shutdown() throws Exception {
+		if (startupComplete.compareAndSet(true, false)) {
+			// 配置监听关闭
+			liveness.stop();
+			// 关闭采集生涯
+			DestroyableUtils.destroyQuietly(container);
+			// 关闭监控
+			monitor.stop();
+			isStartingUp.set(false);
+			// 减持执行线程
+			shutdownLatch.countDown();
+			logInfo("shut down completed");
+		} else {
+			logInfo("lassock has been shutdown");
 		}
+		isShuttingDown.set(true);
 	}
 
 	public void awaitShutdown() throws InterruptedException {

@@ -57,7 +57,7 @@ public class ApacheTelnet {
 		try {
 			telnet.connect(ip, port);
 		} catch (Exception e) {
-			throw new Exception("Connect " + ip + "/" + port + ":" + e.getMessage(), e);
+			throw new Exception("Connect " + ip + ":" + port + "failed!", e);
 		}
 		in = telnet.getInputStream();
 		out = new PrintStream(telnet.getOutputStream());
@@ -71,9 +71,9 @@ public class ApacheTelnet {
 						ch = (char) code;
 						buf.append(ch);
 						real.append(ch);
-						
-//						System.out.print(ch);
-						
+
+//						 System.out.print(ch);
+
 						if (in.available() == 0) {
 							String str = real.toString().trim();
 							if (StringUtils.isNotBlank(str)) {
@@ -91,8 +91,8 @@ public class ApacheTelnet {
 							}
 							if (str.endsWith("...") || str.endsWith("... Open")) {
 								Thread.sleep(2000);
-							} else if (str.endsWith("re--") || str.endsWith("re --")) {
-								
+							} else if (str.endsWith("re--") || str.endsWith("re --") || str.endsWith("re ----")) {
+
 							} else {
 								Thread.sleep(1000);
 							}
@@ -107,7 +107,10 @@ public class ApacheTelnet {
 						}
 					}
 				} catch (Exception e) {
-					LOGGER.error(e.getMessage(), e);
+					LOGGER.error(e.getMessage());
+					if (LOGGER.isDebugEnabled()) {
+						LOGGER.debug(e);
+					}
 				}
 			}
 		});
@@ -205,42 +208,4 @@ public class ApacheTelnet {
 	public void setWaitMillis(long waitMillis) {
 		this.waitMillis = waitMillis;
 	}
-
-	// public static void main(String[] args) {
-	// ApacheTelnet telnet = new ApacheTelnet("ANSI"); //Windows,用VT220,否则会乱码
-	// try {
-	// telnet.connect("10.160.2.251", 23);
-	// System.out.println(telnet.getPrew());
-	// // BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-	// String result = null;
-	// // while (true) {
-	// // String command = in.readLine().trim();
-	// // if (command.equals("quit")) {
-	// // break;
-	// // }
-	// // if (command.startsWith("!")) {
-	// // result = telnet.sendCommand(command.substring(1));
-	// // } else {
-	// // result = telnet.sendCommandToEnd(command);
-	// // }
-	// // }
-	// result = telnet.sendCommand("cisco");
-	// // System.err.println(result);
-	// result = telnet.sendCommand("cisco");
-	// System.err.println(result);
-	// result = telnet.sendCommand("en");
-	// // System.err.println(result);
-	// result = telnet.sendCommand("dc.cisco");
-	// // System.err.println(result);
-	// result = telnet.sendCommandToEnd("show run");
-	// // System.err.println(result);
-	// result = telnet.sendCommandToEnd("show arp");
-	// System.err.println(result);
-	//
-	// } catch (Exception e) {
-	// e.printStackTrace();
-	// } finally {
-	// telnet.distinct();
-	// }
-	// }
 }

@@ -452,7 +452,7 @@ public class TextHill extends AbstractHill<TextSign, TextShade> {
 
 	@Override
 	protected TextShade creatShade(TextSign sign) {
-		Basket defaultBasket = baskets.get("_DEFUALT");
+		Basket defaultBasket = baskets.get("_DEFAULT");
 		Basket basket = defaultBasket;
 		if (StringUtils.isNotBlank(sign.getBasketName())) {
 			if (baskets.containsKey(sign.getBasketName())) {

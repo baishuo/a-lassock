@@ -1,7 +1,12 @@
 package com.aleiye.lassock.lang;
 
+import java.util.Map;
+import java.util.Map.Entry;
+
 import org.apache.commons.lang3.StringUtils;
 
+import com.aleiye.lassock.api.LassockInformation;
+import com.aleiye.lassock.live.conf.Context;
 import com.aleiye.lassock.util.ConfigUtils;
 import com.aleiye.lassock.util.SigarUtils;
 
@@ -15,7 +20,7 @@ import com.aleiye.lassock.util.SigarUtils;
 public class Sistem {
 	private Sistem() {}
 
-	private static final String lassockName;
+	private static final String name;
 	// 本机主机名
 	private static final String host;
 	// 本机IP
@@ -25,56 +30,31 @@ public class Sistem {
 
 	private static final OSType osType;
 
+	private static final int port;
+
+	private static final Map<String, Object> header;
+
 	static {
-		// 获取HOST
-		String host0 = null;
-		try {
-			host0 = ConfigUtils.getConfig().getString("system.host");
-		} catch (Exception e) {
-			;
-		}
-		if (StringUtils.isBlank(host0))
-			host = SigarUtils.getHostsNameBySigar();
-		else {
-			host = host0;
-		}
+		Context system = ConfigUtils.getContext("system");
 		// 获取IP
-		String ip0 = null;
-		try {
-			ip0 = ConfigUtils.getConfig().getString("system.ip");
-		} catch (Exception e) {
-			;
-		}
-		if (StringUtils.isBlank(ip0))
-			ip = SigarUtils.getIPBySigar();
-		else {
-			ip = ip0;
-		}
+		String ip0 = system.getString("ip");
+		ip = StringUtils.isNotBlank(ip0) ? ip0 : SigarUtils.getIPBySigar();
+		// 获取HOST
+		String host0 = system.getString("host");
+		host0 = StringUtils.isNotBlank(host0) ? host0 : SigarUtils.getHostsNameBySigar();
+		host = "localhost".equals(host0) ? ip : host0;
 		// 获取MAC
-		String mac0 = null;
-		try {
-			mac0 = ConfigUtils.getConfig().getString("system.ip");
-		} catch (Exception e) {
-			;
-		}
-		if (StringUtils.isBlank(mac0))
-			mac = SigarUtils.getMacBySigar();
-		else {
-			mac = mac0;
-		}
+		String mac0 = system.getString("mac");
+		mac = StringUtils.isNotBlank(mac0) ? mac0 : SigarUtils.getMacBySigar();
+
+		port = system.getInteger("port", 9981);
 
 		// 获取名称
-		String name = null;
-		try {
-			name = ConfigUtils.getConfig().getString("system.name");
-		} catch (Exception e) {
-			;
-		}
-		if (StringUtils.isBlank(name))
-			lassockName = "lassock_" + host;
-		else
-			lassockName = name;
+		String name0 = system.getString("name");
+		name = StringUtils.isNotBlank(name0) ? name0 : "lassock_" + host;
 		String osName = System.getProperty("os.name");
+		// 附加属性
+		header = system.getSubProperties("header.");
 		if (osName.indexOf("Windows") > -1) {
 			osType = OSType.WINDOWS;
 		} else if (osName.indexOf("Linux") > -1) {
@@ -86,6 +66,19 @@ public class Sistem {
 		} else {
 			osType = OSType.OTHER;
 		}
+	}
+
+	public static LassockInformation getInformation() {
+		LassockInformation info = new LassockInformation();
+		info.setName(name);
+		info.setHost(host);
+		info.setIp(ip);
+		info.setMac(mac);
+		info.setPort(port);
+		for (Entry<String, Object> entry : header.entrySet()) {
+			info.put(entry.getKey(), entry.getValue().toString());
+		}
+		return info;
 	}
 
 	/**
@@ -120,6 +113,14 @@ public class Sistem {
 	}
 
 	public static String getLassockname() {
-		return lassockName;
+		return name;
+	}
+
+	public static Map<String, Object> getHeader() {
+		return header;
+	}
+
+	public static int getPort() {
+		return port;
 	}
 }

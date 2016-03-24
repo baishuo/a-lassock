@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import com.aleiye.lassock.api.Course;
 import com.aleiye.lassock.api.Intelligence;
-import com.aleiye.lassock.api.ShadeStatus;
+import com.aleiye.lassock.api.Intelligence.ShadeState;
 import com.aleiye.lassock.lifecycle.LifecycleState;
 import com.aleiye.lassock.util.LogUtils;
 import com.google.common.base.Preconditions;
@@ -14,30 +14,24 @@ import com.google.common.base.Throwables;
 public abstract class BasicShadeSemantics extends AbstractShade {
 	private static final Logger logger = LoggerFactory.getLogger(BasicShadeSemantics.class);
 
-	private Exception exception;
-
-	public BasicShadeSemantics() {
-		lifecycleState = LifecycleState.IDLE;
-	}
+	private Exception exception = null;
 
 	public synchronized void configure(Course course) {
 		if (isStarted()) {
 			throw new IllegalStateException("Configure called when started");
-		} else {
-			try {
-				exception = null;
-				setLifecycleState(LifecycleState.IDLE);
-				doConfigure(course);
-				this.intelligence = new Intelligence(this.name);
-				this.intelligence.setType(course.getType());
-				this.intelligence.setSubType(course.getSubType());
-			} catch (Exception e) {
-				this.intelligence.setStatus(ShadeStatus.ERROR);
-				exception = e;
-				LogUtils.error(course.getName() + "configure exception:" + e.getMessage());
-				setLifecycleState(LifecycleState.ERROR);
-				Throwables.propagate(e);
-			}
+		}
+		try {
+			setLifecycleState(LifecycleState.IDLE);
+			this.intelligence = new Intelligence(this.name);
+			doConfigure(course);
+			this.intelligence.setType(course.getType());
+			this.intelligence.setSubType(course.getSubType());
+		} catch (Exception e) {
+			this.intelligence.setState(ShadeState.ERROR);
+			exception = e;
+			LogUtils.error(course.getName() + "configure exception:" + e.getMessage());
+			setLifecycleState(LifecycleState.ERROR);
+			Throwables.propagate(e);
 		}
 	}
 
@@ -53,6 +47,7 @@ public abstract class BasicShadeSemantics extends AbstractShade {
 			} catch (Exception e) {
 				logger.error(String.format("Unexpected error performing start: name = %s", getName()), e);
 				exception = e;
+				LogUtils.error(this.getName() + "start exception:" + e.getMessage());
 				setLifecycleState(LifecycleState.ERROR);
 			}
 		}
@@ -69,22 +64,8 @@ public abstract class BasicShadeSemantics extends AbstractShade {
 		}
 	}
 
-	protected boolean isStarted() {
-		return getLifecycleState() == LifecycleState.START;
-	}
-
-	protected void assertStarted() {
-		if (!isStarted()) {
-			throw new IllegalStateException("Shade is not started!");
-		}
-	}
-
 	protected Exception getStartException() {
 		return exception;
-	}
-
-	protected synchronized void setLifecycleState(LifecycleState lifecycleState) {
-		this.lifecycleState = lifecycleState;
 	}
 
 	protected abstract void doConfigure(Course course) throws Exception;

@@ -28,7 +28,7 @@ import org.snmp4j.util.ThreadPool;
 import com.aleiye.lassock.api.Course;
 import com.aleiye.lassock.lang.Sistem;
 import com.aleiye.lassock.live.hill.shade.AbstractEventDrivenShade;
-import com.aleiye.lassock.model.GeneralMushroom;
+import com.aleiye.lassock.live.model.GeneralMushroom;
 import com.aleiye.lassock.util.ScrollUtils;
 
 /**
@@ -95,7 +95,7 @@ public class SnmpTrapShade extends AbstractEventDrivenShade implements CommandRe
 
 	@Override
 	protected void doStart() throws Exception {
-		LOGGER.info("SNMPTrap TCP/" + sign.getPort() + " shade starting...");
+		LOGGER.info("SNMPTrap " + sign.getPort() + " shade starting...");
 		ThreadPool threadPool = ThreadPool.create("SNMP_TRAP", 2);
 		MultiThreadedMessageDispatcher dispatcher = new MultiThreadedMessageDispatcher(threadPool,
 				new MessageDispatcherImpl());
@@ -118,6 +118,7 @@ public class SnmpTrapShade extends AbstractEventDrivenShade implements CommandRe
 		SecurityModels.getInstance().addSecurityModel(usm);
 		snmp.listen();
 		snmp.addCommandResponder(this);
+		LOGGER.info("SNMPTrap " + sign.getPort() + " shade started!");
 	}
 
 	@Override

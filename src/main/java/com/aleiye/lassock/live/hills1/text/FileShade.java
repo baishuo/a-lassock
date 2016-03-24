@@ -8,10 +8,10 @@ import java.nio.channels.FileChannel;
 
 import org.apache.commons.io.IOUtils;
 
-import com.aleiye.lassock.api.ShadeStatus;
+import com.aleiye.lassock.api.Intelligence.ShadeState;
 import com.aleiye.lassock.live.basket.Basket;
 import com.aleiye.lassock.live.exception.SignRemovedException;
-import com.aleiye.lassock.model.GeneralMushroom;
+import com.aleiye.lassock.live.model.GeneralMushroom;
 import com.aleiye.lassock.util.MarkUtil;
 
 /**
@@ -252,7 +252,7 @@ public class FileShade extends TextShade {
 		// 是否读到尾
 		if (this.si == this.di) {
 			this.setStat(Stat.END);
-			this.intelligence.setStatus(ShadeStatus.END);
+			this.intelligence.setState(ShadeState.END);
 			return false;
 		}
 		return true;
@@ -306,13 +306,13 @@ public class FileShade extends TextShade {
 		this.setStat(stat);
 		switch (stat) {
 		case NORMAL:
-			this.intelligence.setStatus(ShadeStatus.NORMAL);
+			this.intelligence.setState(ShadeState.NORMAL);
 			break;
 		case END:
-			this.intelligence.setStatus(ShadeStatus.END);
+			this.intelligence.setState(ShadeState.END);
 			break;
 		case ERR:
-			this.intelligence.setStatus(ShadeStatus.ERROR);
+			this.intelligence.setState(ShadeState.ERROR);
 			break;
 		default:
 			break;

@@ -3,7 +3,7 @@ package com.aleiye.lassock.live.interceptor;
 import java.util.List;
 
 import com.aleiye.lassock.common.able.Configurable;
-import com.aleiye.lassock.model.Mushroom;
+import com.aleiye.lassock.live.model.Mushroom;
 
 public interface Interceptor {
 	public void initialize();
