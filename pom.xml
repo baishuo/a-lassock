@@ -307,7 +307,7 @@
 		</dependency>
 
 		<dependency>
-			<groupId>com.aleiye.lassock</groupId>
+			<groupId>com.aleiye</groupId>
 			<artifactId>aleiye-lassock-api</artifactId>
 			<version>${project.version}</version>
 		</dependency>

@@ -1,5 +1,11 @@
-target
+.classpath
 .idea
-lassock.iml
+.metadata
+.settings
 .project
-.setting*
+target
+tmp
+*.iml
+*.swp
+*.log
+.DS_Store
