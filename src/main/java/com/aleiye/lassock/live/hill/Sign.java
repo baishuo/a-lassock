@@ -34,7 +34,6 @@ public class Sign extends ValueStation {
 	// 采集类型
 	private String type;
 
-	private String subType;
 	// 编码
 	private String encoding = "UTF-8";
 	// 是否移除
@@ -175,14 +174,6 @@ public class Sign extends ValueStation {
 
 	public void setCron(String cron) {
 		this.cron = cron;
-	}
-
-	public String getSubType() {
-		return subType;
-	}
-
-	public void setSubType(String subType) {
-		this.subType = subType;
 	}
 
 	public String getName() {

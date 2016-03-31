@@ -35,7 +35,6 @@ public class SnmpTemperatureShade extends SnmpStandardShade {
 			return;
 		}
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("A_logtype", this.sign.getSubType());
 		map.put("host", this.sign.getHost());
 		map.put("temperature", vt1OutletTemperature.getVariable().toString());
 		Mushroom generalMushroom = MushroomBuilder.withBody(map, null);

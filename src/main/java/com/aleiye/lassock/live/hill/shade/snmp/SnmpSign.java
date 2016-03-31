@@ -35,9 +35,6 @@ public class SnmpSign extends Sign {
 
 	@Override
 	public String getDescription() {
-		if (getSubType() != null && getSubType().toLowerCase() == "trap") {
-			return protocol + "/" + port;
-		}
 		return protocol + "/" + host + ":" + port;
 	}
 

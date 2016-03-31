@@ -60,7 +60,6 @@ public class FileShade extends TextShade {
 		super(unit, basket);
 		this.intelligence.put("file", this.sign.getPath());
 		this.intelligence.setType(unit.getType());
-		this.intelligence.setSubType(unit.getSubType());
 	}
 
 	private void makeMushroom(byte[] content) throws SignRemovedException, InterruptedException {

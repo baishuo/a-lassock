@@ -24,8 +24,7 @@ public abstract class BasicShadeSemantics extends AbstractShade {
 			setLifecycleState(LifecycleState.IDLE);
 			this.intelligence = new Intelligence(this.name);
 			doConfigure(course);
-			this.intelligence.setType(course.getType());
-			this.intelligence.setSubType(course.getSubType());
+			this.intelligence.setType(course.getType().toString());
 		} catch (Exception e) {
 			this.intelligence.setState(ShadeState.ERROR);
 			exception = e;

@@ -85,11 +85,7 @@ public class DefaultHill implements Hill {
 		ScrollUtils.validate(course);
 		if (!this.paused.get()) {
 			try {
-				String type = course.getType();
-				String subType = course.getSubType();
-				if (StringUtils.isNotBlank(subType)) {
-					type = type + "_" + subType;
-				}
+				String type = course.getType().toString();
 				Shade shade = factory.create(course.getName(), type);
 				shade.configure(course);
 				String bn = "_DEFAULT";

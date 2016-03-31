@@ -437,8 +437,7 @@ public class TextHill extends AbstractHill<TextSign, TextShade> {
 				break;
 			}
 			TextSign sign = new TextSign();
-			sign.setType(course.getType());
-			sign.setSubType(course.getSubType());
+			sign.setType(course.getType().toString());
 			sign.setNodeId(FileGeter.getFileKey(file, bfa));
 			sign.setId(course.getType() + ":" + sign.getNodeId());
 			sign.setName(sign.getId());

@@ -12,21 +12,13 @@ import com.aleiye.lassock.live.hill.Sign;
 public class SyslogSign extends Sign {
 
 	// 协议 TCP,UDP
-	private String protocol;
+//	private String protocol;
 	// 服务端口号
 	private int port;
 
 	@Override
 	public String getDescription() {
-		return protocol + "/" + port;
-	}
-
-	public String getProtocol() {
-		return protocol;
-	}
-
-	public void setProtocol(String protocol) {
-		this.protocol = protocol;
+		return this.getType().toString() + "/" + port;
 	}
 
 	public int getPort() {
