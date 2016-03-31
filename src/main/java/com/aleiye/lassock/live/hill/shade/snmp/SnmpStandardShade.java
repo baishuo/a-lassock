@@ -32,7 +32,7 @@ import org.snmp4j.transport.DefaultUdpTransportMapping;
 import com.aleiye.lassock.api.Course;
 import com.aleiye.lassock.live.model.Mushroom;
 import com.aleiye.lassock.live.model.MushroomBuilder;
-import com.aleiye.lassock.live.scroll.Const;
+import com.aleiye.lassock.live.scroll.CourseConst;
 import com.aleiye.lassock.util.ScrollUtils;
 
 /**
@@ -113,7 +113,7 @@ public class SnmpStandardShade extends SnmpShade {
 	}
 
 	protected void openListen() throws Exception {
-		if (Const.PROTOCOL_TCP.equals(this.sign.getProtocol().toLowerCase())) {
+		if (CourseConst.PROTOCOL_TCP.equals(this.sign.getProtocol().toLowerCase())) {
 			transport = new DefaultTcpTransportMapping();
 		} else {
 			transport = new DefaultUdpTransportMapping();

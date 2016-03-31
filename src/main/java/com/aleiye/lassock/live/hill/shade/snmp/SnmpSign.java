@@ -3,7 +3,7 @@ package com.aleiye.lassock.live.hill.shade.snmp;
 import java.util.List;
 
 import com.aleiye.lassock.live.hill.Sign;
-import com.aleiye.lassock.live.scroll.Const;
+import com.aleiye.lassock.live.scroll.CourseConst;
 
 /**
  * SNMP 采集标识
@@ -15,7 +15,7 @@ import com.aleiye.lassock.live.scroll.Const;
 public class SnmpSign extends Sign {
 	/** 通用 */
 	// 协议
-	private String protocol = Const.PROTOCOL_UDP;
+	private String protocol = CourseConst.PROTOCOL_UDP;
 	// 端口
 	private int port = 161;
 	/** 标准 SNMP */

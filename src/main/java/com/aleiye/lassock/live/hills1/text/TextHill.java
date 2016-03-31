@@ -26,7 +26,7 @@ import com.aleiye.lassock.live.hills1.AbstractHill;
 import com.aleiye.lassock.live.hills1.Shade;
 import com.aleiye.lassock.live.hills1.text.TextShade.Stat;
 import com.aleiye.lassock.live.mark.Marker;
-import com.aleiye.lassock.live.scroll.Const;
+import com.aleiye.lassock.live.scroll.CourseConst;
 import com.aleiye.lassock.util.ClassUtils;
 import com.aleiye.lassock.util.CloseableUtils;
 import com.aleiye.lassock.util.ConfigUtils;
@@ -148,7 +148,7 @@ public class TextHill extends AbstractHill<TextSign, TextShade> {
 									Course course = courses.get(s);
 									if (course != null) {
 										int prentChangedReadCount = Integer.parseInt(course.get(
-												Const.text.CHANGED_READ_COUNT).toString());
+												CourseConst.text.CHANGED_READ_COUNT).toString());
 										if (prentChangedReadCount == 0) {
 											zoreCount++;
 											continue;
@@ -249,7 +249,7 @@ public class TextHill extends AbstractHill<TextSign, TextShade> {
 								for (String s : courseIds) {
 									Course course = courses.get(s);
 									if (course != null) {
-										String mp = course.getString(Const.text.MOVE_PATH);
+										String mp = course.getString(CourseConst.text.MOVE_PATH);
 										if (StringUtils.isNotBlank(mp))
 											paths.add(mp);
 										currCourses.add(course);
@@ -268,11 +268,11 @@ public class TextHill extends AbstractHill<TextSign, TextShade> {
 								// 移动目录和本目录没找到，重新扫描课程表寻找
 								if (newPath == null) {
 									for (Course course : currCourses) {
-										String reg = course.getString(Const.text.PATH_FILTER_REGEX);
+										String reg = course.getString(CourseConst.text.PATH_FILTER_REGEX);
 										FileFinder ff = new FileFinder(new String[] {
 											reg
 										});
-										List<File> findFiles = ff.getFiles(course.getString(Const.text.DATA_INPUT_PATH));
+										List<File> findFiles = ff.getFiles(course.getString(CourseConst.text.DATA_INPUT_PATH));
 										for (File file1 : findFiles) {
 											String findKey = FileGeter.getFileKey(file1);
 											if (fileKey.equals(findKey)) {
@@ -423,13 +423,13 @@ public class TextHill extends AbstractHill<TextSign, TextShade> {
 	@Override
 	protected List<TextSign> makeDetails(Course course) {
 		List<TextSign> details = new ArrayList<TextSign>();
-		String reg = course.getString(Const.text.PATH_FILTER_REGEX);
+		String reg = course.getString(CourseConst.text.PATH_FILTER_REGEX);
 		// 创建FILE FINDER
 		FileFinder ff = new FileFinder(new String[] {
 			reg
 		});
 		// 获取所有可读文件
-		List<File> findFiles = ff.getFiles(course.getString(Const.text.DATA_INPUT_PATH));
+		List<File> findFiles = ff.getFiles(course.getString(CourseConst.text.DATA_INPUT_PATH));
 		// 创建Units
 		for (File file : findFiles) {
 			BasicFileAttributes bfa = FileGeter.getFileAttributes(file);
@@ -480,16 +480,16 @@ public class TextHill extends AbstractHill<TextSign, TextShade> {
 
 	@Override
 	protected boolean compareCourse(Course newc, Course old) {
-		if (!newc.getString(Const.text.DATA_INPUT_PATH).equals(old.getString(Const.text.DATA_INPUT_PATH))) {
+		if (!newc.getString(CourseConst.text.DATA_INPUT_PATH).equals(old.getString(CourseConst.text.DATA_INPUT_PATH))) {
 			return false;
 		}
-		if (!newc.getString(Const.text.PATH_FILTER_REGEX).equals(old.getString(Const.text.PATH_FILTER_REGEX))) {
+		if (!newc.getString(CourseConst.text.PATH_FILTER_REGEX).equals(old.getString(CourseConst.text.PATH_FILTER_REGEX))) {
 			return false;
 		}
-		if (!newc.getString(Const.text.PATH_FILTER_REGEX).equals(old.getString(Const.text.PATH_FILTER_REGEX))) {
+		if (!newc.getString(CourseConst.text.PATH_FILTER_REGEX).equals(old.getString(CourseConst.text.PATH_FILTER_REGEX))) {
 			return false;
 		}
-		if (!newc.getString(Const.text.MOVE_PATH).equals(old.getString(Const.text.MOVE_PATH))) {
+		if (!newc.getString(CourseConst.text.MOVE_PATH).equals(old.getString(CourseConst.text.MOVE_PATH))) {
 			return false;
 		}
 		return true;
@@ -497,7 +497,7 @@ public class TextHill extends AbstractHill<TextSign, TextShade> {
 
 	@Override
 	protected void validateCourse(Course course) throws Exception {
-		if (StringUtils.isBlank(course.getString(Const.text.DATA_INPUT_PATH))) {
+		if (StringUtils.isBlank(course.getString(CourseConst.text.DATA_INPUT_PATH))) {
 			throw new CourseException("Date input path no be null!");
 		}
 	}
