@@ -11,7 +11,6 @@ import org.apache.curator.framework.recipes.cache.PathChildrenCache;
 import org.apache.curator.framework.recipes.cache.PathChildrenCacheEvent;
 import org.apache.curator.framework.recipes.cache.PathChildrenCacheListener;
 import org.apache.curator.utils.CloseableUtils;
-import org.apache.curator.utils.ZKPaths;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +19,6 @@ import com.aleiye.lassock.api.Course;
 import com.aleiye.lassock.api.conf.Context;
 import com.aleiye.lassock.lang.Sistem;
 import com.aleiye.lassock.live.Live;
-import com.aleiye.lassock.util.ConfigUtils;
 import com.aleiye.lassock.util.JsonProvider;
 import com.aleiye.zkclient.standard.CuratorClient;
 import com.aleiye.zkclient.standard.CuratorFactory;
@@ -54,9 +52,7 @@ public class ZkLiveness extends AbstractLiveness {
 			framework.blockUntilConnected();
 			final CuratorClient client = CuratorFactory.create(framework);
 			final Live live = getLive();
-			final String nodePath = ZKPaths.makePath("/aleiye/lassock", Sistem.getMac());
-			// 监测该采集器配置
-			final String resourcePath = ZKPaths.makePath(nodePath, "courses");
+			final String nodePath = String.format(ZKPathConstants.collector.COLLECTOR_REG_PATH, Sistem.getMac());
 
 			// 监测该采集状态
 			nodeCache = new NodeCache(framework, nodePath);
@@ -95,6 +91,9 @@ public class ZkLiveness extends AbstractLiveness {
 			};
 			nodeCache.getListenable().addListener(nodeListener);
 			nodeCache.start();
+
+			// 监测该采集器配置
+			final String resourcePath = String.format(ZKPathConstants.collector.RESOURCE_PATH, Sistem.getMac());
 
 			courseCache = new PathChildrenCache(framework, resourcePath, true);
 			PathChildrenCacheListener listener = new PathChildrenCacheListener() {
