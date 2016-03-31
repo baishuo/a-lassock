@@ -1,6 +1,6 @@
 package com.aleiye.lassock.common.able;
 
-import com.aleiye.lassock.live.conf.Context;
+import com.aleiye.lassock.api.conf.Context;
 
 public interface Configurable {
 	public void configure(Context context);

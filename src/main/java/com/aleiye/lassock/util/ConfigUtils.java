@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 
-import com.aleiye.lassock.live.conf.Context;
+import com.aleiye.lassock.api.conf.Context;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import com.typesafe.config.ConfigValue;

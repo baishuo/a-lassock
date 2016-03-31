@@ -3,8 +3,8 @@ package com.aleiye.lassock;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import com.aleiye.lassock.api.conf.Context;
 import com.aleiye.lassock.live.LiveContainer;
-import com.aleiye.lassock.live.conf.Context;
 import com.aleiye.lassock.liveness.Liveness;
 import com.aleiye.lassock.liveness.LivenessConfiguration;
 import com.aleiye.lassock.logging.Logging;

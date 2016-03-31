@@ -1,7 +1,7 @@
 package com.aleiye.lassock.liveness;
 
+import com.aleiye.lassock.api.conf.Context;
 import com.aleiye.lassock.live.Live;
-import com.aleiye.lassock.live.conf.Context;
 
 /**
  * Liveness 配置类

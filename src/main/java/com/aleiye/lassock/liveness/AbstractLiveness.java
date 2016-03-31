@@ -3,10 +3,10 @@ package com.aleiye.lassock.liveness;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.aleiye.lassock.api.conf.Context;
 import com.aleiye.lassock.lifecycle.AbstractLifecycleAware;
 import com.aleiye.lassock.lifecycle.LifecycleState;
 import com.aleiye.lassock.live.Live;
-import com.aleiye.lassock.live.conf.Context;
 import com.aleiye.lassock.util.LogUtils;
 import com.google.common.base.Throwables;
 
@@ -59,7 +59,7 @@ public abstract class AbstractLiveness extends AbstractLifecycleAware implements
 		super.stop();
 	}
 
-	protected abstract void doConfigure(Context course) throws Exception;
+	protected abstract void doConfigure(Context context) throws Exception;
 
 	protected abstract void doStart() throws Exception;
 

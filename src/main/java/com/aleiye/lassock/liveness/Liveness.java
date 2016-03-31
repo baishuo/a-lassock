@@ -12,5 +12,9 @@ import com.aleiye.lassock.live.Live;
  * @version 2.2.1
  */
 public interface Liveness extends LifecycleAware, Configurable {
+	/**
+	 * 设置采集容器
+	 * @param live
+	 */
 	void setLive(Live live);
 }

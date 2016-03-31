@@ -1,6 +1,12 @@
 package com.aleiye.lassock.liveness;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.commons.lang.StringUtils;
 import org.apache.curator.framework.CuratorFramework;
+import org.apache.curator.framework.recipes.cache.NodeCache;
+import org.apache.curator.framework.recipes.cache.NodeCacheListener;
 import org.apache.curator.framework.recipes.cache.PathChildrenCache;
 import org.apache.curator.framework.recipes.cache.PathChildrenCacheEvent;
 import org.apache.curator.framework.recipes.cache.PathChildrenCacheListener;
@@ -11,12 +17,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.aleiye.lassock.api.Course;
+import com.aleiye.lassock.api.conf.Context;
 import com.aleiye.lassock.lang.Sistem;
 import com.aleiye.lassock.live.Live;
-import com.aleiye.lassock.live.conf.Context;
 import com.aleiye.lassock.util.ConfigUtils;
 import com.aleiye.lassock.util.JsonProvider;
+import com.aleiye.zkclient.standard.CuratorClient;
 import com.aleiye.zkclient.standard.CuratorFactory;
+import com.aleiye.zkpath.constants.ZKPathConstants;
 
 /**
  * ZK 课程配置活动监测
@@ -28,17 +36,15 @@ import com.aleiye.zkclient.standard.CuratorFactory;
 public class ZkLiveness extends AbstractLiveness {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ZkLiveness.class);
 	ObjectMapper mapper = JsonProvider.adaptMapper;
-
+	// ZK连接串
 	private String connectionString;
-
 	// ZK framework
 	private CuratorFramework framework;
 
-	// // 监视节点
-	// private NodeCache nodeCache;
-
+	// 监视节点 该节点为lassock 注册节点 用于控制lassock 启停状态控制
+	private NodeCache nodeCache;
 	// 监视节点
-	private PathChildrenCache cache;
+	private PathChildrenCache courseCache;
 
 	@Override
 	public void doStart() {
@@ -46,52 +52,51 @@ public class ZkLiveness extends AbstractLiveness {
 			framework = CuratorFactory.createFramework(connectionString);
 			framework.start();
 			framework.blockUntilConnected();
+			final CuratorClient client = CuratorFactory.create(framework);
 			final Live live = getLive();
-			// final String path = ZKPaths.makePath("/aleiye/lassock",
-			// Sistem.getMac());
+			final String nodePath = ZKPaths.makePath("/aleiye/lassock", Sistem.getMac());
 			// 监测该采集器配置
-			final String resourcePath = ZKPaths.makePath("/aleiye/lassock", Sistem.getMac());
+			final String resourcePath = ZKPaths.makePath(nodePath, "courses");
 
-			// // 监测该采集状态
-			// nodeCache = new NodeCache(framework, path);
-			// NodeCacheListener nodeListener = new NodeCacheListener() {
-			// @SuppressWarnings({
-			// "unchecked"
-			// })
-			// @Override
-			// public void nodeChanged() throws Exception {
-			// String payload = client.getDataString(path);
-			// if (StringUtils.isNotBlank(payload)) {
-			// Map<String, Object> map = client.getData(path, HashMap.class);
-			// if (map.containsKey(ZKPathConstants.collector.KEY_STATUS)) {
-			// try {
-			// int sts =
-			// Integer.parseInt(map.get(ZKPathConstants.collector.KEY_STATUS).toString());
-			// switch (sts) {
-			// case 0:
-			// if (!live.isPaused()) {
-			// live.pause();
-			// }
-			// break;
-			// case 1:
-			// if (live.isPaused()) {
-			// live.resume();
-			// }
-			// break;
-			// default:
-			// break;
-			// }
-			// } catch (Exception e) {
-			// LOGGER.error("Repetitive operation!", e);
-			// }
-			// }
-			// }
-			// }
-			// };
-			// nodeCache.getListenable().addListener(nodeListener);
-			// nodeCache.start();
+			// 监测该采集状态
+			nodeCache = new NodeCache(framework, nodePath);
+			NodeCacheListener nodeListener = new NodeCacheListener() {
+				@SuppressWarnings({
+					"unchecked"
+				})
+				@Override
+				public void nodeChanged() throws Exception {
+					String payload = client.getDataString(nodePath);
+					if (StringUtils.isNotBlank(payload)) {
+						Map<String, Object> map = client.getData(nodePath, HashMap.class);
+						if (map.containsKey(ZKPathConstants.collector.KEY_STATUS)) {
+							try {
+								int sts = Integer.parseInt(map.get(ZKPathConstants.collector.KEY_STATUS).toString());
+								switch (sts) {
+								case 0:
+									if (!live.isPaused()) {
+										live.pause();
+									}
+									break;
+								case 1:
+									if (live.isPaused()) {
+										live.resume();
+									}
+									break;
+								default:
+									break;
+								}
+							} catch (Exception e) {
+								LOGGER.error("Repetitive operation!", e);
+							}
+						}
+					}
+				}
+			};
+			nodeCache.getListenable().addListener(nodeListener);
+			nodeCache.start();
 
-			cache = new PathChildrenCache(framework, resourcePath, true);
+			courseCache = new PathChildrenCache(framework, resourcePath, true);
 			PathChildrenCacheListener listener = new PathChildrenCacheListener() {
 				@Override
 				public void childEvent(CuratorFramework client, PathChildrenCacheEvent event) throws Exception {
@@ -120,9 +125,9 @@ public class ZkLiveness extends AbstractLiveness {
 					}
 				}
 			};
-			cache.getListenable().addListener(listener);
+			courseCache.getListenable().addListener(listener);
 
-			cache.start();
+			courseCache.start();
 		} catch (Exception e) {
 			throw new IllegalArgumentException(e.getMessage());
 		}
@@ -130,13 +135,13 @@ public class ZkLiveness extends AbstractLiveness {
 
 	@Override
 	public void doStop() {
-		CloseableUtils.closeQuietly(cache);
+		CloseableUtils.closeQuietly(nodeCache);
+		CloseableUtils.closeQuietly(courseCache);
 		CloseableUtils.closeQuietly(framework);
 	}
 
 	@Override
 	public void doConfigure(Context context) {
-		connectionString = ConfigUtils.getConfig().getString("remote.zookeeper.url");
-
+		connectionString = context.getString("connectionString");
 	}
 }

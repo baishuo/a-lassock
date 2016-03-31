@@ -2,7 +2,7 @@ package com.aleiye.lassock.live.basket;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
-import com.aleiye.lassock.live.conf.Context;
+import com.aleiye.lassock.api.conf.Context;
 import com.aleiye.lassock.live.model.Mushroom;
 
 /**
@@ -26,7 +26,6 @@ public class MemoryQueueBasket extends AbstractBasket {
 
 	@Override
 	public void configure(Context context) {
-		// TODO Auto-generated method stub
 
 	}
 }

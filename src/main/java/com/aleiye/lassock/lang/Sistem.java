@@ -6,7 +6,7 @@ import java.util.Map.Entry;
 import org.apache.commons.lang3.StringUtils;
 
 import com.aleiye.lassock.api.LassockInformation;
-import com.aleiye.lassock.live.conf.Context;
+import com.aleiye.lassock.api.conf.Context;
 import com.aleiye.lassock.util.ConfigUtils;
 import com.aleiye.lassock.util.SigarUtils;
 

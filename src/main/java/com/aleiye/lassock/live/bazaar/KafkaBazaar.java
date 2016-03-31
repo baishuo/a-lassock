@@ -20,8 +20,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.aleiye.event.protobuf.AleiyeEvent;
+import com.aleiye.lassock.api.conf.Context;
 import com.aleiye.lassock.lifecycle.LifecycleState;
-import com.aleiye.lassock.live.conf.Context;
 import com.aleiye.lassock.live.model.Mushroom;
 import com.aleiye.lassock.util.ConfigUtils;
 import com.aleiye.zkclient.standard.CuratorClient;
