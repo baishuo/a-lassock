@@ -1,6 +1,5 @@
 package com.aleiye.lassock.live.bazaar;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Map.Entry;
 import java.util.Properties;
@@ -11,7 +10,6 @@ import kafka.producer.ProducerClosedException;
 import kafka.producer.ProducerConfig;
 
 import org.apache.curator.framework.CuratorFramework;
-import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.framework.recipes.cache.PathChildrenCache;
 import org.apache.curator.framework.recipes.cache.PathChildrenCacheEvent;
 import org.apache.curator.framework.recipes.cache.PathChildrenCacheListener;
@@ -23,9 +21,11 @@ import com.aleiye.event.protobuf.AleiyeEvent;
 import com.aleiye.lassock.api.conf.Context;
 import com.aleiye.lassock.lifecycle.LifecycleState;
 import com.aleiye.lassock.live.model.Mushroom;
+import com.aleiye.lassock.util.CloseableUtils;
 import com.aleiye.lassock.util.ConfigUtils;
 import com.aleiye.zkclient.standard.CuratorClient;
 import com.aleiye.zkclient.standard.CuratorFactory;
+import com.aleiye.zkpath.constants.ZKPathConstants;
 import com.google.protobuf.ByteString;
 
 /**
@@ -38,17 +38,14 @@ public class KafkaBazaar extends AbstractBazaar {
 
 	static Logger _LOG = LoggerFactory.getLogger(KafkaBazaar.class);
 
-	public static final String ALEIYE_SYSTEM_KAFKA_PATH = "/aleiye/system/kafka";
+	public static final String ALEIYE_SYSTEM_KAFKA_PATH = ZKPathConstants.ALEIYE_SYSTEM_KAFKA_PATH;
 
 	// 存储系统当前topic格式定义的path
-	public static final String KAFKA_TOPIC_DEF_PATH = ALEIYE_SYSTEM_KAFKA_PATH + "/topic";
+	public static final String KAFKA_TOPIC_DEF_PATH = ZKPathConstants.KAFKA_TOPIC_DEF_PATH;
 
-	public static final String KAFKA_BROKER_DEF_PATH = ALEIYE_SYSTEM_KAFKA_PATH + "/broker";
+	public static final String KAFKA_BROKER_DEF_PATH = ZKPathConstants.KAFKA_BROKER_DEF_PATH;
 
-	public static final String KAFKA_PARTITION_DEF_PATH = ALEIYE_SYSTEM_KAFKA_PATH + "/partition";
-
-	/** 采集器ZK注册地址 */
-	public static final String ZK_DISCOVERY_REG_PATH = "/aleiye/api/services";
+	public static final String KAFKA_PARTITION_DEF_PATH = ZKPathConstants.KAFKA_PARTITION_DEF_PATH;
 
 	private CuratorFramework client;
 
@@ -74,10 +71,11 @@ public class KafkaBazaar extends AbstractBazaar {
 	public void configure(Context context) {
 		String zkConnect = context.getString("zkhost");
 		RetryUntilElapsed retryPolicy = new RetryUntilElapsed(3000, Integer.MAX_VALUE);
-		// client = CuratorFactory.createFramework(zkConnect, retryPolicy);
-		CuratorFrameworkFactory.Builder zkBuilder = CuratorFrameworkFactory.builder().connectString(zkConnect)
-				.retryPolicy(retryPolicy);
-		client = zkBuilder.build();
+		client = CuratorFactory.createFramework(zkConnect, retryPolicy);
+		// CuratorFrameworkFactory.Builder zkBuilder =
+		// CuratorFrameworkFactory.builder().connectString(zkConnect)
+		// .retryPolicy(retryPolicy);
+		// client = zkBuilder.build();
 		client.start();
 		try {
 			client.blockUntilConnected();
@@ -152,14 +150,8 @@ public class KafkaBazaar extends AbstractBazaar {
 		if (producer != null) {
 			producer.close();
 		}
-
-		try {
-			if (pathChildrenCache != null) {
-				pathChildrenCache.close();
-			}
-		} catch (IOException e) {
-			_LOG.error("close nodeCache error", e);
-		}
+		CloseableUtils.closeQuietly(pathChildrenCache);
+		CloseableUtils.closeQuietly(client);
 		super.stop();
 	}
 
