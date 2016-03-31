@@ -4,10 +4,10 @@ import java.util.List;
 import java.util.Map;
 
 import com.aleiye.lassock.api.Course;
-import com.aleiye.lassock.api.Course.RunType;
 import com.aleiye.lassock.api.Intelligence;
 import com.aleiye.lassock.api.LassockState;
 import com.aleiye.lassock.api.LassockState.RunState;
+import com.aleiye.lassock.api.shade.CourseType;
 import com.aleiye.lassock.lang.Sistem;
 import com.aleiye.lassock.live.basket.Basket;
 import com.aleiye.lassock.live.hill.DefaultHill;
@@ -80,7 +80,7 @@ public class HillMirror implements Hill {
 
 	@Override
 	public synchronized void add(Course course) throws Exception {
-		if (course.getRunType() == RunType.TEXT)
+		if (course.getType() == CourseType.TEXT)
 			hill1.addCourse(course);
 		else
 			hill.add(course);
@@ -90,7 +90,7 @@ public class HillMirror implements Hill {
 
 	@Override
 	public void modify(Course course) throws Exception {
-		if (course.getRunType() == RunType.TEXT)
+		if (course.getType() == CourseType.TEXT)
 			hill1.modifyCourse(course);
 		else
 			hill.modify(course);
@@ -99,7 +99,7 @@ public class HillMirror implements Hill {
 
 	@Override
 	public synchronized void remove(Course course) throws Exception {
-		if (course.getRunType() == RunType.TEXT)
+		if (course.getType() == CourseType.TEXT)
 			hill1.removeCourse(course);
 		else
 			hill.remove(course);
