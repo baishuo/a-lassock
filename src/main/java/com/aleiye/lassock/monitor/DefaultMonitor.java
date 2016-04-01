@@ -69,7 +69,7 @@ public class DefaultMonitor extends NamedLifecycle implements Monitor {
 			actorSystem.actorOf(Props.create(StatusActor.class, live), "state");
 			if (target.getBoolean("enabled")) {
 				timer = new Timer("timer-monitor");
-				String targetHost = target.getString("host");
+				String targetHost = target.getString("host",Sistem.getHost());
 				int targetPort = target.getInteger("port");
 				String targetName = target.getString("systemname");
 				String targetRegName = target.getString("registername");
