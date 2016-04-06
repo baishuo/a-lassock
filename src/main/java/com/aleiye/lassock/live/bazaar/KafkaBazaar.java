@@ -93,7 +93,6 @@ public class KafkaBazaar extends AbstractBazaar {
 			}
 			// 启动topic的监听
 			pathChildrenCache = new PathChildrenCache(client, ALEIYE_SYSTEM_KAFKA_PATH, true);
-			pathChildrenCache.start();
 
 			pathChildrenCache.getListenable().addListener(new PathChildrenCacheListener() {
 				@SuppressWarnings("incomplete-switch")
@@ -109,6 +108,7 @@ public class KafkaBazaar extends AbstractBazaar {
 					}
 				}
 			});
+			pathChildrenCache.start();
 			Thread.sleep(10 * 1000);
 			createProducer();
 			super.start();

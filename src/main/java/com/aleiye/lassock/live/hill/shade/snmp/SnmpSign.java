@@ -2,8 +2,8 @@ package com.aleiye.lassock.live.hill.shade.snmp;
 
 import java.util.List;
 
+import com.aleiye.lassock.api.CourseConst;
 import com.aleiye.lassock.live.hill.Sign;
-import com.aleiye.lassock.live.scroll.CourseConst;
 
 /**
  * SNMP 采集标识

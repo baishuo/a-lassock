@@ -27,6 +27,8 @@ import com.aleiye.lassock.live.hill.shade.AbstractShade;
 public class Sign extends ValueStation {
 	// 关个多个课程时拼接字符
 	public static final String JOIN_CHAR = ",";
+	
+	private Course course;
 	// 唯一标识
 	private String id;
 
@@ -198,5 +200,13 @@ public class Sign extends ValueStation {
 
 	public void setBasketName(String basketName) {
 		this.basketName = basketName;
+	}
+
+	public Course getCourse() {
+		return course;
+	}
+
+	public void setCourse(Course course) {
+		this.course = course;
 	}
 }

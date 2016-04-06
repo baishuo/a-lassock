@@ -2,7 +2,9 @@ package com.aleiye.lassock.live.hills1;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import com.aleiye.event.constants.EventKey;
 import com.aleiye.lassock.api.Intelligence;
+import com.aleiye.lassock.lang.Sistem;
 import com.aleiye.lassock.live.basket.Basket;
 import com.aleiye.lassock.live.exception.SignRemovedException;
 import com.aleiye.lassock.live.hill.Sign;
@@ -52,6 +54,10 @@ public abstract class AbstractShade<T extends Sign> implements Shade {
 		generalMushroom.setOriginalValues(sign.getValues());
 		((GeneralMushroom) generalMushroom).setIntelligence(this.intelligence);
 		basket.push(generalMushroom);
+		generalMushroom.getHeaders().put(EventKey.RESOURCEID, sign.getCourseIds());
+		generalMushroom.getHeaders().put(EventKey.USERID, Sistem.getHeader().get("userid").toString());
+		generalMushroom.getHeaders().put(EventKey.MAC, Sistem.getMac());
+		generalMushroom.getHeaders().put(EventKey.HOSTNAME, Sistem.getHost());
 		// 每次事件产生 增1
 		this.intelligence.setAcceptedCount(this.intelligence.getAcceptedCount() + 1);
 		// MonitorHelper.setPicked(sign.getKey(), cid.split(","),

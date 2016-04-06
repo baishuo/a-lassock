@@ -8,6 +8,7 @@ import java.nio.channels.FileChannel;
 
 import org.apache.commons.io.IOUtils;
 
+import com.aleiye.event.constants.EventKey;
 import com.aleiye.lassock.api.Intelligence.ShadeState;
 import com.aleiye.lassock.live.basket.Basket;
 import com.aleiye.lassock.live.exception.SignRemovedException;
@@ -66,7 +67,7 @@ public class FileShade extends TextShade {
 		GeneralMushroom mr = new GeneralMushroom();
 		mr.setIntelligence(this.intelligence);
 		mr.setBody(content);
-		mr.getHeaders().put("path", this.sign.getPath());
+		mr.getHeaders().put(EventKey.FILEPATH, this.sign.getPath());
 		mr.getHeaders().put("soffset", String.valueOf(this.bx));
 		mr.getHeaders().put("eoffset", String.valueOf(this.dx));
 		putMushroom(mr);

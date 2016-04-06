@@ -1,6 +1,8 @@
 package com.aleiye.lassock.live.hill.shade;
 
+import com.aleiye.lassock.api.Course;
 import com.aleiye.lassock.api.Intelligence;
+import com.aleiye.lassock.lang.Sistem;
 import com.aleiye.lassock.live.NamedLifecycle;
 import com.aleiye.lassock.live.basket.Basket;
 import com.aleiye.lassock.live.hill.Shade;
@@ -21,6 +23,8 @@ public abstract class AbstractShade extends NamedLifecycle implements Shade {
 	private Basket basket;
 
 	protected Intelligence intelligence;
+	
+	protected Course course;
 
 	public AbstractShade() {
 		this.intelligence = new Intelligence(this.name);
@@ -49,6 +53,11 @@ public abstract class AbstractShade extends NamedLifecycle implements Shade {
 		// generalMushroom.setEnconde(sign.getEncoding());
 		// generalMushroom.setSignId(sign.getId());
 
+		generalMushroom.getHeaders().put("courseName",this.course.getName());
+		generalMushroom.getHeaders().put("userid", Sistem.getHeader().get("userid").toString());
+		generalMushroom.getHeaders().put("mac", Sistem.getMac());
+		generalMushroom.getHeaders().put("hostname", Sistem.getHost());
+		
 		generalMushroom.setOriginalValues(sign.getValues());
 		generalMushroom.getHeaders().put("type", sign.getType());
 		((GeneralMushroom) generalMushroom).setIntelligence(this.intelligence);

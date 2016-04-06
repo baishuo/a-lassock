@@ -19,6 +19,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 
 import com.aleiye.lassock.api.Course;
+import com.aleiye.lassock.api.CourseConst;
 import com.aleiye.lassock.live.basket.Basket;
 import com.aleiye.lassock.live.exception.CourseException;
 import com.aleiye.lassock.live.exception.SignException;
@@ -26,7 +27,6 @@ import com.aleiye.lassock.live.hills1.AbstractHill;
 import com.aleiye.lassock.live.hills1.Shade;
 import com.aleiye.lassock.live.hills1.text.TextShade.Stat;
 import com.aleiye.lassock.live.mark.Marker;
-import com.aleiye.lassock.live.scroll.CourseConst;
 import com.aleiye.lassock.util.ClassUtils;
 import com.aleiye.lassock.util.CloseableUtils;
 import com.aleiye.lassock.util.ConfigUtils;
@@ -444,6 +444,7 @@ public class TextHill extends AbstractHill<TextSign, TextShade> {
 			sign.setCt(bfa.creationTime().toMillis());
 			sign.setLmt(bfa.lastModifiedTime().toMillis());
 			sign.setPath(file.getPath());
+			sign.setCourse(course);
 			details.add(sign);
 		}
 		return details;

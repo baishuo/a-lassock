@@ -1,6 +1,7 @@
 package com.aleiye.lassock.liveness;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -53,7 +54,7 @@ public class ZkLiveness extends AbstractLiveness {
 			final CuratorClient client = CuratorFactory.create(framework);
 			final Live live = getLive();
 			final String nodePath = String.format(ZKPathConstants.collector.COLLECTOR_REG_PATH, Sistem.getMac());
-
+			
 			// 监测该采集状态
 			nodeCache = new NodeCache(framework, nodePath);
 			NodeCacheListener nodeListener = new NodeCacheListener() {
@@ -94,12 +95,15 @@ public class ZkLiveness extends AbstractLiveness {
 
 			// 监测该采集器配置
 			final String resourcePath = String.format(ZKPathConstants.collector.RESOURCE_PATH, Sistem.getMac());
-
 			courseCache = new PathChildrenCache(framework, resourcePath, true);
 			PathChildrenCacheListener listener = new PathChildrenCacheListener() {
 				@Override
 				public void childEvent(CuratorFramework client, PathChildrenCacheEvent event) throws Exception {
 					try {
+						byte[] data = event.getData().getData();
+						if (data == null) {
+							return;
+						}
 						Course course = mapper.readValue(event.getData().getData(), Course.class);
 						switch (event.getType()) {
 						case CHILD_ADDED: {
