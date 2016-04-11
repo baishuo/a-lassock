@@ -1,5 +1,7 @@
 package com.aleiye.lassock.live.hill.shade;
 
+import com.aleiye.common.utils.EncrypDES;
+import com.aleiye.event.constants.EventKey;
 import com.aleiye.lassock.api.Course;
 import com.aleiye.lassock.api.Intelligence;
 import com.aleiye.lassock.lang.Sistem;
@@ -23,7 +25,7 @@ public abstract class AbstractShade extends NamedLifecycle implements Shade {
 	private Basket basket;
 
 	protected Intelligence intelligence;
-	
+
 	protected Course course;
 
 	public AbstractShade() {
@@ -53,11 +55,12 @@ public abstract class AbstractShade extends NamedLifecycle implements Shade {
 		// generalMushroom.setEnconde(sign.getEncoding());
 		// generalMushroom.setSignId(sign.getId());
 
-		generalMushroom.getHeaders().put("courseName",this.course.getName());
-		generalMushroom.getHeaders().put("userid", Sistem.getHeader().get("userid").toString());
-		generalMushroom.getHeaders().put("mac", Sistem.getMac());
-		generalMushroom.getHeaders().put("hostname", Sistem.getHost());
-		
+		generalMushroom.getHeaders().put(EventKey.RESOURCEID, this.course.getName());
+		generalMushroom.getHeaders().put(EventKey.USERID,
+				EncrypDES.decrypt(Sistem.getHeader().get("authkey").toString()));
+		generalMushroom.getHeaders().put(EventKey.MAC, Sistem.getMac());
+		generalMushroom.getHeaders().put(EventKey.HOSTNAME, Sistem.getHost());
+
 		generalMushroom.setOriginalValues(sign.getValues());
 		generalMushroom.getHeaders().put("type", sign.getType());
 		((GeneralMushroom) generalMushroom).setIntelligence(this.intelligence);

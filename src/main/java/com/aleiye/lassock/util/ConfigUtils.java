@@ -4,9 +4,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
 
+import com.aleiye.common.config.ConfigFence;
 import com.aleiye.lassock.api.conf.Context;
 import com.typesafe.config.Config;
-import com.typesafe.config.ConfigFactory;
 import com.typesafe.config.ConfigValue;
 
 /**
@@ -17,7 +17,7 @@ import com.typesafe.config.ConfigValue;
  * @version 1.0
  */
 public class ConfigUtils {
-	private static Config config = ConfigFactory.load();
+	private static Config config = ConfigFence.load();
 
 	private ConfigUtils() {}
 

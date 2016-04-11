@@ -2,6 +2,7 @@ package com.aleiye.lassock.live.hills1;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import com.aleiye.common.utils.EncrypDES;
 import com.aleiye.event.constants.EventKey;
 import com.aleiye.lassock.api.Intelligence;
 import com.aleiye.lassock.lang.Sistem;
@@ -55,7 +56,8 @@ public abstract class AbstractShade<T extends Sign> implements Shade {
 		((GeneralMushroom) generalMushroom).setIntelligence(this.intelligence);
 		basket.push(generalMushroom);
 		generalMushroom.getHeaders().put(EventKey.RESOURCEID, sign.getCourseIds());
-		generalMushroom.getHeaders().put(EventKey.USERID, Sistem.getHeader().get("userid").toString());
+		generalMushroom.getHeaders().put(EventKey.USERID,
+				EncrypDES.decrypt(Sistem.getHeader().get("authkey").toString()));
 		generalMushroom.getHeaders().put(EventKey.MAC, Sistem.getMac());
 		generalMushroom.getHeaders().put(EventKey.HOSTNAME, Sistem.getHost());
 		// 每次事件产生 增1
