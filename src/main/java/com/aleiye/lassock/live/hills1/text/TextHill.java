@@ -272,7 +272,8 @@ public class TextHill extends AbstractHill<TextSign, TextShade> {
 										FileFinder ff = new FileFinder(new String[] {
 											reg
 										});
-										List<File> findFiles = ff.getFiles(course.getString(CourseConst.text.DATA_INPUT_PATH));
+										List<File> findFiles = ff.getFiles(course
+												.getString(CourseConst.text.DATA_INPUT_PATH));
 										for (File file1 : findFiles) {
 											String findKey = FileGeter.getFileKey(file1);
 											if (fileKey.equals(findKey)) {
@@ -452,11 +453,11 @@ public class TextHill extends AbstractHill<TextSign, TextShade> {
 
 	@Override
 	protected TextShade creatShade(TextSign sign) {
-		Basket defaultBasket = baskets.get("_DEFAULT");
+		Basket defaultBasket = baskets.getBasket("_DEFAULT");
 		Basket basket = defaultBasket;
 		if (StringUtils.isNotBlank(sign.getBasketName())) {
-			if (baskets.containsKey(sign.getBasketName())) {
-				basket = baskets.get(sign.getBasketName());
+			if (baskets.contains(sign.getBasketName())) {
+				basket = baskets.getBasket(sign.getBasketName());
 			}
 		}
 		FileShade fs = new FileShade(sign, basket);
@@ -484,10 +485,12 @@ public class TextHill extends AbstractHill<TextSign, TextShade> {
 		if (!newc.getString(CourseConst.text.DATA_INPUT_PATH).equals(old.getString(CourseConst.text.DATA_INPUT_PATH))) {
 			return false;
 		}
-		if (!newc.getString(CourseConst.text.PATH_FILTER_REGEX).equals(old.getString(CourseConst.text.PATH_FILTER_REGEX))) {
+		if (!newc.getString(CourseConst.text.PATH_FILTER_REGEX).equals(
+				old.getString(CourseConst.text.PATH_FILTER_REGEX))) {
 			return false;
 		}
-		if (!newc.getString(CourseConst.text.PATH_FILTER_REGEX).equals(old.getString(CourseConst.text.PATH_FILTER_REGEX))) {
+		if (!newc.getString(CourseConst.text.PATH_FILTER_REGEX).equals(
+				old.getString(CourseConst.text.PATH_FILTER_REGEX))) {
 			return false;
 		}
 		if (!newc.getString(CourseConst.text.MOVE_PATH).equals(old.getString(CourseConst.text.MOVE_PATH))) {

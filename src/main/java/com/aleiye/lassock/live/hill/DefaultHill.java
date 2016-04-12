@@ -15,11 +15,11 @@ import com.aleiye.lassock.api.Course;
 import com.aleiye.lassock.api.Intelligence;
 import com.aleiye.lassock.api.LassockState;
 import com.aleiye.lassock.lifecycle.LifecycleState;
-import com.aleiye.lassock.live.basket.Basket;
 import com.aleiye.lassock.live.exception.CourseException;
 import com.aleiye.lassock.live.exception.SignException;
 import com.aleiye.lassock.live.hill.shade.tool.ShadeExecutor;
 import com.aleiye.lassock.live.hill.shade.tool.ShadeScheduler;
+import com.aleiye.lassock.live.station.BasketStation;
 import com.aleiye.lassock.util.ScrollUtils;
 
 /**
@@ -32,7 +32,7 @@ import com.aleiye.lassock.util.ScrollUtils;
 public class DefaultHill implements Hill {
 	private static final Logger LOGGER = LoggerFactory.getLogger(DefaultHill.class);
 	// 所有 对列
-	protected Map<String, Basket> baskets;
+	protected BasketStation baskets;
 	// 采集子源工厂
 	DefaultShadeFactory factory = new DefaultShadeFactory();
 	// 暂停开关
@@ -46,7 +46,7 @@ public class DefaultHill implements Hill {
 	protected Map<String, ShadeRunner> shades = new HashMap<String, ShadeRunner>();
 
 	@Override
-	public void setBaskets(Map<String, Basket> baskets) {
+	public void setBaskets(BasketStation baskets) {
 		this.baskets = baskets;
 	}
 
@@ -92,7 +92,7 @@ public class DefaultHill implements Hill {
 				if (StringUtils.isNotBlank(course.getBasketName())) {
 					bn = course.getBasketName();
 				}
-				shade.setBasket(baskets.get(bn));
+				shade.setBasket(baskets.getBasket(bn));
 				ShadeRunner runner = ShadeRunner.forSource(shade);
 				runner.start();
 				shades.put(course.getName(), runner);

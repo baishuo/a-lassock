@@ -1,23 +1,16 @@
 package com.aleiye.lassock.live;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import com.aleiye.lassock.common.able.Destroyable;
-import com.aleiye.lassock.live.basket.Basket;
-import com.aleiye.lassock.live.basket.BasketFactory;
-import com.aleiye.lassock.live.basket.DefaultBasketFactory;
-import com.aleiye.lassock.live.basket.MemoryQueueBasket;
-import com.aleiye.lassock.live.bazaar.Bazaar;
-import com.aleiye.lassock.live.bazaar.BazaarFactory;
-import com.aleiye.lassock.live.bazaar.BazaarRunner;
-import com.aleiye.lassock.live.bazaar.DefaultBazaarFactory;
+import com.aleiye.lassock.api.conf.Context;
+import com.aleiye.lassock.common.InitializeAware;
+import com.aleiye.lassock.conf.ConfigurationConstants;
+import com.aleiye.lassock.conf.LiveConfiguration;
 import com.aleiye.lassock.live.hill.Hill;
+import com.aleiye.lassock.live.station.BasketStation;
+import com.aleiye.lassock.live.station.BazaarStation;
 import com.aleiye.lassock.logging.Logging;
 import com.aleiye.lassock.util.ConfigUtils;
 import com.aleiye.lassock.util.DestroyableUtils;
 import com.typesafe.config.Config;
-import com.typesafe.config.ConfigException;
 
 /**
  * 内容容器
@@ -26,98 +19,33 @@ import com.typesafe.config.ConfigException;
  * @since 2015年5月19日
  * @version 2.2.1
  */
-public class LiveContainer extends Logging implements Destroyable {
+public class LiveContainer extends Logging implements InitializeAware {
+	Config config;
 	/** 队列*/
-	private Map<String, Basket> baskets;
+	BasketStation basketStation;
+
+	BazaarStation bazaarStation;
 	/**采集管理*/
 	private Hill hill;
-	/** 集市*/
-	private Map<String, BazaarRunner> bazaarRunners;
 
 	public LiveContainer(Config config) throws Exception {
-		// this.config = config;
+		this.config = config;
 	}
 
-	/**
-	 * 初始组件
-	 * @throws Exception
-	 */
+	@Override
 	public void initialize() throws Exception {
-		// 加载队列
-		loadBaskets();
+		Context liveContext = ConfigUtils.toContext(config.getConfig(ConfigurationConstants.CONFIG_LIVE));
+		LiveConfiguration configuration = new LiveConfiguration(liveContext);
+		basketStation = new BasketStation(configuration);
+		basketStation.initialize();
+
+		bazaarStation = new BazaarStation(configuration, basketStation);
+		bazaarStation.initialize();
 
 		// 加载采集源
 		hill = new HillMirror();
-		hill.setBaskets(baskets);
+		hill.setBaskets(basketStation);
 		hill.initialize();
-
-		// 加载消费商
-		loadBazaars();
-	}
-
-	private void loadBaskets() throws Exception {
-		baskets = new HashMap<String, Basket>();
-		Basket defualt = new MemoryQueueBasket();
-		defualt.setName("_DEFAULT");
-		baskets.put(defualt.getName(), defualt);
-		BasketFactory factory = new DefaultBasketFactory();
-		// 加载自定义扩展采集源
-		Config config = ConfigUtils.getConfig().getConfig("live.baskets");
-		for (int i = 0; i < Integer.MAX_VALUE; i++) {
-			String key = "basket" + i;
-			if (!containsKey(config, key)) {
-				break;
-			}
-			Config conf = config.getConfig(key);
-			String name = conf.getString("name");
-			String strClass = conf.getString("class");
-			Basket basket = factory.create(name, strClass);
-			basket.start();
-			baskets.put(name, basket);
-		}
-	}
-
-	private void loadBazaars() throws Exception {
-		bazaarRunners = new HashMap<String, BazaarRunner>();
-		BazaarFactory factory = new DefaultBazaarFactory();
-		// 加载自定义扩展采集源
-		Config config = ConfigUtils.getConfig().getConfig("live.bazaars");
-		Basket defaultBasket = baskets.get("_DEFAULT");
-		for (int i = 0; i < Integer.MAX_VALUE; i++) {
-			String key = "bazaar" + i;
-			if (!containsKey(config, key)) {
-				break;
-			}
-			Config conf = config.getConfig(key);
-			String name = conf.getString("name");
-			String strClass = conf.getString("class");
-			Bazaar bazaar = factory.create(name, strClass);
-			if (containsKey(conf, "basket")) {
-				String bk = conf.getString("basket");
-				if (!baskets.containsKey(bk)) {
-					throw new Exception("Cant find basket wiht name:" + bk);
-				}
-				Basket basket = baskets.get(bk);
-				bazaar.setBasket(basket);
-			} else {
-				bazaar.setBasket(defaultBasket);
-			}
-			bazaar.configure(ConfigUtils.toContext(conf));
-			BazaarRunner runner = BazaarRunner.forBazaar(bazaar);
-			runner.start();
-			bazaarRunners.put(name, runner);
-		}
-	}
-
-	private boolean containsKey(Config conf, String key) {
-		try {
-			conf.getObject(key);
-		} catch (ConfigException.WrongType e) {
-			return true;
-		} catch (Exception e1) {
-			return false;
-		}
-		return true;
 	}
 
 	public Live live() {
@@ -128,16 +56,9 @@ public class LiveContainer extends Logging implements Destroyable {
 	public void destroy() {
 		// 采集关闭
 		DestroyableUtils.destroyQuietly(hill);
-		// 集市关闭
-		for (BazaarRunner br : bazaarRunners.values()) {
-			br.stop();
-		}
-		bazaarRunners.clear();
+		// 消费关闭
+		bazaarStation.destroy();
 		// 对列关闭
-		for (Basket bk : baskets.values()) {
-			bk.stop();
-		}
-		baskets.clear();
-
+		basketStation.destroy();
 	}
 }

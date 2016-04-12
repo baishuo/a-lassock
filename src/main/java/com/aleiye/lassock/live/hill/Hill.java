@@ -1,10 +1,8 @@
 package com.aleiye.lassock.live.hill;
 
-import java.util.Map;
-
 import com.aleiye.lassock.common.able.Destroyable;
 import com.aleiye.lassock.live.Live;
-import com.aleiye.lassock.live.basket.Basket;
+import com.aleiye.lassock.live.station.BasketStation;
 
 /**
  * 采集源接口
@@ -17,6 +15,6 @@ public interface Hill extends Live, Destroyable {
 
 	void initialize() throws Exception;
 
-	public void setBaskets(Map<String, Basket> baskets);
+	public void setBaskets(BasketStation baskets);
 
 }

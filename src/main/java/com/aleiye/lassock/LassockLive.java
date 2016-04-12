@@ -37,7 +37,7 @@ public class LassockLive extends Logging {
 		try {
 			logInfo("Lassock starting......");
 			if (isShuttingDown.get())
-				throw new IllegalStateException("Aleiye lassock is still shutting down, cannot re-start!");
+				throw new IllegalStateException("Lassock is still shutting down, cannot re-start!");
 			if (startupComplete.get())
 				return;
 			boolean canStartup = isStartingUp.compareAndSet(false, true);

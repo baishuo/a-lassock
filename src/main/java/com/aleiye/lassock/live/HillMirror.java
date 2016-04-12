@@ -1,7 +1,6 @@
 package com.aleiye.lassock.live;
 
 import java.util.List;
-import java.util.Map;
 
 import com.aleiye.lassock.api.Course;
 import com.aleiye.lassock.api.Intelligence;
@@ -9,11 +8,11 @@ import com.aleiye.lassock.api.LassockState;
 import com.aleiye.lassock.api.LassockState.RunState;
 import com.aleiye.lassock.api.shade.CourseType;
 import com.aleiye.lassock.lang.Sistem;
-import com.aleiye.lassock.live.basket.Basket;
 import com.aleiye.lassock.live.hill.DefaultHill;
 import com.aleiye.lassock.live.hill.Hill;
 import com.aleiye.lassock.live.hills1.Hill1;
 import com.aleiye.lassock.live.hills1.text.TextHill;
+import com.aleiye.lassock.live.station.BasketStation;
 import com.aleiye.lassock.util.DestroyableUtils;
 
 /**
@@ -26,7 +25,7 @@ import com.aleiye.lassock.util.DestroyableUtils;
 public class HillMirror implements Hill {
 
 	/** 队列*/
-	private Map<String, Basket> baskets;
+	private BasketStation baskets;
 
 	private Hill1 hill1;
 
@@ -108,7 +107,7 @@ public class HillMirror implements Hill {
 	}
 
 	@Override
-	public void destroy() throws Exception {
+	public void destroy() {
 		DestroyableUtils.destroyQuietly(hill);
 		DestroyableUtils.destroyQuietly(hill1);
 		state.setState(RunState.SHUTDOWN);
@@ -129,7 +128,7 @@ public class HillMirror implements Hill {
 	}
 
 	@Override
-	public void setBaskets(Map<String, Basket> baskets) {
+	public void setBaskets(BasketStation baskets) {
 		this.baskets = baskets;
 	}
 

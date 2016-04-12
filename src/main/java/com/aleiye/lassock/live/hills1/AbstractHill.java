@@ -8,10 +8,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.aleiye.lassock.api.Course;
 import com.aleiye.lassock.api.Intelligence;
-import com.aleiye.lassock.live.basket.Basket;
 import com.aleiye.lassock.live.exception.CourseException;
 import com.aleiye.lassock.live.exception.SignException;
 import com.aleiye.lassock.live.hill.Sign;
+import com.aleiye.lassock.live.station.BasketStation;
 import com.aleiye.lassock.logging.Logging;
 import com.aleiye.lassock.util.CloseableUtils;
 
@@ -26,10 +26,10 @@ public abstract class AbstractHill<T extends Sign, S extends AbstractShade<T>> e
 	// 是否消毁
 	protected final AtomicBoolean destroyed = new AtomicBoolean(false);
 	// 输出对列
-	protected Map<String, Basket> baskets;
+	protected BasketStation baskets;
 
 	// 输出注入
-	public void setBaskets(Map<String, Basket> baskets) {
+	public void setBaskets(BasketStation baskets) {
 		this.baskets = baskets;
 	}
 
