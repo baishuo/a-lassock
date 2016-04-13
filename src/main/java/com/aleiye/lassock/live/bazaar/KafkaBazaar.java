@@ -2,7 +2,7 @@ package com.aleiye.lassock.live.bazaar;
 
 import com.aleiye.event.exception.InvalidEventContentException;
 import com.aleiye.event.factory.AleiyeEventFactory;
-import com.aleiye.lassock.api.conf.Context;
+import com.aleiye.lassock.conf.Context;
 import com.aleiye.lassock.lifecycle.LifecycleState;
 import com.aleiye.lassock.live.model.Mushroom;
 import com.aleiye.lassock.util.CloseableUtils;
@@ -10,10 +10,12 @@ import com.aleiye.lassock.util.ConfigUtils;
 import com.aleiye.zkclient.standard.CuratorClient;
 import com.aleiye.zkclient.standard.CuratorFactory;
 import com.aleiye.zkpath.constants.ZKPathConstants;
+
 import kafka.javaapi.producer.Producer;
 import kafka.producer.KeyedMessage;
 import kafka.producer.ProducerClosedException;
 import kafka.producer.ProducerConfig;
+
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.recipes.cache.PathChildrenCache;
 import org.apache.curator.framework.recipes.cache.PathChildrenCacheEvent;

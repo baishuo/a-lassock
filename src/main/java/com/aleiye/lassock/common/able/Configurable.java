@@ -1,6 +1,6 @@
 package com.aleiye.lassock.common.able;
 
-import com.aleiye.lassock.api.conf.Context;
+import com.aleiye.lassock.conf.Context;
 
 /**
  * 任何继承该类接口都将通过引入一个上下文来配置

@@ -7,7 +7,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.aleiye.lassock.api.Course;
 import com.aleiye.lassock.api.Course.RunType;
-import com.aleiye.lassock.api.conf.ValueStation;
+import com.aleiye.lassock.conf.ValueStation;
 import com.aleiye.lassock.live.hill.shade.AbstractShade;
 
 /**

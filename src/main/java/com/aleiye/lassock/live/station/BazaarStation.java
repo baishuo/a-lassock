@@ -6,9 +6,9 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.aleiye.lassock.api.conf.Context;
 import com.aleiye.lassock.common.InitializeAware;
 import com.aleiye.lassock.conf.ConfigurationConstants;
+import com.aleiye.lassock.conf.Context;
 import com.aleiye.lassock.conf.LiveConfiguration;
 import com.aleiye.lassock.lifecycle.LifecycleAware;
 import com.aleiye.lassock.live.basket.Basket;

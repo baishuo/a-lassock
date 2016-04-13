@@ -3,10 +3,10 @@ package com.aleiye.lassock.live;
 import java.util.List;
 
 import com.aleiye.lassock.api.Course;
+import com.aleiye.lassock.api.CourseType;
 import com.aleiye.lassock.api.Intelligence;
 import com.aleiye.lassock.api.LassockState;
 import com.aleiye.lassock.api.LassockState.RunState;
-import com.aleiye.lassock.api.shade.CourseType;
 import com.aleiye.lassock.lang.Sistem;
 import com.aleiye.lassock.live.hill.DefaultHill;
 import com.aleiye.lassock.live.hill.Hill;

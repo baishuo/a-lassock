@@ -1,6 +1,5 @@
 package com.aleiye.lassock.conf;
 
-import com.aleiye.lassock.api.conf.Context;
 import com.aleiye.lassock.live.Live;
 import com.aleiye.lassock.liveness.Liveness;
 import com.google.common.eventbus.EventBus;

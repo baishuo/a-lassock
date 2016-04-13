@@ -16,7 +16,7 @@ import com.aleiye.lassock.api.Intelligence;
 import com.aleiye.lassock.api.IntelligenceLetter;
 import com.aleiye.lassock.api.LassockInformation;
 import com.aleiye.lassock.api.LassockState;
-import com.aleiye.lassock.api.conf.Context;
+import com.aleiye.lassock.conf.Context;
 import com.aleiye.lassock.lang.Sistem;
 import com.aleiye.lassock.lifecycle.AbstractLifecycleAware;
 import com.aleiye.lassock.live.Live;

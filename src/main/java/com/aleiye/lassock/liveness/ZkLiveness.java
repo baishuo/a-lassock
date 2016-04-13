@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 
 import com.aleiye.lassock.api.Course;
 import com.aleiye.lassock.api.LassockState.RunState;
-import com.aleiye.lassock.api.conf.Context;
+import com.aleiye.lassock.conf.Context;
 import com.aleiye.lassock.lang.Sistem;
 import com.aleiye.lassock.util.JsonProvider;
 import com.aleiye.zkclient.standard.CuratorClient;

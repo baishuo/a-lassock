@@ -6,7 +6,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.aleiye.lassock.api.conf.Context;
+import com.aleiye.lassock.conf.Context;
 import com.aleiye.lassock.conf.LivenessConfiguration;
 import com.aleiye.lassock.live.LiveContainer;
 import com.aleiye.lassock.liveness.Liveness;

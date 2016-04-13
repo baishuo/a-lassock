@@ -3,7 +3,7 @@ package com.aleiye.lassock.liveness;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.aleiye.lassock.api.conf.Context;
+import com.aleiye.lassock.conf.Context;
 import com.aleiye.lassock.lifecycle.AbstractLifecycleAware;
 import com.aleiye.lassock.lifecycle.LifecycleState;
 import com.aleiye.lassock.util.LogUtils;

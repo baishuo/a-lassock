@@ -2,7 +2,7 @@ package com.aleiye.lassock.live.basket;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
-import com.aleiye.lassock.api.conf.Context;
+import com.aleiye.lassock.conf.Context;
 import com.aleiye.lassock.live.model.Mushroom;
 
 /**

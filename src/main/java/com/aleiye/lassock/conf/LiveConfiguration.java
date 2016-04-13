@@ -5,8 +5,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import com.aleiye.lassock.api.conf.Context;
-
 /**
  * 采集生涯配置
  * 

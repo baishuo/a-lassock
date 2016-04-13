@@ -6,7 +6,7 @@ import java.util.List;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import com.aleiye.lassock.api.Course;
-import com.aleiye.lassock.api.conf.Context;
+import com.aleiye.lassock.conf.Context;
 import com.aleiye.lassock.util.JsonProvider;
 
 public class FilePickLiveness extends AbstractLiveness {
