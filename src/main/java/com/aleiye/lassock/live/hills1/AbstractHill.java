@@ -213,16 +213,16 @@ public abstract class AbstractHill<T extends Sign, S extends AbstractShade<T>> i
 	 * @throws Exception 
 	 */
 	@Override
-	public void removeCourse(Course course) throws Exception {
+	public void removeCourse(String course) throws Exception {
 		synchronized (courseLock) {
-			Course existsCourse = courses.remove(course.getName());
+			Course existsCourse = courses.remove(course);
 			if (existsCourse != null) {
-				List<T> list = details.remove(course.getName());
+				List<T> list = details.remove(existsCourse.getName());
 				if (list != null && list.size() > 0) {
 					synchronized (signLock) {
 						for (T sign : list) {
 							T removed = this.signs.get(sign.getName());
-							removed.disassociate(course.getName());
+							removed.disassociate(existsCourse.getName());
 							if (removed.associateSize() == 0)
 								removeSign(removed);
 						}
@@ -295,7 +295,7 @@ public abstract class AbstractHill<T extends Sign, S extends AbstractShade<T>> i
 					return;
 				}
 				// 先删除已存在课程
-				removeCourse(course);
+				removeCourse(course.getName());
 			}
 			// 再添加新的
 			addCourse(course);

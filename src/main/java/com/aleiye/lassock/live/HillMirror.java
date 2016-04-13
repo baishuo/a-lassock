@@ -14,6 +14,7 @@ import com.aleiye.lassock.live.hills1.Hill1;
 import com.aleiye.lassock.live.hills1.text.TextHill;
 import com.aleiye.lassock.live.station.BasketStation;
 import com.aleiye.lassock.util.DestroyableUtils;
+import com.google.common.eventbus.Subscribe;
 
 /**
  * hill镜子类，用于共存旧版Hill和新版hill
@@ -52,56 +53,38 @@ public class HillMirror implements Hill {
 		return hill.isPaused();
 	}
 
-	@Override
-	public void refresh(List<Course> curriculum) throws Exception {
-		for (Course course : curriculum) {
-			add(course);
+	@Subscribe
+	public void changRunType(RunState state) {
+		if (state == RunState.RUNNING) {
+			resume();
+		} else if (state == RunState.PAUSED) {
+			pause();
 		}
-
 	}
 
-	// @Override
-	// public void clean() {
-	// hill.clean();
-	//
-	// }
-	//
-	// @Override
-	// public void clean(String type) {
-	// hill.clean(type);
-	//
-	// }
-	//
-	// @Override
-	// public void clean(String type, String subType) {
-	// hill.clean(type, subType);
-	// }
+	@Subscribe
+	public void putAll(List<Course> curriculum) throws Exception {
+		for (Course course : curriculum) {
+			put(course);
+		}
+	}
 
 	@Override
-	public synchronized void add(Course course) throws Exception {
+	@Subscribe
+	public synchronized void put(Course course) throws Exception {
 		if (course.getType() == CourseType.TEXT)
 			hill1.addCourse(course);
 		else
-			hill.add(course);
+			hill.put(course);
 		state.setScrollCount(state.getScrollCount() + 1);
 
 	}
 
 	@Override
-	public void modify(Course course) throws Exception {
-		if (course.getType() == CourseType.TEXT)
-			hill1.modifyCourse(course);
-		else
-			hill.modify(course);
-
-	}
-
-	@Override
-	public synchronized void remove(Course course) throws Exception {
-		if (course.getType() == CourseType.TEXT)
-			hill1.removeCourse(course);
-		else
-			hill.remove(course);
+	@Subscribe
+	public synchronized void remove(String course) throws Exception {
+		hill.remove(course);
+		hill1.removeCourse(course);
 		state.setScrollCount(state.getScrollCount() - 1);
 
 	}

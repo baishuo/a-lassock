@@ -15,16 +15,41 @@ import com.aleiye.lassock.common.PausedAware;
  * @version 2.1.2
  */
 public interface Live extends PausedAware {
+	/**
+	 * 批量添加采集任务
+	 * 
+	 * @param curriculum
+	 * @throws Exception
+	 */
+	void putAll(List<Course> curriculum) throws Exception;
 
-	void refresh(List<Course> curriculum) throws Exception;
+	/**
+	 * 添加采集任务
+	 * 
+	 * @param course
+	 * @throws Exception
+	 */
+	void put(Course course) throws Exception;
 
-	void add(Course course) throws Exception;
+	/**
+	 * 移除任务
+	 * 
+	 * @param course
+	 * @throws Exception
+	 */
+	void remove(String course) throws Exception;
 
-	void modify(Course course) throws Exception;
-
-	void remove(Course course) throws Exception;
-
+	/**
+	 * 获取采集任务的情报信息
+	 * 
+	 * @return
+	 */
 	List<Intelligence> getIntelligences();
 
+	/**
+	 * 获取采集状态
+	 * 
+	 * @return
+	 */
 	LassockState getState();
 }

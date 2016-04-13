@@ -6,20 +6,22 @@ import org.slf4j.LoggerFactory;
 import com.aleiye.lassock.api.conf.Context;
 import com.aleiye.lassock.lifecycle.AbstractLifecycleAware;
 import com.aleiye.lassock.lifecycle.LifecycleState;
-import com.aleiye.lassock.live.Live;
 import com.aleiye.lassock.util.LogUtils;
 import com.google.common.base.Throwables;
+import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.SubscriberExceptionContext;
 
 public abstract class AbstractLiveness extends AbstractLifecycleAware implements Liveness {
 	private static final Logger logger = LoggerFactory.getLogger(AbstractLiveness.class);
-	private Live live;
 
-	protected Live getLive() {
-		return live;
+	protected EventBus eventBus;
+
+	public void setEventBus(EventBus eventBus) {
+		this.eventBus = eventBus;
 	}
 
-	public void setLive(Live live) {
-		this.live = live;
+	public void ExceptionHandler(Throwable exception, SubscriberExceptionContext context) {
+		;
 	}
 
 	@Override
@@ -32,7 +34,6 @@ public abstract class AbstractLiveness extends AbstractLifecycleAware implements
 			LogUtils.error("Liveness configure exception:" + e.getMessage());
 			Throwables.propagate(e);
 		}
-
 	}
 
 	@Override
@@ -64,4 +65,5 @@ public abstract class AbstractLiveness extends AbstractLifecycleAware implements
 	protected abstract void doStart() throws Exception;
 
 	protected abstract void doStop() throws Exception;
+
 }

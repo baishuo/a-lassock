@@ -22,7 +22,7 @@ public class FilePickLiveness extends AbstractLiveness {
 		sc = mapper.readValue(file, SimpleCourse.class);
 		// 正式配置
 		List<Course> addCources = sc.courses;
-		getLive().refresh(addCources);
+		eventBus.post(addCources);
 	}
 
 	@Override

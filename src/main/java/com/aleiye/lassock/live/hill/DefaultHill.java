@@ -73,18 +73,19 @@ public class DefaultHill implements Hill {
 
 	}
 
-	@Override
-	public synchronized void refresh(List<Course> courses) throws Exception {
+//	@Override
+	public synchronized void putAll(List<Course> courses) throws Exception {
 		if (courses == null || courses.size() == 0) {
 			return;
 		}
 		for (Course course : courses) {
-			add(course);
+			put(course);
 		}
 	}
 
 	@Override
-	public synchronized void add(Course course) throws Exception {
+	public synchronized void put(Course course) throws Exception {
+		remove(course.getName());
 		ScrollUtils.validate(course);
 		if (!this.paused.get()) {
 			try {
@@ -108,19 +109,13 @@ public class DefaultHill implements Hill {
 	}
 
 	@Override
-	public synchronized void remove(Course course) throws Exception {
-		Course existsCourse = courses.remove(course.getName());
+	public synchronized void remove(String course) throws Exception {
+		Course existsCourse = courses.remove(course);
 		if (existsCourse != null) {
 			ShadeRunner runner = shades.get(existsCourse.getName());
 			if (runner != null)
 				runner.stop();
 		}
-	}
-
-	@Override
-	public synchronized void modify(Course course) throws Exception {
-		remove(course);
-		add(course);
 	}
 
 	@Override
@@ -133,7 +128,7 @@ public class DefaultHill implements Hill {
 		Map<String, Course> oldCourses = courses;
 		courses = new ConcurrentHashMap<String, Course>();
 		try {
-			refresh(new ArrayList<Course>(oldCourses.values()));
+			putAll(new ArrayList<Course>(oldCourses.values()));
 		} catch (Exception e) {
 			;
 		}

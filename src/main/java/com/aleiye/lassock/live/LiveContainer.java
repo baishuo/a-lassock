@@ -19,7 +19,8 @@ import com.typesafe.config.Config;
  * @version 2.2.1
  */
 public class LiveContainer implements InitializeAware {
-//	private static final Logger logger = LoggerFactory.getLogger(LiveContainer.class);
+	// private static final Logger logger =
+	// LoggerFactory.getLogger(LiveContainer.class);
 
 	Config config;
 	/** 队列*/

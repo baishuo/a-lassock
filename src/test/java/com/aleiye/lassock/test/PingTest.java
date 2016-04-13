@@ -1,10 +1,12 @@
-package com.aleiye.lassock.ping;
+package com.aleiye.lassock.test;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.aleiye.lassock.ping.JumpPinger;
 
 public class PingTest {
 

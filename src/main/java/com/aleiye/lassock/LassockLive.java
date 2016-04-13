@@ -7,9 +7,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.aleiye.lassock.api.conf.Context;
+import com.aleiye.lassock.conf.LivenessConfiguration;
 import com.aleiye.lassock.live.LiveContainer;
 import com.aleiye.lassock.liveness.Liveness;
-import com.aleiye.lassock.liveness.LivenessConfiguration;
 import com.aleiye.lassock.monitor.DefaultMonitor;
 import com.aleiye.lassock.monitor.Monitor;
 import com.aleiye.lassock.util.ConfigUtils;
@@ -34,7 +34,7 @@ public class LassockLive {
 	private Liveness liveness;
 	// 采集生涯
 	private LiveContainer container;
-	/** 监控器*/
+	// 监控器
 	private Monitor monitor;
 
 	public void startup() throws Exception {
@@ -57,10 +57,10 @@ public class LassockLive {
 				LivenessConfiguration lc = new LivenessConfiguration(livenessContext, container.live());
 				liveness = lc.getInstance();
 				liveness.start();
+
 				// 监控
 				monitor = new DefaultMonitor(container.live());
 				monitor.configure(ConfigUtils.getContext("monitor"));
-				monitor.setName("lassock-monitor");
 				monitor.start();
 
 				startupComplete.compareAndSet(false, true);

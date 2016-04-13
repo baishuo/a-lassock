@@ -16,9 +16,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.aleiye.lassock.api.Course;
+import com.aleiye.lassock.api.LassockState.RunState;
 import com.aleiye.lassock.api.conf.Context;
 import com.aleiye.lassock.lang.Sistem;
-import com.aleiye.lassock.live.Live;
 import com.aleiye.lassock.util.JsonProvider;
 import com.aleiye.zkclient.standard.CuratorClient;
 import com.aleiye.zkclient.standard.CuratorFactory;
@@ -35,7 +35,7 @@ public class ZkLiveness extends AbstractLiveness {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ZkLiveness.class);
 	ObjectMapper mapper = JsonProvider.adaptMapper;
 	// ZK连接串
-	private String connectionString;
+	private String zkurl;
 	// ZK framework
 	private CuratorFramework framework;
 
@@ -45,15 +45,19 @@ public class ZkLiveness extends AbstractLiveness {
 	private PathChildrenCache courseCache;
 
 	@Override
+	public void doConfigure(Context context) {
+		zkurl = context.getString("zkurl");
+	}
+
+	@Override
 	public void doStart() {
 		try {
-			framework = CuratorFactory.createFramework(connectionString);
+			framework = CuratorFactory.createFramework(zkurl);
 			framework.start();
 			framework.blockUntilConnected();
 			final CuratorClient client = CuratorFactory.create(framework);
-			final Live live = getLive();
 			final String nodePath = String.format(ZKPathConstants.collector.COLLECTOR_REG_PATH, Sistem.getMac());
-			
+
 			// 监测该采集状态
 			nodeCache = new NodeCache(framework, nodePath);
 			NodeCacheListener nodeListener = new NodeCacheListener() {
@@ -70,14 +74,10 @@ public class ZkLiveness extends AbstractLiveness {
 								int sts = Integer.parseInt(map.get(ZKPathConstants.collector.KEY_STATUS).toString());
 								switch (sts) {
 								case 0:
-									if (!live.isPaused()) {
-										live.pause();
-									}
+									eventBus.post(RunState.PAUSED);
 									break;
 								case 1:
-									if (live.isPaused()) {
-										live.resume();
-									}
+									eventBus.post(RunState.RUNNING);
 									break;
 								default:
 									break;
@@ -105,18 +105,14 @@ public class ZkLiveness extends AbstractLiveness {
 						}
 						Course course = mapper.readValue(event.getData().getData(), Course.class);
 						switch (event.getType()) {
-						case CHILD_ADDED: {
-							live.add(course);
-							break;
-						}
-
+						case CHILD_ADDED:
 						case CHILD_UPDATED: {
-							live.modify(course);
+							eventBus.post(course);
 							break;
 						}
 
 						case CHILD_REMOVED: {
-							live.remove(course);
+							eventBus.post(course.getName());
 							break;
 						}
 						default:
@@ -140,10 +136,5 @@ public class ZkLiveness extends AbstractLiveness {
 		CloseableUtils.closeQuietly(nodeCache);
 		CloseableUtils.closeQuietly(courseCache);
 		CloseableUtils.closeQuietly(framework);
-	}
-
-	@Override
-	public void doConfigure(Context context) {
-		connectionString = context.getString("connectionString");
 	}
 }

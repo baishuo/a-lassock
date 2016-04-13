@@ -1,7 +1,11 @@
-package com.aleiye.lassock.liveness;
+package com.aleiye.lassock.conf;
 
 import com.aleiye.lassock.api.conf.Context;
 import com.aleiye.lassock.live.Live;
+import com.aleiye.lassock.liveness.Liveness;
+import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.SubscriberExceptionContext;
+import com.google.common.eventbus.SubscriberExceptionHandler;
 
 /**
  * Liveness 配置类
@@ -26,9 +30,16 @@ public class LivenessConfiguration {
 	 */
 	public Liveness getInstance() throws Exception {
 		Class<?> livenessClass = Class.forName(context.getString("class"));
-		Liveness liveness = (Liveness) livenessClass.newInstance();
+		final Liveness liveness = (Liveness) livenessClass.newInstance();
+		EventBus eventBus = new EventBus(new SubscriberExceptionHandler() {
+			@Override
+			public void handleException(Throwable exception, SubscriberExceptionContext context) {
+				liveness.ExceptionHandler(exception, context);
+			}
+		});
+		eventBus.register(this.live);
 		// 挂钩Live
-		liveness.setLive(live);
+		liveness.setEventBus(eventBus);
 		liveness.configure(context);
 		return liveness;
 	}

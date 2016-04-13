@@ -18,8 +18,8 @@ import com.aleiye.lassock.api.LassockInformation;
 import com.aleiye.lassock.api.LassockState;
 import com.aleiye.lassock.api.conf.Context;
 import com.aleiye.lassock.lang.Sistem;
+import com.aleiye.lassock.lifecycle.AbstractLifecycleAware;
 import com.aleiye.lassock.live.Live;
-import com.aleiye.lassock.live.NamedLifecycle;
 import com.aleiye.lassock.util.AkkaUtils;
 
 /**
@@ -29,7 +29,7 @@ import com.aleiye.lassock.util.AkkaUtils;
  * @since 2016年2月22日
  * @version 1.0
  */
-public class DefaultMonitor extends NamedLifecycle implements Monitor {
+public class DefaultMonitor extends AbstractLifecycleAware implements Monitor {
 	private boolean enabled = false;
 	private String host;
 	private int port;

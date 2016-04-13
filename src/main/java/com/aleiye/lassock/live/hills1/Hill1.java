@@ -31,7 +31,7 @@ public interface Hill1 extends Destroyable {
 
 	// 移除课程
 
-	void removeCourse(Course course) throws Exception;
+	void removeCourse(String course) throws Exception;
 
 	// 暂停
 	void pause();
