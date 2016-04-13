@@ -7,7 +7,6 @@ import com.aleiye.lassock.conf.LiveConfiguration;
 import com.aleiye.lassock.live.hill.Hill;
 import com.aleiye.lassock.live.station.BasketStation;
 import com.aleiye.lassock.live.station.BazaarStation;
-import com.aleiye.lassock.logging.Logging;
 import com.aleiye.lassock.util.ConfigUtils;
 import com.aleiye.lassock.util.DestroyableUtils;
 import com.typesafe.config.Config;
@@ -19,7 +18,9 @@ import com.typesafe.config.Config;
  * @since 2015年5月19日
  * @version 2.2.1
  */
-public class LiveContainer extends Logging implements InitializeAware {
+public class LiveContainer implements InitializeAware {
+//	private static final Logger logger = LoggerFactory.getLogger(LiveContainer.class);
+
 	Config config;
 	/** 队列*/
 	BasketStation basketStation;

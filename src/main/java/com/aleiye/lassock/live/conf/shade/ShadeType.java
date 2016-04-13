@@ -1,6 +1,6 @@
 package com.aleiye.lassock.live.conf.shade;
 
-import com.aleiye.lassock.live.hill.Shade;
+import com.aleiye.lassock.live.hill.shade.Shade;
 import com.aleiye.lassock.live.hill.shade.jdbc.JdbcShade;
 import com.aleiye.lassock.live.hill.shade.snmp.SnmpCpuShade;
 import com.aleiye.lassock.live.hill.shade.snmp.SnmpFlowShade;

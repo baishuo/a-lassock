@@ -1,6 +1,7 @@
 package com.aleiye.lassock;
 
-import com.aleiye.lassock.logging.Logging;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 采集器 启动程序
@@ -9,7 +10,9 @@ import com.aleiye.lassock.logging.Logging;
  * @since 2015年4月17日
  * @version 2.1.2
  */
-public class LassockStartable extends Logging {
+public class LassockStartable {
+	private static final Logger logger = LoggerFactory.getLogger(LassockStartable.class);
+
 	private LassockLive live;
 
 	public LassockStartable() throws Exception {
@@ -20,7 +23,7 @@ public class LassockStartable extends Logging {
 		try {
 			live.startup();
 		} catch (Exception e) {
-			logError("Fatal error during LassockStartable startup. Prepare to shutdown", e);
+			logger.error("Fatal error during LassockStartable startup. Prepare to shutdown", e);
 			System.exit(1);
 		}
 	}
@@ -29,7 +32,7 @@ public class LassockStartable extends Logging {
 		try {
 			live.shutdown();
 		} catch (Exception e) {
-			logError("Fatal error during LassockStartable shutdown. Prepare to halt", e);
+			logger.error("Fatal error during LassockStartable shutdown. Prepare to halt", e);
 			System.exit(1);
 		}
 	}

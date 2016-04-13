@@ -32,7 +32,7 @@ public abstract class AbstractBazaar extends NamedLifecycle implements Bazaar {
 	}
 
 	public String toString() {
-		return this.getClass().getSimpleName() + "{name:" + name + ", basket:" + basket.getName() + "}";
+		return this.getClass().getSimpleName() + "{name:" + getName() + ", basket:" + basket.getName() + "}";
 	}
 
 }

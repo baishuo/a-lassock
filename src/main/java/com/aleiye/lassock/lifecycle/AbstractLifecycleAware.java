@@ -1,5 +1,12 @@
 package com.aleiye.lassock.lifecycle;
 
+/**
+ * 抽象生命周期
+ * 
+ * @author ruibing.zhao
+ * @since 2016年4月12日
+ * @version 1.0
+ */
 public abstract class AbstractLifecycleAware implements LifecycleAware {
 	// 状态
 	protected LifecycleState lifecycleState;

@@ -1,10 +1,12 @@
-package com.aleiye.lassock.live.hill;
+package com.aleiye.lassock.live.hill.shade;
 
 import com.aleiye.lassock.api.Intelligence;
 import com.aleiye.lassock.common.NamedComponent;
 import com.aleiye.lassock.lifecycle.LifecycleAware;
 import com.aleiye.lassock.live.CourseConfigurable;
-import com.aleiye.lassock.live.basket.Basket;
+import com.aleiye.lassock.live.basket.BasketAware;
+import com.aleiye.lassock.live.hill.Hill;
+import com.aleiye.lassock.live.hill.Sign;
 
 /**
  * 采集子源
@@ -17,15 +19,10 @@ import com.aleiye.lassock.live.basket.Basket;
  * 
  * @author ruibing.zhao
  * @since 2015年5月14日
- * @version 2.1.2
+ * @version 1.0
  * @see Hill
  */
-public interface Shade extends LifecycleAware, NamedComponent, CourseConfigurable {
-
-	public void setBasket(Basket basket);
-
-	public Basket getBasket();
-
+public interface Shade extends LifecycleAware, NamedComponent, CourseConfigurable, BasketAware {
 	public Sign getSign();
 
 	public Intelligence getIntelligence();

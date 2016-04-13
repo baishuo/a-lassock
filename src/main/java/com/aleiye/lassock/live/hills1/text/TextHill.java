@@ -71,7 +71,7 @@ public class TextHill extends AbstractHill<TextSign, TextShade> {
 					refreshCourse();
 					Thread.sleep(5000);
 				} catch (InterruptedException e) {
-					logInfo(Thread.currentThread().getName() + "线程停止!");
+					logger.info(Thread.currentThread().getName() + "线程停止!");
 				}
 			}
 		}
@@ -198,7 +198,7 @@ public class TextHill extends AbstractHill<TextSign, TextShade> {
 					if (shade != null) {
 						emergency.add(shade);
 					}
-					logInfo(Thread.currentThread().getName() + "线程停止!");
+					logger.info(Thread.currentThread().getName() + "线程停止!");
 				}
 			}
 		}
@@ -325,14 +325,14 @@ public class TextHill extends AbstractHill<TextSign, TextShade> {
 				} catch (InterruptedException e1) {
 					if (shade != null)
 						emergency.add(shade);
-					logInfo(Thread.currentThread().getName() + "线程停止!");
+					logger.info(Thread.currentThread().getName() + "线程停止!");
 				} catch (Exception e) {
 					if (shade != null) {
 						try {
 							errors.put(shade);
 						} catch (InterruptedException e1) {
 							emergency.add(shade);
-							logInfo(Thread.currentThread().getName() + "线程停止!");
+							logger.error(Thread.currentThread().getName() + "线程停止!");
 						}
 					}
 				}
@@ -365,7 +365,7 @@ public class TextHill extends AbstractHill<TextSign, TextShade> {
 					try {
 						marker.save();
 					} catch (Exception e) {
-						logError("mark save is failure!", e);
+						logger.info("mark save is failure!", e);
 					}
 				}
 			};
@@ -407,7 +407,7 @@ public class TextHill extends AbstractHill<TextSign, TextShade> {
 				}
 			}
 		} catch (Exception e) {
-			logError("刷新Text 失败!", e);
+			logger.error("刷新Text 失败!", e);
 		}
 	}
 

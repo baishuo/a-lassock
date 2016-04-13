@@ -5,6 +5,7 @@ import java.util.List;
 import com.aleiye.lassock.api.Course;
 import com.aleiye.lassock.api.Intelligence;
 import com.aleiye.lassock.api.LassockState;
+import com.aleiye.lassock.common.PausedAware;
 
 /**
  * 生涯
@@ -13,20 +14,9 @@ import com.aleiye.lassock.api.LassockState;
  * @since 2015年5月12日
  * @version 2.1.2
  */
-public interface Live {
-	void resume();
+public interface Live extends PausedAware {
 
-	void pause();
-
-	boolean isPaused();
-	
 	void refresh(List<Course> curriculum) throws Exception;
-
-	// void clean();
-	//
-	// void clean(String type);
-	//
-	// void clean(String type, String subType);
 
 	void add(Course course) throws Exception;
 

@@ -1,6 +1,5 @@
 package com.aleiye.lassock.live.hill.shade;
 
-import com.aleiye.lassock.live.hill.PollableShade;
 import com.aleiye.lassock.util.LogUtils;
 
 public abstract class AbstractPollableShade extends BasicShadeSemantics implements PollableShade {

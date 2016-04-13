@@ -1,6 +1,6 @@
 package com.aleiye.lassock.live.hill;
 
-import com.aleiye.lassock.common.able.Destroyable;
+import com.aleiye.lassock.common.InitializeAware;
 import com.aleiye.lassock.live.Live;
 import com.aleiye.lassock.live.station.BasketStation;
 
@@ -11,10 +11,6 @@ import com.aleiye.lassock.live.station.BasketStation;
  * @since 2015年5月14日
  * @version 2.1.2
  */
-public interface Hill extends Live, Destroyable {
-
-	void initialize() throws Exception;
-
+public interface Hill extends Live, InitializeAware {
 	public void setBaskets(BasketStation baskets);
-
 }

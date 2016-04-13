@@ -1,39 +1,44 @@
-package com.aleiye.lassock.live.hill.shade;
+package com.aleiye.lassock.live.hill.executor;
 
-import java.util.concurrent.TimeUnit;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.aleiye.lassock.lifecycle.LifecycleState;
-import com.aleiye.lassock.live.hill.PollableShade;
-import com.aleiye.lassock.live.hill.Shade;
-import com.aleiye.lassock.live.hill.ShadeRunner;
 import com.aleiye.lassock.live.hill.Sign;
-import com.aleiye.lassock.live.hill.shade.tool.ShadeExecutor;
+import com.aleiye.lassock.live.hill.shade.PollableShade;
+import com.aleiye.lassock.live.hill.shade.Shade;
+import com.aleiye.lassock.live.hill.shade.ShadeRunner;
 
-public class ScheduleShadeRunner extends ShadeRunner {
-	private static final Logger LOGGER = LoggerFactory.getLogger(ScheduleShadeRunner.class);
+/**
+ * Timer
+ * @author ruibing.zhao
+ * @since 2015年9月29日
+ */
+public class TimerShadeRunner extends ShadeRunner {
+	private static final Logger LOGGER = LoggerFactory.getLogger(TimerShadeRunner.class);
+	private static Timer timer = new Timer("TimerShadeRunner");
 
 	private LifecycleState lifecycleState;
-
-	private TimerRunner runner;
+	private TimerTaskRunner runner;
 
 	@Override
 	public void start() {
 		PollableShade source = (PollableShade) getShade();
 		source.start();
-		runner = new TimerRunner();
+		runner = new TimerTaskRunner();
 		runner.source = source;
 		Sign sign = source.getSign();
-		ShadeExecutor.getService()
-				.scheduleAtFixedRate(runner, sign.getDelay(), sign.getPeriod(), TimeUnit.MILLISECONDS);
+		timer.schedule(runner, sign.getDelay(), sign.getPeriod());
 		lifecycleState = LifecycleState.START;
 		LOGGER.info("Shade:" + source.getName() + " was running!");
 	}
 
 	@Override
 	public void stop() {
+		runner.cancel();
 		Shade shade = getShade();
 		shade.stop();
 		lifecycleState = LifecycleState.STOP;
@@ -45,7 +50,7 @@ public class ScheduleShadeRunner extends ShadeRunner {
 		return lifecycleState;
 	}
 
-	public class TimerRunner implements Runnable {
+	public class TimerTaskRunner extends TimerTask {
 		private PollableShade source;
 
 		@Override
@@ -57,7 +62,8 @@ public class ScheduleShadeRunner extends ShadeRunner {
 			try {
 				source.pick();
 			} catch (Exception e) {
-				LOGGER.error(source.getName() + " pick exception:" + e.getMessage());
+				LOGGER.error(source.getName() + " pick exception!");
+				LOGGER.error(e.getMessage(), e);
 				LOGGER.debug("", e);
 			}
 		}

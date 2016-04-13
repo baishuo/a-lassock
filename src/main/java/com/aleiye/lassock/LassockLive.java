@@ -3,11 +3,13 @@ package com.aleiye.lassock;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.aleiye.lassock.api.conf.Context;
 import com.aleiye.lassock.live.LiveContainer;
 import com.aleiye.lassock.liveness.Liveness;
 import com.aleiye.lassock.liveness.LivenessConfiguration;
-import com.aleiye.lassock.logging.Logging;
 import com.aleiye.lassock.monitor.DefaultMonitor;
 import com.aleiye.lassock.monitor.Monitor;
 import com.aleiye.lassock.util.ConfigUtils;
@@ -20,7 +22,9 @@ import com.aleiye.lassock.util.DestroyableUtils;
  * @since 2015年5月12日
  * @version 2.1.2
  */
-public class LassockLive extends Logging {
+public class LassockLive {
+	private static final Logger logger = LoggerFactory.getLogger(LassockLive.class);
+
 	private AtomicBoolean startupComplete = new AtomicBoolean(false);
 	private AtomicBoolean isShuttingDown = new AtomicBoolean(false);
 	private AtomicBoolean isStartingUp = new AtomicBoolean(false);
@@ -35,7 +39,7 @@ public class LassockLive extends Logging {
 
 	public void startup() throws Exception {
 		try {
-			logInfo("Lassock starting......");
+			logger.info("Lassock starting......");
 			if (isShuttingDown.get())
 				throw new IllegalStateException("Lassock is still shutting down, cannot re-start!");
 			if (startupComplete.get())
@@ -43,10 +47,10 @@ public class LassockLive extends Logging {
 			boolean canStartup = isStartingUp.compareAndSet(false, true);
 			if (canStartup) {
 				// Live 初始化
-				logInfo("Initializing live!");
+				logger.info("Initializing live!");
 				container = new LiveContainer(ConfigUtils.getConfig());
 				container.initialize();
-				logInfo("Live was initialized!");
+				logger.info("Live was initialized!");
 
 				// liveness初始化;
 				Context livenessContext = ConfigUtils.getContext("liveness");
@@ -60,10 +64,10 @@ public class LassockLive extends Logging {
 				monitor.start();
 
 				startupComplete.compareAndSet(false, true);
-				logInfo("Lassock startup completed");
+				logger.info("Lassock startup completed");
 			}
 		} catch (Exception e) {
-			logError("Fatal error during LassockLive startup. Prepare to shutdown");
+			logger.error("Fatal error during LassockLive startup. Prepare to shutdown");
 			shutdown();
 			isStartingUp.set(false);
 			throw e;
@@ -81,9 +85,9 @@ public class LassockLive extends Logging {
 			isStartingUp.set(false);
 			// 减持执行线程
 			shutdownLatch.countDown();
-			logInfo("shut down completed");
+			logger.info("Lassock shutdown completed");
 		} else {
-			logInfo("lassock has been shutdown");
+			logger.info("Lassock has been shutdown");
 		}
 		isShuttingDown.set(true);
 	}

@@ -12,7 +12,7 @@ import com.aleiye.lassock.lifecycle.AbstractLifecycleAware;
  */
 public abstract class NamedLifecycle extends AbstractLifecycleAware implements NamedComponent {
 	// 名称
-	protected String name;
+	private String name;
 
 	@Override
 	public synchronized void setName(String name) {

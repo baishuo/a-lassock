@@ -22,7 +22,7 @@ public abstract class BasicShadeSemantics extends AbstractShade {
 		}
 		try {
 			setLifecycleState(LifecycleState.IDLE);
-			this.intelligence = new Intelligence(this.name);
+			this.intelligence = new Intelligence(this.getName());
 			this.course = course;
 			doConfigure(course);
 			this.intelligence.setType(course.getType().toString());

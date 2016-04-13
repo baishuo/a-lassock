@@ -35,7 +35,6 @@ public class Sign extends ValueStation {
 	private String name;
 	// 采集类型
 	private String type;
-
 	// 编码
 	private String encoding = "UTF-8";
 	// 是否移除

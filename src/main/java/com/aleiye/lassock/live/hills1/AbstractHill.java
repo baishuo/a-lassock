@@ -6,13 +6,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.aleiye.lassock.LassockLive;
 import com.aleiye.lassock.api.Course;
 import com.aleiye.lassock.api.Intelligence;
 import com.aleiye.lassock.live.exception.CourseException;
 import com.aleiye.lassock.live.exception.SignException;
 import com.aleiye.lassock.live.hill.Sign;
 import com.aleiye.lassock.live.station.BasketStation;
-import com.aleiye.lassock.logging.Logging;
 import com.aleiye.lassock.util.CloseableUtils;
 
 /**
@@ -22,7 +25,8 @@ import com.aleiye.lassock.util.CloseableUtils;
  * @since 2015年6月4日
  * @version 2.1.2
  */
-public abstract class AbstractHill<T extends Sign, S extends AbstractShade<T>> extends Logging implements Hill1 {
+public abstract class AbstractHill<T extends Sign, S extends AbstractShade<T>> implements Hill1 {
+	protected static final Logger logger = LoggerFactory.getLogger(LassockLive.class);
 	// 是否消毁
 	protected final AtomicBoolean destroyed = new AtomicBoolean(false);
 	// 输出对列
@@ -124,7 +128,7 @@ public abstract class AbstractHill<T extends Sign, S extends AbstractShade<T>> e
 				addSign(sign);
 			} catch (SignException s) {
 				// 多标识中某个发生常异处理
-				logError(s.getMessage());
+				logger.error(s.getMessage());
 			}
 		}
 		details.put(course.getName(), signs);
@@ -172,7 +176,7 @@ public abstract class AbstractHill<T extends Sign, S extends AbstractShade<T>> e
 				if (s != null) {
 					shades.put(key, s);
 					signs.put(key, t);
-					logInfo("Add sign:" + t.getName());
+					logger.info("Add sign:" + t.getName());
 				}
 			}
 		}
@@ -245,7 +249,7 @@ public abstract class AbstractHill<T extends Sign, S extends AbstractShade<T>> e
 				T removed = signs.remove(key);
 				removed.setRemoved(true);
 				removeShade(removed);
-				logInfo(this.getClass().getSimpleName() + "/Sign:" + t.getName() + " was removed!");
+				logger.info(this.getClass().getSimpleName() + "/Sign:" + t.getName() + " was removed!");
 			}
 		}
 	}

@@ -7,7 +7,6 @@ import com.aleiye.lassock.api.Intelligence;
 import com.aleiye.lassock.lang.Sistem;
 import com.aleiye.lassock.live.NamedLifecycle;
 import com.aleiye.lassock.live.basket.Basket;
-import com.aleiye.lassock.live.hill.Shade;
 import com.aleiye.lassock.live.hill.Sign;
 import com.aleiye.lassock.live.model.GeneralMushroom;
 import com.aleiye.lassock.live.model.Mushroom;
@@ -23,18 +22,14 @@ import com.google.common.base.Preconditions;
 public abstract class AbstractShade extends NamedLifecycle implements Shade {
 	// 传输缓存对列
 	private Basket basket;
-
+	// 运行情报
 	protected Intelligence intelligence;
-
+	// 课程配置
 	protected Course course;
-
-	public AbstractShade() {
-		this.intelligence = new Intelligence(this.name);
-	}
 
 	@Override
 	public synchronized void start() {
-		Preconditions.checkState(basket != null, "No basket processor configured");
+		Preconditions.checkState(basket != null, "No basket configured");
 		super.start();
 	}
 
@@ -45,16 +40,6 @@ public abstract class AbstractShade extends NamedLifecycle implements Shade {
 	 * @throws InterruptedException 线程阻塞唤醒异常,该异常发生时代表该Shade关闭
 	 */
 	protected void putMushroom(Sign sign, Mushroom generalMushroom) throws InterruptedException {
-		// // 判断关联课程是否为空
-		// String cid = sign.getCourseIds();
-		// if (StringUtils.isBlank(cid)) {
-		// // 无关联课程表的Sign(Shade)处于移除状态
-		// throw new SignRemovedException("Shade:" + sign.getId() +
-		// " was removed!");
-		// }
-		// generalMushroom.setEnconde(sign.getEncoding());
-		// generalMushroom.setSignId(sign.getId());
-
 		generalMushroom.getHeaders().put(EventKey.RESOURCEID, this.course.getName());
 		generalMushroom.getHeaders().put(EventKey.USERID,
 				EncrypDES.decrypt(Sistem.getHeader().get("authkey").toString()));
