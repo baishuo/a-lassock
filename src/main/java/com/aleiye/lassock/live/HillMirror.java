@@ -36,15 +36,19 @@ public class HillMirror implements Hill {
 
 	@Override
 	public void resume() {
-		hill.resume();
-		hill1.resume();
+		if (hill.isPaused())
+			hill.resume();
+		if (hill.isPaused())
+			hill1.resume();
 		state.setState(RunState.RUNNING);
 	}
 
 	@Override
 	public void pause() {
-		hill1.pause();
-		hill.pause();
+		if (!hill1.isPaused())
+			hill1.pause();
+		if (!hill.isPaused())
+			hill.pause();
 		state.setState(RunState.PAUSED);
 	}
 

@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.aleiye.lassock.lang.Sistem;
+import com.aleiye.lassock.util.SigarUtils;
 
 /**
  * Lassock启动程序
@@ -18,6 +19,9 @@ public class Lassock {
 
 	public static void main(String[] args) {
 		try {
+			// 将本机IP存入 System
+			System.setProperty("local.host", SigarUtils.getIPBySigar());
+
 			// 采集器系统信息
 			Class.forName(Sistem.class.getName());
 			// Startable

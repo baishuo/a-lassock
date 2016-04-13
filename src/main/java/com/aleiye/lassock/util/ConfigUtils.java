@@ -48,13 +48,6 @@ public class ConfigUtils {
 		if (config != null)
 			for (Entry<String, ConfigValue> entry : config.entrySet()) {
 				String value = entry.getValue().unwrapped().toString();
-				if (CEUtil.match(value)) {
-					try {
-						value = ConfigUtils.config.getString(CEUtil.getKey(value));
-					} catch (Exception e) {
-						value = "";
-					}
-				}
 				contxt.put(entry.getKey(), value);
 			}
 		return contxt;
@@ -66,24 +59,12 @@ public class ConfigUtils {
 	 * @return
 	 */
 	public static Context getContext(String keyPath) {
-		Context contxt = new Context();
 		try {
 			Config configVlaue = config.getConfig(keyPath);
-			if (configVlaue != null)
-				for (Entry<String, ConfigValue> entry : configVlaue.entrySet()) {
-					String value = entry.getValue().unwrapped().toString();
-					if (CEUtil.match(value)) {
-						try {
-							value = config.getString(CEUtil.getKey(value));
-						} catch (Exception e) {
-							value = "";
-						}
-					}
-					contxt.put(entry.getKey(), value);
-				}
+			return toContext(configVlaue);
 		} catch (Exception e) {
 			;
 		}
-		return contxt;
+		return new Context();
 	}
 }

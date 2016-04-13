@@ -21,6 +21,7 @@ import com.aleiye.lassock.lang.Sistem;
 import com.aleiye.lassock.lifecycle.AbstractLifecycleAware;
 import com.aleiye.lassock.live.Live;
 import com.aleiye.lassock.util.AkkaUtils;
+import com.aleiye.lassock.util.ConfigUtils;
 
 /**
  * 默认监听
@@ -31,8 +32,6 @@ import com.aleiye.lassock.util.AkkaUtils;
  */
 public class DefaultMonitor extends AbstractLifecycleAware implements Monitor {
 	private boolean enabled = false;
-	private String host;
-	private int port;
 	private String systemName;
 
 	private ActorSystem actorSystem;
@@ -54,8 +53,6 @@ public class DefaultMonitor extends AbstractLifecycleAware implements Monitor {
 	public void configure(Context context) {
 		enabled = context.getBoolean("enabled", false);
 		systemName = Sistem.getLassockname();
-		host = Sistem.getHost();
-		port = context.getInteger("port", Sistem.getPort());
 		target = new Context(context.getSubProperties("target."));
 	}
 
@@ -64,12 +61,12 @@ public class DefaultMonitor extends AbstractLifecycleAware implements Monitor {
 		// 是否开启监控服务
 		if (enabled) {
 			// 开启AKKA服务
-			actorSystem = AkkaUtils.createActorSystem(host, port, systemName);
+			actorSystem = ActorSystem.create(systemName, ConfigUtils.getConfig().getConfig("akka").atPath("akka"));
 			// state 状态服务
 			actorSystem.actorOf(Props.create(StatusActor.class, live), "state");
 			if (target.getBoolean("enabled")) {
 				timer = new Timer("timer-monitor");
-				String targetHost = target.getString("host",Sistem.getHost());
+				String targetHost = target.getString("host", Sistem.getHost());
 				int targetPort = target.getInteger("port");
 				String targetName = target.getString("systemname");
 				String targetRegName = target.getString("registername");
