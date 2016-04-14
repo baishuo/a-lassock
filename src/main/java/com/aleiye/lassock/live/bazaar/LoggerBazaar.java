@@ -9,6 +9,13 @@ import com.aleiye.lassock.conf.Context;
 import com.aleiye.lassock.live.basket.Basket;
 import com.aleiye.lassock.live.model.Mushroom;
 
+/**
+ * Logger输出消费端，采集数据将在Logger 中输出主要用于测试
+ * 
+ * @author ruibing.zhao
+ * @since 2016年4月14日
+ * @version 1.0
+ */
 public class LoggerBazaar extends AbstractBazaar {
 	private static final Logger logger = LoggerFactory.getLogger(LoggerBazaar.class);
 
@@ -21,9 +28,9 @@ public class LoggerBazaar extends AbstractBazaar {
 			event = channel.take();
 
 			if (event != null) {
-				if (logger.isInfoEnabled()) {
-					logger.info("Event: " + new String((byte[]) event.getBody()));
-					logger.info(JSONObject.fromObject(event.getHeaders()).toString());
+				if (logger.isDebugEnabled()) {
+					logger.debug("Event: " + new String((byte[]) event.getBody()));
+					logger.debug(JSONObject.fromObject(event.getHeaders()).toString());
 					event.incrementCompleteCount();
 				}
 			}
