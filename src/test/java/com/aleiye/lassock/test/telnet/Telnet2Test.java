@@ -3,7 +3,7 @@ package com.aleiye.lassock.test.telnet;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
-import com.aleiye.lassock.live.hill.shade.telnet.ApacheTelnet;
+import com.aleiye.lassock.live.hill.source.telnet.ApacheTelnet;
 
 public class Telnet2Test {
 	public static void main(String[] args) {

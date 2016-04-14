@@ -1,6 +1,7 @@
 package com.aleiye.lassock.live.hills1.text;
 
-import com.aleiye.lassock.live.hill.Sign;
+import com.aleiye.lassock.live.hills1.Sign;
+
 
 /**
  * 文档采集标识

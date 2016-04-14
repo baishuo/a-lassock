@@ -8,7 +8,7 @@ import org.apache.commons.lang.StringUtils;
 import com.aleiye.lassock.api.Course;
 import com.aleiye.lassock.api.Course.RunType;
 import com.aleiye.lassock.conf.ValueStation;
-import com.aleiye.lassock.live.hill.shade.AbstractShade;
+import com.aleiye.lassock.live.hill.source.AbstractSource;
 
 /**
  * 采集标识 <br>
@@ -22,7 +22,7 @@ import com.aleiye.lassock.live.hill.shade.AbstractShade;
  * @since 2015年5月20日
  * @version 2.1.2
  * @see Course
- * @see AbstractShade
+ * @see AbstractSource
  */
 public class Sign extends ValueStation {
 	// 关个多个课程时拼接字符

@@ -14,7 +14,6 @@ import com.aleiye.lassock.api.Course;
 import com.aleiye.lassock.api.Intelligence;
 import com.aleiye.lassock.live.exception.CourseException;
 import com.aleiye.lassock.live.exception.SignException;
-import com.aleiye.lassock.live.hill.Sign;
 import com.aleiye.lassock.live.station.BasketStation;
 import com.aleiye.lassock.util.CloseableUtils;
 

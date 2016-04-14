@@ -19,7 +19,7 @@ public abstract class AbstractLifecycleAware implements LifecycleAware {
 		this.lifecycleState = lifecycleState;
 	}
 
-	protected boolean isStarted() {
+	public boolean isStarted() {
 		return getLifecycleState() == LifecycleState.START;
 	}
 

@@ -17,11 +17,11 @@ import com.aleiye.lassock.api.LassockState;
 import com.aleiye.lassock.lifecycle.LifecycleState;
 import com.aleiye.lassock.live.exception.CourseException;
 import com.aleiye.lassock.live.exception.SignException;
-import com.aleiye.lassock.live.hill.executor.tool.ShadeExecutor;
-import com.aleiye.lassock.live.hill.executor.tool.ShadeScheduler;
-import com.aleiye.lassock.live.hill.shade.DefaultShadeFactory;
-import com.aleiye.lassock.live.hill.shade.Shade;
-import com.aleiye.lassock.live.hill.shade.ShadeRunner;
+import com.aleiye.lassock.live.hill.executor.tool.SourceExecutor;
+import com.aleiye.lassock.live.hill.executor.tool.SourceScheduler;
+import com.aleiye.lassock.live.hill.source.DefaultSourceFactory;
+import com.aleiye.lassock.live.hill.source.Source;
+import com.aleiye.lassock.live.hill.source.SourceRunner;
 import com.aleiye.lassock.live.station.BasketStation;
 import com.aleiye.lassock.util.ScrollUtils;
 
@@ -37,7 +37,7 @@ public class DefaultHill implements Hill {
 	// 所有 对列
 	protected BasketStation baskets;
 	// 采集子源工厂
-	DefaultShadeFactory factory = new DefaultShadeFactory();
+	DefaultSourceFactory factory = new DefaultSourceFactory();
 	// 暂停开关
 	protected AtomicBoolean paused = new AtomicBoolean(false);
 	// 是否消毁
@@ -46,7 +46,7 @@ public class DefaultHill implements Hill {
 	// 所有课程
 	protected ConcurrentHashMap<String, Course> courses = new ConcurrentHashMap<String, Course>();
 	// 采集子源
-	protected Map<String, ShadeRunner> shades = new HashMap<String, ShadeRunner>();
+	protected Map<String, SourceRunner> shades = new HashMap<String, SourceRunner>();
 
 	@Override
 	public void setBaskets(BasketStation baskets) {
@@ -55,8 +55,8 @@ public class DefaultHill implements Hill {
 
 	@Override
 	public void initialize() throws Exception {
-		ShadeExecutor.start();
-		ShadeScheduler.start();
+		SourceExecutor.start();
+		SourceScheduler.start();
 		// ShadeFileExecutor.start();
 	}
 
@@ -73,7 +73,7 @@ public class DefaultHill implements Hill {
 
 	}
 
-//	@Override
+	// @Override
 	public synchronized void putAll(List<Course> courses) throws Exception {
 		if (courses == null || courses.size() == 0) {
 			return;
@@ -88,22 +88,17 @@ public class DefaultHill implements Hill {
 		remove(course.getName());
 		ScrollUtils.validate(course);
 		if (!this.paused.get()) {
-			try {
-				String type = course.getType().toString();
-				Shade shade = factory.create(course.getName(), type);
-				shade.configure(course);
-				String bn = "_DEFAULT";
-				if (StringUtils.isNotBlank(course.getBasketName())) {
-					bn = course.getBasketName();
-				}
-				shade.setBasket(baskets.getBasket(bn));
-				ShadeRunner runner = ShadeRunner.forSource(shade);
-				runner.start();
-				shades.put(course.getName(), runner);
-			} catch (Exception e) {
-
+			String type = course.getType().toString();
+			Source source = factory.create(course.getName(), type);
+			source.configure(course);
+			String bn = "_DEFAULT";
+			if (StringUtils.isNotBlank(course.getBasketName())) {
+				bn = course.getBasketName();
 			}
-
+			source.setBasket(baskets.getBasket(bn));
+			SourceRunner runner = SourceRunner.forSource(source);
+			runner.start();
+			shades.put(course.getName(), runner);
 		}
 		courses.put(course.getName(), course);
 	}
@@ -112,7 +107,7 @@ public class DefaultHill implements Hill {
 	public synchronized void remove(String course) throws Exception {
 		Course existsCourse = courses.remove(course);
 		if (existsCourse != null) {
-			ShadeRunner runner = shades.get(existsCourse.getName());
+			SourceRunner runner = shades.get(existsCourse.getName());
 			if (runner != null)
 				runner.stop();
 		}
@@ -143,7 +138,7 @@ public class DefaultHill implements Hill {
 			throw error;
 		}
 		// 关闭所有Shade
-		for (ShadeRunner shade : shades.values()) {
+		for (SourceRunner shade : shades.values()) {
 			if (shade.getLifecycleState() == LifecycleState.START)
 				shade.stop();
 		}
@@ -171,8 +166,8 @@ public class DefaultHill implements Hill {
 			// // 清空课程
 			// courses.clear();
 		}
-		ShadeExecutor.shutdown();
-		ShadeScheduler.shutdown(true);
+		SourceExecutor.shutdown();
+		SourceScheduler.shutdown(true);
 		// ShadeFileExecutor.shutdown();
 		destroyed.set(true);
 	}
@@ -180,7 +175,7 @@ public class DefaultHill implements Hill {
 	@Override
 	public synchronized List<Intelligence> getIntelligences() {
 		List<Intelligence> intelligences = new ArrayList<Intelligence>();
-		for (ShadeRunner runner : shades.values()) {
+		for (SourceRunner runner : shades.values()) {
 			intelligences.add(runner.getShade().getIntelligence());
 		}
 		return intelligences;

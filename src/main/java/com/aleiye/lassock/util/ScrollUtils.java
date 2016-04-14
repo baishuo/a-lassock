@@ -9,17 +9,24 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.aleiye.lassock.api.Course;
 import com.aleiye.lassock.api.annotation.Required;
-import com.aleiye.lassock.live.hill.Sign;
 
 public class ScrollUtils {
-	public static Sign forSign(Course course, Class<? extends Sign> clazz) throws Exception {
-		Sign sign = clazz.newInstance();
-		JSONObject jo = JSONObject.fromObject(course);
-		jo.putAll(course.getParameters());
-		sign = JsonProvider.adaptMapper.readValue(jo.toString(), clazz);
-		sign.setId(course.getName());
-		sign.associate(((Course) course).getName());
-		return sign;
+	// public static Sign forSign(Course course, Class<? extends Sign> clazz)
+	// throws Exception {
+	// Sign sign = clazz.newInstance();
+	// JSONObject jo = JSONObject.fromObject(course);
+	// jo.putAll(course.getParameters());
+	// sign = JsonProvider.adaptMapper.readValue(jo.toString(), clazz);
+	// sign.setId(course.getName());
+	// sign.associate(((Course) course).getName());
+	// return sign;
+	// }
+
+	public static <T> T forParam(Course course, Class<T> clazz) throws Exception {
+		JSONObject jo = JSONObject.fromObject(course.getParameters());
+		T t = JsonProvider.adaptMapper.readValue(jo.toString(), clazz);
+		validate(t);
+		return t;
 	}
 
 	public static void validate(Object obj) throws Exception {
@@ -34,7 +41,6 @@ public class ScrollUtils {
 					throw new Exception(obj.getClass().getSimpleName() + "-" + f.getName() + " is required!");
 				}
 				if (value.getClass().isAssignableFrom(String.class)) {
-
 					if (StringUtils.isBlank((String) value)) {
 						throw new Exception(obj.getClass().getSimpleName() + "-" + f.getName() + "is required!");
 					}

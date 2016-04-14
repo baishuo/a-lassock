@@ -21,7 +21,7 @@ public abstract class AbstractLiveness extends AbstractLifecycleAware implements
 	}
 
 	public void ExceptionHandler(Throwable exception, SubscriberExceptionContext context) {
-		;
+		logger.error("Liveness cource error", exception);
 	}
 
 	@Override

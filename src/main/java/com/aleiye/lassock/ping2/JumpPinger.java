@@ -2,7 +2,7 @@ package com.aleiye.lassock.ping2;
 
 import java.util.Arrays;
 
-import com.aleiye.lassock.live.hill.shade.telnet.ApacheTelnet;
+import com.aleiye.lassock.live.hill.source.telnet.ApacheTelnet;
 
 public class JumpPinger extends Pinger {
 	boolean conected = false;

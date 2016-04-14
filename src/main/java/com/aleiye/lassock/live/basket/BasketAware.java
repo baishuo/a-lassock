@@ -8,7 +8,15 @@ package com.aleiye.lassock.live.basket;
  * @version 1.0
  */
 public interface BasketAware {
+	/**
+	 *  设置通道
+	 * @param basket
+	 */
 	public void setBasket(Basket basket);
 
+	/**
+	 *  获取通道
+	 * @param basket
+	 */
 	public Basket getBasket();
 }

@@ -3,7 +3,7 @@ package com.aleiye.lassock.ping;
 import java.text.MessageFormat;
 import java.util.Arrays;
 
-import com.aleiye.lassock.live.hill.shade.telnet.ApacheTelnet;
+import com.aleiye.lassock.live.hill.source.telnet.ApacheTelnet;
 
 public class JumpPinger extends Pinger {
 	//	private final Logger LOGGER = Logger.getLogger(JumpPinger.class);
