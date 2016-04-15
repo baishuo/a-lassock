@@ -164,9 +164,11 @@ public class KafkaBazaar extends AbstractBazaar {
 			if (messageCount >= numPartition) {
 				messageCount = 0;
 			}
+			mushroom.incrementCompleteCount();
 		} catch (InterruptedException e) {
 			_LOG.error("get message error", e);
 		} catch (ProducerClosedException e) {
+			mushroom.incrementFailedCount();
 			_LOG.error("kafka serve change", e);
 			try {
 				this.getBasket().push(mushroom);
