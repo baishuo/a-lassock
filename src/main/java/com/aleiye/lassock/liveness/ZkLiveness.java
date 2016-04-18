@@ -100,7 +100,7 @@ public class ZkLiveness extends AbstractLiveness {
 				public void childEvent(CuratorFramework client, PathChildrenCacheEvent event) throws Exception {
 					try {
 						byte[] data = event.getData().getData();
-						if (data == null) {
+						if (data == null || data.length == 0) {
 							return;
 						}
 						Course course = mapper.readValue(data, Course.class);
