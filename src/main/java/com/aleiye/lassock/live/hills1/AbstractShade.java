@@ -52,8 +52,9 @@ public abstract class AbstractShade<T extends Sign> implements Shade {
 	protected void putMushroom(GeneralMushroom generalMushroom) throws InterruptedException, SignRemovedException {
 		// 判断关联课程是否为空
 		generalMushroom.setOriginalValues(sign.getValues());
-		((GeneralMushroom) generalMushroom).setIntelligence(this.intelligence);
-		basket.push(generalMushroom);
+		if (generalMushroom.getIntelligence() == null) {
+			generalMushroom.setIntelligence(this.intelligence);
+		}
 		generalMushroom.getHeaders().put(EventKey.RESOURCEID, sign.getCourseIds());
 		generalMushroom.getHeaders().put(EventKey.USERID,
 				EncrypDES.decrypt(Sistem.getHeader().get("authkey").toString()));
@@ -61,6 +62,7 @@ public abstract class AbstractShade<T extends Sign> implements Shade {
 		generalMushroom.getHeaders().put(EventKey.HOSTNAME, Sistem.getHost());
 		// 每次事件产生 增1
 		this.intelligence.setAcceptedCount(this.intelligence.getAcceptedCount() + 1);
+		basket.push(generalMushroom);
 		// MonitorHelper.setPicked(sign.getKey(), cid.split(","),
 		// sign.getType(), sign.getDescription(),
 		// mushroom.getContent().length);
