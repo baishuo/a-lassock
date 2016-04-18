@@ -53,13 +53,13 @@ public abstract class AbstractShade<T extends Sign> implements Shade {
 		// 判断关联课程是否为空
 		generalMushroom.setOriginalValues(sign.getValues());
 		((GeneralMushroom) generalMushroom).setIntelligence(this.intelligence);
-		basket.push(generalMushroom);
 		generalMushroom.getHeaders().put(EventKey.RESOURCEID, sign.getCourseIds());
 		generalMushroom.getHeaders().put(EventKey.USERID,
 				EncrypDES.decrypt(Sistem.getHeader().get("authkey").toString()));
 		generalMushroom.getHeaders().put(EventKey.MAC, Sistem.getMac());
 		generalMushroom.getHeaders().put(EventKey.HOSTNAME, Sistem.getHost());
 		// 每次事件产生 增1
+		basket.push(generalMushroom);
 		this.intelligence.setAcceptedCount(this.intelligence.getAcceptedCount() + 1);
 		// MonitorHelper.setPicked(sign.getKey(), cid.split(","),
 		// sign.getType(), sign.getDescription(),
