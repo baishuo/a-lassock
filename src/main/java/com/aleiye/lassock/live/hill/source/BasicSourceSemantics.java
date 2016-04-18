@@ -67,7 +67,7 @@ public abstract class BasicSourceSemantics extends AbstractSource {
 		}
 	}
 
-	protected abstract void doConfigure(Course cource) throws Exception;
+	protected abstract void doConfigure(Course course) throws Exception;
 
 	protected abstract void doStart() throws Exception;
 

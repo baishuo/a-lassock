@@ -67,4 +67,8 @@ public class GeneralMushroom implements Mushroom {
 
 	}
 
+	public Intelligence getIntelligence() {
+		return intelligence;
+	}
+
 }
