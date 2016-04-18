@@ -1,5 +1,7 @@
 package com.aleiye.lassock.live.hill.source.syslog;
 
+import com.aleiye.lassock.api.CourseConst;
+
 /**
  * SYSLOG标识
  * 
@@ -10,7 +12,7 @@ package com.aleiye.lassock.live.hill.source.syslog;
 public class SyslogParam {
 
 	// 协议 TCP,UDP
-	private String protocol;
+	private String protocol = CourseConst.PROTOCOL_UDP;
 	// 服务端口号
 	private int port;
 
