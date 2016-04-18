@@ -103,7 +103,7 @@ public class ZkLiveness extends AbstractLiveness {
 						if (data == null) {
 							return;
 						}
-						Course course = mapper.readValue(event.getData().getData(), Course.class);
+						Course course = mapper.readValue(data, Course.class);
 						switch (event.getType()) {
 						case CHILD_ADDED:
 						case CHILD_UPDATED: {
