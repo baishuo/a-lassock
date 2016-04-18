@@ -53,7 +53,8 @@ public class FileFinder extends DirectoryWalker<File> {
 		results.add(file);
 	}
 
-	public List<File> getFiles(String path) {
+	public List<File> getFiles(String filePath) {
+		String path = filePath.trim();
 		List<File> result = new ArrayList<File>();
 		try {
 			File file = new File(path);
