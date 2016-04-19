@@ -91,7 +91,7 @@ public class CustomThreadPoolExecutor extends ThreadPoolExecutor {
 		super.afterExecute(r, t);
 		TextCluser shade = (TextCluser) r;
 		// 正常时放入执行队列继续读
-		if (shade.getStat() == CluserState.NORMAL) {
+		if (shade.getState() == CluserState.NORMAL) {
 			execute(r);
 		} else {
 			shade.returnQueue();

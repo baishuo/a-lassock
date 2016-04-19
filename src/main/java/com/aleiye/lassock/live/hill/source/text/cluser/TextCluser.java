@@ -1,13 +1,13 @@
 package com.aleiye.lassock.live.hill.source.text.cluser;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import com.aleiye.lassock.api.Intelligence;
-import com.aleiye.lassock.live.hills1.text.FileGeter;
+import com.aleiye.lassock.live.exception.SignRemovedException;
+import com.aleiye.lassock.live.hill.source.text.CluserSign;
+import com.aleiye.lassock.live.hill.source.text.PickPolicy;
 
 /**
  * 事件驱动
@@ -17,15 +17,10 @@ import com.aleiye.lassock.live.hills1.text.FileGeter;
  * @version 2.1.2
  */
 public abstract class TextCluser implements Cluser, Runnable {
-	protected final File file;
-	protected final String fileKey;
-	protected Intelligence intelligence;
-	protected CluserListener listener;
-	// 状态
-	protected CluserState state = CluserState.NORMAL;
 
-	// 采集策略 默认为行采集策略
-	protected PickPolicy pickPolic = new LinesPickPolicy();
+	protected final AtomicBoolean done = new AtomicBoolean(false);
+	protected final CluserSign sign;
+	protected CluserListener listener;
 
 	// 等待执行队列(单元对应Shade)
 	private final BlockingQueue<TextCluser> normals;
@@ -34,36 +29,96 @@ public abstract class TextCluser implements Cluser, Runnable {
 	// 应急备用通道(用于在关闭时保存唤醒阻塞无处存放的Shade)
 	private final List<TextCluser> emergency;
 
-	AtomicBoolean opend = new AtomicBoolean();
-
-	public TextCluser(File file, CluserListener listener, BlockingQueue<TextCluser> normals,
-			BlockingQueue<TextCluser> errors, List<TextCluser> emergency) {
-		this.file = file;
-		String key = FileGeter.getFileKey(file);
-		fileKey = key;
+	public TextCluser(CluserSign sign, BlockingQueue<TextCluser> normals, BlockingQueue<TextCluser> errors,
+			List<TextCluser> emergency) {
+		this.sign = sign;
 		this.normals = normals;
 		this.errors = errors;
 		this.emergency = emergency;
 	}
+
+	// 状态
+	private CluserState state = CluserState.NORMAL;
+	// 结束状态保持次数
+	private int endConut = 0;
+	// 异常状态保持次数
+	private int errConut = 0;
+
+	// 采集策略 默认为行采集策略
+	protected PickPolicy pickPolic = new LinesPickPolicy();
 
 	@Override
 	public void run() {
 		try {
 			this.pickPolic.pick(this);
 		} catch (IOException e) {
-			this.state = CluserState.ERR;
+			this.setState(CluserState.ERR);
 		} catch (InterruptedException e) {
 			;
+		} catch (SignRemovedException e) {
+			this.setState(CluserState.ERR);
 		}
 	}
 
-	public CluserState getStat() {
+	// 移动偏移
+	public void seek(long offset) {
+		;
+	}
+
+	// 是否可采集信息
+	public abstract boolean canPick();
+
+	// 采集信息
+	public abstract CluserState selfCheck();
+
+	public int getEndConut() {
+		return endConut;
+	}
+
+	public int getErrConut() {
+		return errConut;
+	}
+
+	@Override
+	public boolean isOpen() {
+		return this.done.get();
+	}
+
+	// 状态设置 如果当前设置状态是保持状态,状态自增
+	@Override
+	public void setState(CluserState state) {
+		this.state = state;
+		switch (state) {
+		case END:
+			errConut = 0;
+			endConut++;
+			break;
+		case ERR:
+			errConut++;
+			endConut = 0;
+			break;
+
+		default:
+			errConut = 0;
+			endConut = 0;
+			break;
+		}
+	}
+
+	@Override
+	public CluserState getState() {
 		return state;
 	}
 
+	@Override
+	public void setListener(CluserListener listener) {
+		this.listener = listener;
+	}
+
+	@Override
 	public void returnQueue() {
 		try {
-			if (getStat() == CluserState.ERR) {
+			if (getState() == CluserState.ERR) {
 				errors.put(this);
 			} else {
 				normals.put(this);
@@ -75,30 +130,19 @@ public abstract class TextCluser implements Cluser, Runnable {
 
 	@Override
 	public void open() throws IOException {
-		doOpen();
-		opend.compareAndSet(false, true);
+		if (done.compareAndSet(false, true)) {
+			doOpen();
+		} else {
+			throw new IllegalStateException("Cluser was opend!");
+		}
 	}
 
 	@Override
 	public void close() throws IOException {
-		doClose();
-		opend.compareAndSet(true, false);
-	}
-
-	@Override
-	public boolean isOpen() {
-		return opend.get();
-	}
-
-	@Override
-	public CluserState getState() {
-		return this.state;
-
-	}
-
-	@Override
-	public void setListener(CluserListener listener) {
-		this.listener = listener;
+		if (done.compareAndSet(true, false))
+			doClose();
+		else
+			throw new IllegalStateException("Cluser is not opend!");
 	}
 
 	protected abstract void doOpen() throws IOException;
@@ -114,20 +158,14 @@ public abstract class TextCluser implements Cluser, Runnable {
 	 */
 	public static class LinesPickPolicy implements PickPolicy {
 
-		public void pick(Cluser shade) throws IOException, InterruptedException {
-			shade.next();
+		public void pick(TextCluser shade) throws IOException, SignRemovedException, InterruptedException {
+			if (shade.canPick()) {
+				shade.next();
+			}
 		}
 	}
 
-	public Intelligence getIntelligence() {
-		return intelligence;
-	}
-
-	public void setIntelligence(Intelligence intelligence) {
-		this.intelligence = intelligence;
-	}
-
-	public String getFileKey() {
-		return fileKey;
+	public CluserSign getSign() {
+		return sign;
 	}
 }

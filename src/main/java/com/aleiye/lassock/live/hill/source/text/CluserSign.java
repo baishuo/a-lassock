@@ -1,4 +1,4 @@
-package com.aleiye.lassock.live.hill.source.text1;
+package com.aleiye.lassock.live.hill.source.text;
 
 /**
  * 文档采集标识

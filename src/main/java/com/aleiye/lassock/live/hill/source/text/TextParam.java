@@ -1,5 +1,6 @@
 package com.aleiye.lassock.live.hill.source.text;
 
+
 /**
  * 文档采集标识
  * 
@@ -8,15 +9,11 @@ package com.aleiye.lassock.live.hill.source.text;
  * @version 2.1.2
  */
 public class TextParam {
-	// unix系统nodeid|windows file path
-	private String fileKey;
-	
-	private String pathFilterRegex;
-
 	/** FILE */
 	// 文件
 	private String path;
-
+	// unix系统nodeid
+	private String nodeId;
 	// 文件是否变更
 	private boolean changed = false;
 
@@ -97,19 +94,11 @@ public class TextParam {
 		this.readLength = readLength;
 	}
 
-	public String getFileKey() {
-		return fileKey;
+	public String getNodeId() {
+		return nodeId;
 	}
 
-	public void setFileKey(String fileKey) {
-		this.fileKey = fileKey;
-	}
-
-	public String getPathFilterRegex() {
-		return pathFilterRegex;
-	}
-
-	public void setPathFilterRegex(String pathFilterRegex) {
-		this.pathFilterRegex = pathFilterRegex;
+	public void setNodeId(String nodeId) {
+		this.nodeId = nodeId;
 	}
 }

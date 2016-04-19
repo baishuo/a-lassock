@@ -1,9 +1,9 @@
-package com.aleiye.lassock.live.hill.source.text1;
+package com.aleiye.lassock.live.hill.source.text;
 
 import java.io.IOException;
 
 import com.aleiye.lassock.live.exception.SignRemovedException;
-import com.aleiye.lassock.live.hill.source.text1.cluser.TextCluser;
+import com.aleiye.lassock.live.hill.source.text.cluser.TextCluser;
 
 /**
  * 采集策略接口

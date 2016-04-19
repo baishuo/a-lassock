@@ -59,13 +59,13 @@ public class FileGeter {
 	// 扫描INODE 文件路径
 	public static String getFile(File file, String key) {
 		if (file.isFile()) {
-			String r = getFileKey(file);
+			String r = new FileAttributes(file).getFileKey();
 			if (r.equals(key)) {
 				return file.getPath();
 			}
 		} else {
 			for (File f : file.listFiles()) {
-				String r = getFileKey(f);
+				String r = new FileAttributes(f).getFileKey();
 				if (r.equals(key)) {
 					return f.getPath();
 				}

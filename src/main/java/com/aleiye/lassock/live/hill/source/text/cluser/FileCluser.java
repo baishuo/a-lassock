@@ -11,8 +11,9 @@ import java.util.concurrent.BlockingQueue;
 import org.apache.commons.io.IOUtils;
 
 import com.aleiye.event.constants.EventKey;
-import com.aleiye.lassock.api.Intelligence.ShadeState;
-import com.aleiye.lassock.live.hills1.text.FileGeter;
+import com.aleiye.lassock.live.exception.SignRemovedException;
+import com.aleiye.lassock.live.hill.source.text.CluserSign;
+import com.aleiye.lassock.live.hill.source.text.FileAttributes;
 import com.aleiye.lassock.live.model.GeneralMushroom;
 import com.aleiye.lassock.util.MarkUtil;
 
@@ -25,55 +26,53 @@ import com.aleiye.lassock.util.MarkUtil;
  */
 public class FileCluser extends TextCluser {
 
-	public FileCluser(File file, CluserListener listener, BlockingQueue<TextCluser> normals,
-			BlockingQueue<TextCluser> errors, List<TextCluser> emergency) {
-		super(file, listener, normals, errors, emergency);
+	public FileCluser(CluserSign sign, BlockingQueue<TextCluser> normals, BlockingQueue<TextCluser> errors,
+			List<TextCluser> emergency) {
+		super(sign, normals, errors, emergency);
 	}
 
 	/** 文件 */
-	// 读取文件 ds
-	RandomAccessFile readFile;
-	// 文件频道es
-	FileChannel channel;
-	// 栈读取偏移si
-	long readOffset = 0;
-	// 结尾偏移di
-	long eofIndex = 0;
+	// 读取文件
+	RandomAccessFile ds;
+	// 文件频道
+	FileChannel es;
+	// 栈读取偏移
+	long si = 0;
+	// 结尾偏移
+	long di = 0;
 
-	// 当前行开始位置bx
-	long lineStartIndex = 0;
-	// 当前行结束位dx
-	long lineEndIndex = 0;
+	// 当前行开始位置
+	long bx = 0;
+	// 当前行结束位
+	long dx = 0;
 
 	/** 读取栈 */
 	// 栈
-	ByteBuffer readBuf;
+	ByteBuffer ss;
 	// 重置位
-	int resetIndex = 0;
+	int bp = 0;
 	// 栈读取位
-	int bufReadIndex = 0;
+	int sp = 0;
 
-	// 累加缓存器,用于两次读取之间行头行尾合并 ax
-	ByteBuffer addBuf = null;
+	// 累加缓存器,用于两次读取之间行头行尾合并
+	ByteBuffer ax = null;
 
-	// 计数缓存器 cx
-	long count = 0;
+	// 计数缓存器
+	long cx = 0;
 
 	// long ip = 0;
 	// RandomAccessFile cs;
 
 	// int flag;
 
-	private void makeMushroom(byte[] content) throws InterruptedException {
+	private void makeMushroom(byte[] content) throws SignRemovedException, InterruptedException {
 		GeneralMushroom mr = new GeneralMushroom();
-		mr.setIntelligence(this.intelligence);
 		mr.setBody(content);
-		mr.getHeaders().put(EventKey.FILEPATH, this.file.getPath());
-		mr.getHeaders().put("soffset", String.valueOf(this.lineStartIndex));
-		mr.getHeaders().put("eoffset", String.valueOf(this.lineEndIndex));
-		listener.picked(mr);
-		this.intelligence.put("offset", this.readOffset);
-		MarkUtil.mark(this.file.getPath(), this.lineEndIndex);
+		mr.getHeaders().put(EventKey.FILEPATH, this.sign.getPath());
+		mr.getHeaders().put("soffset", String.valueOf(this.bx));
+		mr.getHeaders().put("eoffset", String.valueOf(this.dx));
+		this.listener.picked(mr);
+		MarkUtil.mark(this.sign.getKey(), this.dx);
 	}
 
 	/**
@@ -81,179 +80,177 @@ public class FileCluser extends TextCluser {
 	 */
 	public void seek(long offset) {
 		if (offset > 0) {
-			this.readOffset = offset;
-			this.lineEndIndex = readOffset;
-			this.intelligence.put("offset", this.readOffset);
+			this.si = offset;
+			this.dx = si;
+			// this.intelligence.put("offset", this.si);
 		}
 	}
 
+	@Override
 	public void doOpen() throws IOException {
-		selfCheck();
-		readFile.seek(this.readOffset);
-		// 初始缓存器
-		readBuf = ByteBuffer.allocate(2048);
-		readBuf.clear();
-
+		if (selfCheck() == CluserState.NORMAL) {
+			// 初始缓存器
+			ss = ByteBuffer.allocate(this.sign.getReadLength());
+			ss.clear();
+			ds.seek(this.si);
+		}
 	}
 
 	// 读入栈
-	@Override
-	public void next() throws IOException, InterruptedException {
+	public boolean next() throws IOException, SignRemovedException, InterruptedException {
 		if (!canPick()) {
-			return;
+			return false;
 		}
 		// 重置读取行数（相对于栈）
-		count = 0;
+		cx = 0;
 		// 可用空间移动最大，但保留上次未读完数据
 		// ss.limit(ss.capacity());
 		int rl;
 		// 读取
-		if ((rl = channel.read(readBuf)) > 0) {
-			this.readOffset += rl;
+		if ((rl = es.read(ss)) > 0) {
+			this.si += rl;
 			// 反转缓冲区
-			this.readBuf.flip();
+			this.ss.flip();
 			this.readLines();
-			return;
+			return true;
 		}
-		return;
+		return false;
 	}
 
 	// 读入行
-	private void readLines() throws IOException, InterruptedException {
+	private void readLines() throws IOException, SignRemovedException, InterruptedException {
 		// 行开始的位置、结束位置
-		resetIndex = readBuf.position();
-		bufReadIndex = readBuf.limit();
+		bp = ss.position();
+		sp = ss.limit();
 		// 标记为0
-		readBuf.mark();
+		ss.mark();
 		boolean eol = false;
-		while (readBuf.hasRemaining()) {
-			switch (readBuf.get()) {
+		while (ss.hasRemaining()) {
+			switch (ss.get()) {
 			case '\n':
 				eol = true;
 				break;
 			case '\r':
 				// 判断下一个字符是不是换行
-				if ((readBuf.get()) == '\n') {
+				if ((ss.get()) == '\n') {
 					eol = true;
 				}
 				break;
 			}
 			if (eol) {
 				// 回朔一位
-				readBuf.position(readBuf.position() - 1);
+				ss.position(ss.position() - 1);
 				this.readLine();
 				// 跳过换行符
-				readBuf.get();
+				ss.get();
 				// 标记行起始位
-				readBuf.mark();
-				bufReadIndex = readBuf.position();
+				ss.mark();
+				sp = ss.position();
 				// 新行开始位
-				resetIndex = bufReadIndex;
-				lineEndIndex++;
+				bp = sp;
+				dx++;
 				// 重新找行
 				eol = false;
 			}
 		}
 		// 没有读到行
-		if (count == 0) {
+		if (cx == 0) {
 			// 读到尾
-			if (this.readOffset == this.eofIndex) {
+			if (this.si == this.di) {
 				this.readLine();
 			} else {
 				// 一次读取读不完一行
 				// 将当前读取数据寄存在AX
-				if (addBuf == null) {
-					addBuf = ByteBuffer.allocate(readBuf.capacity() + readBuf.limit());
-					addBuf.clear();
+				if (ax == null) {
+					ax = ByteBuffer.allocate(ss.capacity() + ss.limit());
+					ax.clear();
 				}
 				// 当缓存可用部分小于当前读取数据时 ，增加缓存容量
-				if (addBuf.remaining() < readBuf.limit()) {
-					ByteBuffer tax = ByteBuffer.allocate(addBuf.capacity() + readBuf.limit());
+				if (ax.remaining() < ss.limit()) {
+					ByteBuffer tax = ByteBuffer.allocate(ax.capacity() + ss.limit());
 					tax.clear();
-					addBuf.flip();
-					tax.put(addBuf);
-					addBuf = tax;
+					ax.flip();
+					tax.put(ax);
+					ax = tax;
 				}
-				readBuf.flip();
-				addBuf.put(readBuf);
-				readBuf.mark();
+				ss.flip();
+				ax.put(ss);
+				ss.mark();
 			}
 		}
 		// 结尾
 		else {
-			if (this.readOffset == this.eofIndex) {
+			if (this.si == this.di) {
 				// 标记行开始位
 				// ss.mark();
 				this.readLine();
 			}
 		}
 		// 重置到标记位
-		readBuf.reset();
-		readBuf.compact();
+		ss.reset();
+		ss.compact();
 	}
 
 	// 读行
-	private void readLine() throws InterruptedException {
+	private void readLine() throws SignRemovedException, InterruptedException {
 		// 换行位置
-		bufReadIndex = readBuf.position();
+		sp = ss.position();
 		// 计算该行开始移至上行结束位的下一位
-		if (lineEndIndex != 0) {
-			lineStartIndex = lineEndIndex + 1;
+		if (dx != 0) {
+			bx = dx + 1;
 		}
 
 		int size = 0;
 		// 如果有缓存数据，将加上缓存长度
-		if (addBuf != null) {
+		if (ax != null) {
 			int offset = 0;
-			size = bufReadIndex - resetIndex + addBuf.position();
+			size = sp - bp + ax.position();
 			byte[] line = new byte[size];
-			addBuf.flip();
+			ax.flip();
 			// 读取缓存长度数据
-			addBuf.get(line, offset, addBuf.limit());
-			offset = addBuf.limit();
+			ax.get(line, offset, ax.limit());
+			offset = ax.limit();
 			// 续读 SS;
 			// 重置到标记位
-			readBuf.reset();
+			ss.reset();
 			// 读行数据（换行符前一位）
-			readBuf.get(line, offset, bufReadIndex - resetIndex);
+			ss.get(line, offset, sp - bp);
 			// 释放AX
-			addBuf = null;
-			lineEndIndex += size;
+			ax = null;
+			dx += size;
 			// 传输
 			makeMushroom(line);
 		} else {
-			size = bufReadIndex - resetIndex;
+			size = sp - bp;
 			if (size > 0) {
 				byte[] line = new byte[size];
 				// 重置到标记位
-				readBuf.reset();
+				ss.reset();
 				// 读行数据（换行符前一位）
-				readBuf.get(line);
-				lineEndIndex += size;
+				ss.get(line);
+				dx += size;
 				// 传输
 				makeMushroom(line);
 			}
 		}
-		count++;
-	}
-
-	public synchronized void setState(CluserState state) {
-		this.state = state;
+		cx++;
 	}
 
 	// 是否可以采集
-	public synchronized boolean canPick() {
-		// 是否移除
-		if (this.state == CluserState.REMOVED) {
+	@Override
+	public boolean canPick() {
+		// 是否打开
+		if (!this.isOpen()) {
 			return false;
 		}
-		if (this.state == CluserState.END) {
+		// 是否移除
+		if (this.sign.isRemoved()) {
+			this.setState(CluserState.REMOVED);
 			return false;
 		}
 		// 是否读到尾
-		if (this.readOffset == this.eofIndex) {
+		if (this.si == this.di) {
 			this.setState(CluserState.END);
-			this.intelligence.setState(ShadeState.END);
 			return false;
 		}
 		return true;
@@ -262,72 +259,77 @@ public class FileCluser extends TextCluser {
 	/**
 	 * 自检是否可续读
 	 */
+	@Override
 	public CluserState selfCheck() {
 		if (!this.isOpen()) {
 			throw new IllegalStateException("File shade not open!");
 		}
-		CluserState stat = CluserState.NORMAL;
-		if (this.state == CluserState.REMOVED) {
-			return CluserState.REMOVED;
+		CluserState state = CluserState.NORMAL;
+		if (this.sign.isRemoved()) {
+			state = CluserState.REMOVED;
 		} else {
+			File file = new File(this.sign.getPath());
 			// 先初始化文件
 			try {
-				if (channel != null) {
-					IOUtils.closeQuietly(channel);
+				if (es != null) {
+					IOUtils.closeQuietly(es);
 				}
-				if (readFile != null) {
-					IOUtils.closeQuietly(channel);
+				if (ds != null) {
+					IOUtils.closeQuietly(es);
 				}
-				readFile = new RandomAccessFile(file, "r");
+				FileAttributes fa = new FileAttributes(file);
 				// 再验证是否是同一文件
-				String key = FileGeter.getFileKey(file);
-				if (this.fileKey.equals(key)) {
+				String key = fa.getFileKey();
+				if (this.sign.getKey().equals(key)) {
+					ds = new RandomAccessFile(file, "r");
 					// 是同一文件
 					long length = file.length();
-					if (this.eofIndex < length) {
-						this.eofIndex = length;
-						channel = readFile.getChannel();
-						readFile.seek(this.readOffset);
+					if (this.di < length) {
+						this.di = length;
+						es = ds.getChannel();
+						ds.seek(this.si);
 					} else {
-						if (this.eofIndex > length) {
-							this.readOffset = this.eofIndex = length;
-							readFile.seek(this.readOffset);
+						if (this.di > length) {
+							this.si = this.di = length;
+							ds.seek(this.si);
 						}
-						stat = CluserState.END;
+						state = CluserState.END;
 					}
 				} else {
-					stat = CluserState.ERR;
+					state = CluserState.ERR;
 				}
 			} catch (IOException e) {
-				stat = CluserState.ERR;
+				state = CluserState.ERR;
 			}
 		}
-		this.state = stat;
-		switch (stat) {
-		case NORMAL:
-			this.intelligence.setState(ShadeState.NORMAL);
-			break;
-		case END:
-			this.intelligence.setState(ShadeState.END);
-			break;
-		case ERR:
-			this.intelligence.setState(ShadeState.ERROR);
-			break;
-		default:
-			break;
-		}
-		return this.getStat();
+		this.setState(state);
+		// switch (state) {
+		// case NORMAL:
+		// this.intelligence.setState(ShadeState.NORMAL);
+		// break;
+		// case END:
+		// this.intelligence.setState(ShadeState.END);
+		// break;
+		// case ERR:
+		// this.intelligence.setState(ShadeState.ERROR);
+		// break;
+		// default:
+		// break;
+		// }
+		return this.getState();
 	}
 
 	@Override
-	public void doClose() {
-		if (channel != null) {
-			IOUtils.closeQuietly(channel);
+	protected void doClose() {
+		if (done.compareAndSet(true, false)) {
+			if (es != null) {
+				IOUtils.closeQuietly(es);
+			}
+			if (ds != null) {
+				IOUtils.closeQuietly(ds);
+			}
+			es = null;
+			ds = null;
 		}
-		if (readFile != null) {
-			IOUtils.closeQuietly(readFile);
-		}
-		channel = null;
-		readFile = null;
 	}
 }

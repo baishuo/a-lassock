@@ -12,7 +12,7 @@ import com.aleiye.lassock.live.hill.source.syslog.SyslogSource;
 import com.aleiye.lassock.live.hill.source.telnet.Telnet2Source;
 import com.aleiye.lassock.live.hill.source.telnet.TelnetJumpSource;
 import com.aleiye.lassock.live.hill.source.telnet.TelnetSource;
-import com.aleiye.lassock.live.hill.source.text1.TextSource;
+import com.aleiye.lassock.live.hill.source.text.TextSource;
 
 /**
  * Enumeration of built in shade types available in the system.

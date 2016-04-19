@@ -3,6 +3,8 @@ package com.aleiye.lassock.live.hill.source.text.cluser;
 import java.io.Closeable;
 import java.io.IOException;
 
+import com.aleiye.lassock.live.exception.SignRemovedException;
+
 /**
  * 游标
  * 
@@ -28,8 +30,9 @@ public interface Cluser extends Closeable {
 	 * @return 
 	 * @throws InterruptedException 
 	 * @throws IOException 
+	 * @throws SignRemovedException 
 	 */
-	void next() throws IOException, InterruptedException;
+	boolean next() throws IOException, InterruptedException, SignRemovedException;
 
 	/**
 	 * 设置状态
