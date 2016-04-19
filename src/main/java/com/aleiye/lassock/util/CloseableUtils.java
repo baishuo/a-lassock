@@ -4,7 +4,6 @@ import com.google.common.io.Closeables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.io.Closeable;
-import java.io.IOException;
 
 /**
  * Closeable实例类关闭辅助

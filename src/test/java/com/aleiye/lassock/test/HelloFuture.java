@@ -2,7 +2,7 @@ package com.aleiye.lassock.test;
 
 import net.sf.json.JSONObject;
 
-import com.aleiye.lassock.util.AkkaUtils;
+import com.aleiye.lassock.util.MixedUtils;
 
 import akka.actor.ActorRef;
 import akka.actor.ActorSelection;

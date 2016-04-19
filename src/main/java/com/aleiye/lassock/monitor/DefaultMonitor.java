@@ -21,7 +21,7 @@ import com.aleiye.lassock.conf.Context;
 import com.aleiye.lassock.lang.Sistem;
 import com.aleiye.lassock.lifecycle.AbstractLifecycleAware;
 import com.aleiye.lassock.live.Live;
-import com.aleiye.lassock.util.AkkaUtils;
+import com.aleiye.lassock.util.MixedUtils;
 import com.aleiye.lassock.util.ConfigUtils;
 
 /**
@@ -74,13 +74,13 @@ public class DefaultMonitor extends AbstractLifecycleAware implements Monitor {
 				String targetActorName = target.getString("monitorname");
 				int period = target.getInteger("period", 5000);
 				// 注册
-				ActorSelection regSelection = actorSystem.actorSelection(AkkaUtils.getRemoteActorPath(targetHost,
-						targetPort, targetName, targetRegName));
+				ActorSelection regSelection = actorSystem.actorSelection(MixedUtils.formatActorPath(targetName,
+						targetHost, targetPort, targetRegName));
 				LassockInformation info = Sistem.getInformation();
 				regSelection.tell(info, ActorRef.noSender());
 
 				// 任务监控
-				selection = actorSystem.actorSelection(AkkaUtils.getRemoteActorPath(targetHost, targetPort, targetName,
+				selection = actorSystem.actorSelection(MixedUtils.formatActorPath(targetName, targetHost, targetPort,
 						targetActorName));
 
 				TimerTask tt = new TimerTask() {

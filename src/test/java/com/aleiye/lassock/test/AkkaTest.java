@@ -1,7 +1,5 @@
 package com.aleiye.lassock.test;
 
-import java.util.HashMap;
-
 import net.sf.json.JSONObject;
 
 import org.apache.commons.lang.StringUtils;
@@ -10,17 +8,15 @@ import org.junit.Test;
 import scala.concurrent.Await;
 import scala.concurrent.Future;
 import scala.concurrent.duration.Duration;
-import akka.actor.ActorRef;
 import akka.actor.ActorSelection;
 import akka.actor.ActorSystem;
-import akka.actor.Props;
 import akka.actor.UntypedActor;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
 import akka.pattern.Patterns;
 import akka.util.Timeout;
 
-import com.aleiye.lassock.util.AkkaUtils;
+import com.aleiye.lassock.util.MixedUtils;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 
@@ -58,8 +54,8 @@ public class AkkaTest {
 
 		try {
 			// 注册
-			ActorSelection regSelection = system.actorSelection(AkkaUtils.getRemoteActorPath("10.0.1.117", 9981,
-					"lassock", "state"));
+			ActorSelection regSelection = system.actorSelection(MixedUtils.formatActorPath("lassock", "10.0.1.117",
+					9981, "state"));
 			Timeout timeout = new Timeout(Duration.create(30, "seconds"));
 			Future<Object> future = Patterns.ask(regSelection, false, timeout);
 			Object result = Await.result(future, timeout.duration());
