@@ -3,31 +3,44 @@ package com.aleiye.lassock.util;
 import java.io.File;
 
 import org.apache.log4j.Logger;
+import org.hyperic.sigar.NetFlags;
 import org.hyperic.sigar.NetInfo;
 import org.hyperic.sigar.NetInterfaceConfig;
 import org.hyperic.sigar.Sigar;
 import org.hyperic.sigar.SigarException;
 
 /**
- * Siger 工具
+ * Siger 工具类
  * 
  * @author ruibing.zhao
  * @since 2016年1月29日
  * @version 1.0
  */
 public class SigarUtils {
-	private static Logger _LOG = Logger.getLogger(SigarUtils.class);
+	private static Logger logger = Logger.getLogger(SigarUtils.class);
 
+	/**
+	 * 屏蔽类创建构造
+	 */
 	private SigarUtils() {}
 
 	static {
-		String sigarPath = SigarUtils.class.getClassLoader().getResource("").getPath() + "sigar";
-		String str = System.getProperty("java.library.path");
-		if (!str.contains(sigarPath)) {
-			str = sigarPath + File.pathSeparator + str;
-			System.setProperty("java.library.path", str);
+		// sigar 工具目录
+		String sigarPath = SigarUtils.class.getResource("/").getPath() + "sigar";
+		File sigarFolder = new File(sigarPath);
+		if (!sigarFolder.exists()) {
+			sigarPath = SigarUtils.class.getResource("/").getPath() + "config/sigar";
+			sigarFolder = new File(sigarPath);
+			if (!sigarFolder.exists())
+				throw new RuntimeException("Can not find sigar path!");
 		}
-//		_LOG.info("java.library.path " + System.getProperty("java.library.path"));
+		// 将sigar 目录添加到 class_path
+		String classPath = System.getProperty("java.library.path");
+		if (!classPath.contains(sigarPath)) {
+			classPath = sigarPath + File.pathSeparator + classPath;
+			System.setProperty("java.library.path", classPath);
+		}
+		logger.debug("java.library.path:" + classPath);
 	}
 
 	public static Sigar getSigar() {
@@ -40,15 +53,16 @@ public class SigarUtils {
 	 * @return
 	 * @throws SigarException
 	 */
-	public static String getMacBySigar() {
+	public static String getMac() {
 		Sigar sigar = null;
 		try {
 			sigar = new Sigar();
-			NetInterfaceConfig netInterfaceConfig = sigar.getNetInterfaceConfig(null);
-			String str = netInterfaceConfig.getHwaddr();
+			NetInterfaceConfig config = sigar.getNetInterfaceConfig(null);
+			String str = config.getHwaddr();
 			return str.replaceAll(":", "").replaceAll("-", "");
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("Sigar get MAC error!", e);
+			logger.debug("", e);
 		} finally {
 			if (sigar != null) {
 				sigar.close();
@@ -58,40 +72,45 @@ public class SigarUtils {
 	}
 
 	/**
-	 * 对外如没有特殊情况都调用这几个bysigar的方法
+	 * 获取本机IP地址
 	 * 
 	 * @return
 	 * @throws SigarException
 	 */
-	public static String getIPBySigar() {
+	public static String getIP() {
 		Sigar sigar = null;
 		try {
 			sigar = new Sigar();
-			NetInterfaceConfig netInterfaceConfig = sigar.getNetInterfaceConfig(null);
-
-			return netInterfaceConfig.getAddress();
+			NetInterfaceConfig config = sigar.getNetInterfaceConfig(null);
+			return config.getAddress();
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("Sigar get IP error!", e);
+			logger.debug("", e);
 		} finally {
 			if (sigar != null) {
 				sigar.close();
 			}
 		}
-		return "localhost";
+		return NetFlags.LOOPBACK_ADDRESS;
 	}
 
-	public static String getHostsNameBySigar() {
+	/**
+	 * 获取本机主机名
+	 * 
+	 * @return
+	 */
+	public static String getHostName() {
 		Sigar sigar = null;
 		try {
 			sigar = new Sigar();
 			NetInfo info = sigar.getNetInfo();
 			return info.getHostName();
 		} catch (Exception e) {
-			_LOG.error(e.getMessage(), e);
-			return null;
+			logger.error("Sigar get host name error!", e);
+			logger.debug("", e);
 		} finally {
 			sigar.close();
 		}
-
+		return NetFlags.LOOPBACK_HOSTNAME;
 	}
 }

@@ -20,7 +20,7 @@ public class Lassock {
 	public static void main(String[] args) {
 		try {
 			// 将本机IP存入 System
-			System.setProperty("local.host", SigarUtils.getIPBySigar());
+			System.setProperty("local.host", SigarUtils.getIP());
 
 			// 采集器系统信息
 			Class.forName(Sistem.class.getName());

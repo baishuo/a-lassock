@@ -38,14 +38,14 @@ public class Sistem {
 		Context system = ConfigUtils.getContext("system");
 		// 获取IP
 		String ip0 = system.getString("ip");
-		ip = StringUtils.isNotBlank(ip0) ? ip0 : SigarUtils.getIPBySigar();
+		ip = StringUtils.isNotBlank(ip0) ? ip0 : SigarUtils.getIP();
 		// 获取HOST
 		String host0 = system.getString("host");
-		host0 = StringUtils.isNotBlank(host0) ? host0 : SigarUtils.getHostsNameBySigar();
+		host0 = StringUtils.isNotBlank(host0) ? host0 : SigarUtils.getHostName();
 		host = "localhost".equals(host0) ? ip : host0;
 		// 获取MAC
 		String mac0 = system.getString("mac");
-		mac = StringUtils.isNotBlank(mac0) ? mac0 : SigarUtils.getMacBySigar();
+		mac = StringUtils.isNotBlank(mac0) ? mac0 : SigarUtils.getMac();
 
 		port = system.getInteger("port", 9981);
 
