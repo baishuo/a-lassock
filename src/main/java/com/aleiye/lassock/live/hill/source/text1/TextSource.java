@@ -199,7 +199,7 @@ public class TextSource extends AbstractEventDrivenSource implements Runnable {
 						FileFinder ff = new FileFinder(new String[] {});
 						List<File> findFiles = ff.getFiles(param.getPath());
 						for (File file1 : findFiles) {
-							String findKey = FileGeter.getFileKey(file1);
+							String findKey = new FileAttributes(file1).getFileKey();
 							if (fileKey.equals(findKey)) {
 								newPath = file1.getPath();
 								break;

@@ -13,7 +13,7 @@ import org.apache.commons.io.IOUtils;
 import com.aleiye.event.constants.EventKey;
 import com.aleiye.lassock.live.exception.SignRemovedException;
 import com.aleiye.lassock.live.hill.source.text1.CluserSign;
-import com.aleiye.lassock.live.hill.source.text1.FileGeter;
+import com.aleiye.lassock.live.hill.source.text1.FileAttributes;
 import com.aleiye.lassock.live.model.GeneralMushroom;
 import com.aleiye.lassock.util.MarkUtil;
 
@@ -88,13 +88,11 @@ public class FileCluser extends TextCluser {
 
 	@Override
 	public void doOpen() throws IOException {
-		if (done.compareAndSet(false, true)) {
-			if (selfCheck() == CluserState.NORMAL) {
-				// 初始缓存器
-				ss = ByteBuffer.allocate(this.sign.getReadLength());
-				ss.clear();
-				ds.seek(this.si);
-			}
+		if (selfCheck() == CluserState.NORMAL) {
+			// 初始缓存器
+			ss = ByteBuffer.allocate(this.sign.getReadLength());
+			ss.clear();
+			ds.seek(this.si);
 		}
 	}
 
@@ -279,10 +277,11 @@ public class FileCluser extends TextCluser {
 				if (ds != null) {
 					IOUtils.closeQuietly(es);
 				}
-				ds = new RandomAccessFile(file, "r");
+				FileAttributes fa = new FileAttributes(file);
 				// 再验证是否是同一文件
-				String key = FileGeter.getFileKey(file);
+				String key = fa.getFileKey();
 				if (this.sign.getKey().equals(key)) {
+					ds = new RandomAccessFile(file, "r");
 					// 是同一文件
 					long length = file.length();
 					if (this.di < length) {

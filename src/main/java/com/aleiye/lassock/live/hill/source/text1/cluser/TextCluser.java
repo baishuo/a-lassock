@@ -53,9 +53,6 @@ public abstract class TextCluser implements Cluser, Runnable {
 			this.pickPolic.pick(this);
 		} catch (IOException e) {
 			this.setState(CluserState.ERR);
-			// TODO
-			// this.intelligence.setErrorCount(this.intelligence.getErrorCount()
-			// + 1);
 		} catch (InterruptedException e) {
 			;
 		} catch (SignRemovedException e) {
@@ -65,7 +62,7 @@ public abstract class TextCluser implements Cluser, Runnable {
 
 	// 移动偏移
 	public void seek(long offset) {
-
+		;
 	}
 
 	// 是否可采集信息
@@ -133,20 +130,19 @@ public abstract class TextCluser implements Cluser, Runnable {
 
 	@Override
 	public void open() throws IOException {
-		if (isOpen()) {
+		if (done.compareAndSet(false, true)) {
+			doOpen();
+		} else {
 			throw new IllegalStateException("Cluser was opend!");
 		}
-		doOpen();
-		done.set(true);
 	}
 
 	@Override
 	public void close() throws IOException {
-		if (!isOpen()) {
+		if (done.compareAndSet(true, false))
+			doClose();
+		else
 			throw new IllegalStateException("Cluser is not opend!");
-		}
-		doClose();
-		done.set(false);
 	}
 
 	protected abstract void doOpen() throws IOException;
