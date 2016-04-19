@@ -78,10 +78,10 @@ public class LassockLive {
 		if (startupComplete.compareAndSet(true, false)) {
 			// 配置监听关闭
 			liveness.stop();
-			// 关闭采集生涯
-			DestroyableUtils.destroyQuietly(container);
 			// 关闭监控
 			monitor.stop();
+			// 关闭采集生涯
+			DestroyableUtils.destroyQuietly(container);
 			isStartingUp.set(false);
 			// 减持执行线程
 			shutdownLatch.countDown();

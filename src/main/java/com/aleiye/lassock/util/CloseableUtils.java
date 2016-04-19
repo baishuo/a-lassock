@@ -16,7 +16,7 @@ public class CloseableUtils {
 		try {
 			// Here we've instructed Guava to swallow the IOException
 			Closeables.close(closeable, true);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			// We instructed Guava to swallow the IOException, so this should
 			// never happen. Since it did, log it.
 			log.error("IOException should not have been thrown.", e);

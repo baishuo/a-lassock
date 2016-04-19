@@ -23,7 +23,7 @@ import com.aleiye.lassock.util.ConfigUtils;
 public class FileMarker implements Marker<Long> {
 	private static final Logger LOG = Logger.getLogger(FileMarker.class);
 	private Map<String, Long> marks = Collections.synchronizedMap(new HashMap<String, Long>());
-	//从当前系统中获取换行符，默认是"\n"  
+	// 从当前系统中获取换行符，默认是"\n"
 	private String lineSeparator = System.getProperty("line.separator", "\n");
 
 	private String path = ConfigUtils.getConfig().getString("marker.filePath");
@@ -51,6 +51,13 @@ public class FileMarker implements Marker<Long> {
 	@Override
 	public void mark(String key, Long t) {
 		marks.put(key, t);
+	}
+
+	@Override
+	public Long reMark(String key) {
+		synchronized (marks) {
+			return marks.remove(key);
+		}
 	}
 
 	@Override

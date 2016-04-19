@@ -10,7 +10,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -27,9 +26,7 @@ import com.aleiye.lassock.live.hills1.AbstractHill;
 import com.aleiye.lassock.live.hills1.Shade;
 import com.aleiye.lassock.live.hills1.text.TextShade.Stat;
 import com.aleiye.lassock.live.mark.Marker;
-import com.aleiye.lassock.util.ClassUtils;
 import com.aleiye.lassock.util.CloseableUtils;
-import com.aleiye.lassock.util.ConfigUtils;
 import com.aleiye.lassock.util.MarkUtil;
 import com.google.common.collect.Sets;
 import com.google.common.collect.Sets.SetView;
@@ -354,24 +351,6 @@ public class TextHill extends AbstractHill<TextSign, TextShade> {
 		t119.start();
 		// 医生开启
 		t120.start();
-		// 标记初始化
-		if (markerEnabled = ConfigUtils.getConfig().getBoolean("marker.enabled")) {
-			marker = ClassUtils.newInstance(ConfigUtils.getConfig().getString("marker.class"));
-			marker.load();
-			timer = new Timer("marker_timer");
-			TimerTask tt = new TimerTask() {
-				@Override
-				public void run() {
-					try {
-						marker.save();
-					} catch (Exception e) {
-						logger.info("mark save is failure!", e);
-					}
-				}
-			};
-			timer.schedule(tt, 10000, ConfigUtils.getConfig().getLong("marker.period"));
-			MarkUtil.setMarker(marker);
-		}
 	}
 
 	/**
@@ -565,7 +544,6 @@ public class TextHill extends AbstractHill<TextSign, TextShade> {
 				CloseableUtils.closeQuietly(marker);
 			}
 			super.destroy();
-
 		}
 	}
 

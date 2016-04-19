@@ -4,6 +4,7 @@ import com.aleiye.lassock.common.InitializeAware;
 import com.aleiye.lassock.conf.ConfigurationConstants;
 import com.aleiye.lassock.conf.Context;
 import com.aleiye.lassock.conf.LiveConfiguration;
+import com.aleiye.lassock.live.hill.DefaultHill;
 import com.aleiye.lassock.live.hill.Hill;
 import com.aleiye.lassock.live.station.BasketStation;
 import com.aleiye.lassock.live.station.BazaarStation;
@@ -43,7 +44,8 @@ public class LiveContainer implements InitializeAware {
 		bazaarStation = new BazaarStation(configuration, basketStation);
 		bazaarStation.initialize();
 		// 加载采集源
-		hill = new HillMirror();
+//		hill = new HillMirror();
+		hill = new DefaultHill();
 		hill.setBaskets(basketStation);
 		hill.initialize();
 	}

@@ -16,6 +16,7 @@ import com.aleiye.lassock.api.Intelligence;
 import com.aleiye.lassock.api.IntelligenceLetter;
 import com.aleiye.lassock.api.LassockInformation;
 import com.aleiye.lassock.api.LassockState;
+import com.aleiye.lassock.api.LassockState.RunState;
 import com.aleiye.lassock.conf.Context;
 import com.aleiye.lassock.lang.Sistem;
 import com.aleiye.lassock.lifecycle.AbstractLifecycleAware;
@@ -102,7 +103,9 @@ public class DefaultMonitor extends AbstractLifecycleAware implements Monitor {
 	public synchronized void stop() {
 		if (timer != null)
 			timer.cancel();
-		selection.tell(live.getState(), ActorRef.noSender());
+		LassockState state = live.getState();
+		state.setState(RunState.SHUTDOWN);
+		selection.tell(state, ActorRef.noSender());
 		actorSystem.shutdown();
 		super.stop();
 	}

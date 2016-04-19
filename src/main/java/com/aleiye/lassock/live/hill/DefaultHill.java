@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.apache.commons.lang3.StringUtils;
@@ -14,6 +17,8 @@ import org.slf4j.LoggerFactory;
 import com.aleiye.lassock.api.Course;
 import com.aleiye.lassock.api.Intelligence;
 import com.aleiye.lassock.api.LassockState;
+import com.aleiye.lassock.api.LassockState.RunState;
+import com.aleiye.lassock.lang.Sistem;
 import com.aleiye.lassock.lifecycle.LifecycleState;
 import com.aleiye.lassock.live.exception.CourseException;
 import com.aleiye.lassock.live.exception.SignException;
@@ -22,8 +27,16 @@ import com.aleiye.lassock.live.hill.executor.tool.SourceScheduler;
 import com.aleiye.lassock.live.hill.source.DefaultSourceFactory;
 import com.aleiye.lassock.live.hill.source.Source;
 import com.aleiye.lassock.live.hill.source.SourceRunner;
+import com.aleiye.lassock.live.hill.source.text1.CustomThreadPoolExecutor;
+import com.aleiye.lassock.live.hills1.Shade;
+import com.aleiye.lassock.live.mark.Marker;
 import com.aleiye.lassock.live.station.BasketStation;
+import com.aleiye.lassock.util.ClassUtils;
+import com.aleiye.lassock.util.CloseableUtils;
+import com.aleiye.lassock.util.ConfigUtils;
+import com.aleiye.lassock.util.MarkUtil;
 import com.aleiye.lassock.util.ScrollUtils;
+import com.google.common.eventbus.Subscribe;
 
 /**
  * 采集图
@@ -34,6 +47,7 @@ import com.aleiye.lassock.util.ScrollUtils;
  */
 public class DefaultHill implements Hill {
 	private static final Logger LOGGER = LoggerFactory.getLogger(DefaultHill.class);
+	protected LassockState state;
 	// 所有 对列
 	protected BasketStation baskets;
 	// 采集子源工厂
@@ -53,11 +67,36 @@ public class DefaultHill implements Hill {
 		this.baskets = baskets;
 	}
 
+	Marker<Long> marker = null;
+	Timer timer;
+
 	@Override
 	public void initialize() throws Exception {
-		SourceExecutor.start();
-		SourceScheduler.start();
-		// ShadeFileExecutor.start();
+		if (destroyed.compareAndSet(false, true)) {
+			state = new LassockState();
+			state.setInformation(Sistem.getInformation());
+			SourceExecutor.start();
+			SourceScheduler.start();
+			// ShadeFileExecutor.start();
+			// 标记初始化
+			if (ConfigUtils.getConfig().getBoolean("marker.enabled")) {
+				marker = ClassUtils.newInstance(ConfigUtils.getConfig().getString("marker.class"));
+				marker.load();
+				timer = new Timer("marker_timer");
+				TimerTask tt = new TimerTask() {
+					@Override
+					public void run() {
+						try {
+							marker.save();
+						} catch (Exception e) {
+							LOGGER.info("mark save is failure!", e);
+						}
+					}
+				};
+				timer.schedule(tt, 10000, ConfigUtils.getConfig().getLong("marker.period"));
+				MarkUtil.setMarker(marker);
+			}
+		}
 	}
 
 	/**
@@ -73,7 +112,16 @@ public class DefaultHill implements Hill {
 
 	}
 
-	// @Override
+	@Subscribe
+	public void changRunType(RunState state) {
+		if (state == RunState.RUNNING) {
+			resume();
+		} else if (state == RunState.PAUSED) {
+			pause();
+		}
+	}
+
+	@Subscribe
 	public synchronized void putAll(List<Course> courses) throws Exception {
 		if (courses == null || courses.size() == 0) {
 			return;
@@ -83,6 +131,7 @@ public class DefaultHill implements Hill {
 		}
 	}
 
+	@Subscribe
 	@Override
 	public synchronized void put(Course course) throws Exception {
 		remove(course.getName());
@@ -101,16 +150,19 @@ public class DefaultHill implements Hill {
 			shades.put(course.getName(), runner);
 		}
 		courses.put(course.getName(), course);
+		state.setScrollCount(state.getScrollCount() + 1);
 	}
 
+	@Subscribe
 	@Override
 	public synchronized void remove(String course) throws Exception {
 		Course existsCourse = courses.remove(course);
 		if (existsCourse != null) {
-			SourceRunner runner = shades.get(existsCourse.getName());
+			SourceRunner runner = shades.remove(existsCourse.getName());
 			if (runner != null)
 				runner.stop();
 		}
+		state.setScrollCount(state.getScrollCount() - 1);
 	}
 
 	@Override
@@ -128,6 +180,7 @@ public class DefaultHill implements Hill {
 			;
 		}
 		LOGGER.info("Collect resumed!");
+		state.setState(RunState.RUNNING);
 	}
 
 	@Override
@@ -145,6 +198,7 @@ public class DefaultHill implements Hill {
 		// 清空Shade
 		shades.clear();
 		LOGGER.info("Collect paused!");
+		state.setState(RunState.PAUSED);
 	}
 
 	@Override
@@ -154,22 +208,32 @@ public class DefaultHill implements Hill {
 
 	public synchronized void destroy() {
 		if (!destroyed.get()) {
-			// this.clean();
-			// 关闭type subType Shade
-			// // 关闭所有Shade
-			// for (ShadeRunner shade : shades.values()) {
-			// if (shade.getLifecycleState() == LifecycleState.START)
-			// shade.stop();
-			// }
-			// // 清空Shade
-			// shades.clear();
-			// // 清空课程
-			// courses.clear();
+			SourceExecutor.shutdown();
+			SourceScheduler.shutdown(true);
+			// ShadeFileExecutor.shutdown();
+			CustomThreadPoolExecutor executor = CustomThreadPoolExecutor.newExecutor();
+			executor.stoped();
+			executor.resume();
+			executor.shutdown();
+			try {
+				executor.awaitTermination(60000, TimeUnit.MILLISECONDS);
+			} catch (InterruptedException e) {
+				List<Runnable> runs = executor.shutdownNow();
+				for (Runnable r : runs) {
+					Shade s = (Shade) r;
+					CloseableUtils.closeQuietly(s);
+				}
+			}
+			// 定时关闭
+			if (timer != null) {
+				timer.cancel();
+			}
+			// 标记关闭
+			CloseableUtils.closeQuietly(marker);
 		}
-		SourceExecutor.shutdown();
-		SourceScheduler.shutdown(true);
-		// ShadeFileExecutor.shutdown();
+
 		destroyed.set(true);
+		state.setState(RunState.SHUTDOWN);
 	}
 
 	@Override
@@ -183,7 +247,6 @@ public class DefaultHill implements Hill {
 
 	@Override
 	public LassockState getState() {
-		// TODO Auto-generated method stub
-		return null;
+		return state;
 	}
 }

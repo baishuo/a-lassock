@@ -19,5 +19,8 @@ public interface Marker<T> extends Closeable {
 	// 打标
 	public void mark(String key, T t);
 
+	// 打标
+	public T reMark(String key);
+
 	public T getMark(String key);
 }

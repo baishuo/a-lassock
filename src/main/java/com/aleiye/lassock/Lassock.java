@@ -28,12 +28,28 @@ public class Lassock {
 			final LassockStartable startable = new LassockStartable();
 			// 开启
 			startable.startup();
-			Runtime.getRuntime().addShutdownHook(new Thread() {
+//			Runtime.getRuntime().addShutdownHook(new Thread() {
+//				@Override
+//				public void run() {
+//					startable.shutdown();
+//				}
+//			});
+			
+			Thread t = new Thread(new Runnable() {
+				
 				@Override
 				public void run() {
+					try {
+						Thread.sleep(180000);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 					startable.shutdown();
+					
 				}
 			});
+			t.start();
 
 			startable.awaitShutdown();
 

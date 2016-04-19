@@ -12,6 +12,7 @@ import com.aleiye.lassock.live.hill.source.syslog.SyslogSource;
 import com.aleiye.lassock.live.hill.source.telnet.Telnet2Source;
 import com.aleiye.lassock.live.hill.source.telnet.TelnetJumpSource;
 import com.aleiye.lassock.live.hill.source.telnet.TelnetSource;
+import com.aleiye.lassock.live.hill.source.text1.TextSource;
 
 /**
  * Enumeration of built in shade types available in the system.
@@ -65,8 +66,7 @@ public enum SourceType {
 	/**
 	 * TELNET Shade
 	 */
-	TELNET(TelnetSource.class), TELNET2(Telnet2Source.class),
-
+	TELNET(TelnetSource.class), TELNET2(Telnet2Source.class), TEXT(TextSource.class),
 	/**
 	 * TELNET Shade
 	 */

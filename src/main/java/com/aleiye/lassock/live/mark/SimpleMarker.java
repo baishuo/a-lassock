@@ -27,4 +27,9 @@ public class SimpleMarker<T> implements Marker<T> {
 
 	@Override
 	public void close() throws IOException {}
+
+	@Override
+	public T reMark(String key) {
+		return null;
+	}
 }

@@ -18,6 +18,10 @@ public class MarkUtil {
 		marker.mark(key, mark);
 	}
 
+	public static void reMark(String key) {
+		marker.reMark(key);
+	}
+
 	public static void setMarker(Marker<Long> marker1) {
 		marker = marker1;
 	}
