@@ -19,5 +19,10 @@ public interface Liveness extends LifecycleAware, Configurable {
 	 */
 	void setEventBus(EventBus eventBus);
 
+	/**
+	 * 添加课程时异常处理
+	 * @param exception
+	 * @param context
+	 */
 	void ExceptionHandler(Throwable exception, SubscriberExceptionContext context);
 }

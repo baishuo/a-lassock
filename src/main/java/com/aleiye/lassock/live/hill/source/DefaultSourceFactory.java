@@ -5,7 +5,7 @@ import java.util.Locale;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.aleiye.lassock.live.conf.shade.SourceType;
+import com.aleiye.lassock.live.conf.source.SourceType;
 import com.google.common.base.Preconditions;
 
 public class DefaultSourceFactory implements ShadeFactory {
@@ -37,7 +37,7 @@ public class DefaultSourceFactory implements ShadeFactory {
 			LOGGER.debug("Shade type {} is a custom type", type);
 		}
 		if (!srcType.equals(SourceType.OTHER)) {
-			sourceClass = srcType.getShadeClass();
+			sourceClass = srcType.getSourceClass();
 		}
 		return sourceClass;
 	}
