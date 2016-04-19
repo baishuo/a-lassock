@@ -15,7 +15,7 @@ import com.aleiye.lassock.util.SigarUtils;
  */
 public class Lassock {
 
-	private static Logger _LOG = LoggerFactory.getLogger(Lassock.class);
+	private static Logger logger = LoggerFactory.getLogger(Lassock.class);
 
 	public static void main(String[] args) {
 		try {
@@ -39,7 +39,7 @@ public class Lassock {
 
 			System.exit(0);
 		} catch (Exception e) {
-			_LOG.error("Lassock startup failure!", e);
+			logger.error("Lassock startup failure!", e);
 			System.exit(1);
 		}
 	}
