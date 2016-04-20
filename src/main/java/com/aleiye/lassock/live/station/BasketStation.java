@@ -4,6 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.aleiye.lassock.common.InitializeAware;
 import com.aleiye.lassock.conf.Context;
 import com.aleiye.lassock.conf.LiveConfiguration;
@@ -21,6 +25,9 @@ import com.aleiye.lassock.live.basket.MemoryQueueBasket;
  * @version 1.0
  */
 public class BasketStation implements InitializeAware {
+	private static final Logger logger = LoggerFactory.getLogger(BasketStation.class);
+
+	private static final String DEFAULT_BASKET_NAME = "_DEFAULT";
 	// 配置信息
 	LiveConfiguration configuration;
 
@@ -47,7 +54,7 @@ public class BasketStation implements InitializeAware {
 		baskets = new HashMap<String, Basket>();
 		// 生成默认队列
 		Basket defualt = new MemoryQueueBasket();
-		defualt.setName("_DEFAULT");
+		defualt.setName(DEFAULT_BASKET_NAME);
 		defualt.configure(new Context());
 		defualt.start();
 		baskets.put(defualt.getName(), defualt);
@@ -67,14 +74,19 @@ public class BasketStation implements InitializeAware {
 	}
 
 	public boolean contains(String key) {
-		try {
-			return baskets.containsKey(key);
-		} catch (Exception e) {}
-		return false;
+		return baskets.containsKey(key);
 	}
 
 	public Basket getBasket(String name) {
-		return baskets.get(name);
+		String bkn = name;
+		if (StringUtils.isBlank(bkn)) {
+			logger.warn("Basket name is empty.Try to use the default basket.");
+			bkn = DEFAULT_BASKET_NAME;
+		} else if (!contains(bkn)) {
+			logger.error("Basket can not find for name " + bkn + ".");
+			throw new IllegalArgumentException("Basket can not find for name " + bkn + ".");
+		}
+		return baskets.get(DEFAULT_BASKET_NAME);
 	}
 
 	@Override

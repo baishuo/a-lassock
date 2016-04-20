@@ -6,6 +6,9 @@ public final class ConfigurationConstants {
 	public static final String CONFIG_LIVE_PREFIX = CONFIG_LIVE + ".";
 
 	public static final String CONFIG_BASKETS = "baskets";
+	
+	public static final String CONFIG_BASKET = "basket";
+	
 	public static final String CONFIG_BASKETS_PREFIX = CONFIG_BASKETS + ".";
 
 	public static final String CONFIG_BAZAARS = "bazaars";

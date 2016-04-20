@@ -10,7 +10,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,8 +58,8 @@ public class DefaultHill implements Hill {
 
 	// 所有课程
 	protected ConcurrentHashMap<String, Course> courses = new ConcurrentHashMap<String, Course>();
-	// 采集子源
-	protected Map<String, SourceRunner> shades = new HashMap<String, SourceRunner>();
+	// 课程对应采集
+	protected Map<String, SourceRunner> sourceRunners = new HashMap<String, SourceRunner>();
 
 	@Override
 	public void setBaskets(BasketStation baskets) {
@@ -139,15 +138,11 @@ public class DefaultHill implements Hill {
 		if (!this.paused.get()) {
 			String type = course.getType().toString();
 			Source source = factory.create(course.getName(), type);
+			source.setBasket(baskets.getBasket(course.getBasketName()));
 			source.configure(course);
-			String bn = "_DEFAULT";
-			if (StringUtils.isNotBlank(course.getBasketName())) {
-				bn = course.getBasketName();
-			}
-			source.setBasket(baskets.getBasket(bn));
 			SourceRunner runner = SourceRunner.forSource(source);
 			runner.start();
-			shades.put(course.getName(), runner);
+			sourceRunners.put(course.getName(), runner);
 		}
 		courses.put(course.getName(), course);
 		state.setScrollCount(state.getScrollCount() + 1);
@@ -158,7 +153,7 @@ public class DefaultHill implements Hill {
 	public synchronized void remove(String course) throws Exception {
 		Course existsCourse = courses.remove(course);
 		if (existsCourse != null) {
-			SourceRunner runner = shades.remove(existsCourse.getName());
+			SourceRunner runner = sourceRunners.remove(existsCourse.getName());
 			if (runner != null)
 				runner.stop();
 		}
@@ -191,12 +186,12 @@ public class DefaultHill implements Hill {
 			throw error;
 		}
 		// 关闭所有Shade
-		for (SourceRunner shade : shades.values()) {
+		for (SourceRunner shade : sourceRunners.values()) {
 			if (shade.getLifecycleState() == LifecycleState.START)
 				shade.stop();
 		}
 		// 清空Shade
-		shades.clear();
+		sourceRunners.clear();
 		LOGGER.info("Collect paused!");
 		state.setState(RunState.PAUSED);
 	}
@@ -207,7 +202,7 @@ public class DefaultHill implements Hill {
 	}
 
 	public synchronized void destroy() {
-		if (!destroyed.get()) {
+		if (destroyed.compareAndSet(true, false)) {
 			SourceExecutor.shutdown();
 			SourceScheduler.shutdown(true);
 			// ShadeFileExecutor.shutdown();
@@ -230,16 +225,14 @@ public class DefaultHill implements Hill {
 			}
 			// 标记关闭
 			CloseableUtils.closeQuietly(marker);
+			state.setState(RunState.SHUTDOWN);
 		}
-
-		destroyed.set(true);
-		state.setState(RunState.SHUTDOWN);
 	}
 
 	@Override
 	public synchronized List<Intelligence> getIntelligences() {
 		List<Intelligence> intelligences = new ArrayList<Intelligence>();
-		for (SourceRunner runner : shades.values()) {
+		for (SourceRunner runner : sourceRunners.values()) {
 			intelligences.add(runner.getShade().getIntelligence());
 		}
 		return intelligences;

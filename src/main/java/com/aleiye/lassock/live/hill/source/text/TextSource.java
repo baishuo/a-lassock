@@ -316,7 +316,7 @@ public class TextSource extends AbstractEventDrivenSource implements Runnable {
 				this.sign.getIntelligence().setState(ShadeState.NORMAL);
 		} catch (Exception e) {
 			this.sign.getIntelligence().setState(ShadeState.ERROR);
-			logger.error("Refresh files failed!", e);
+			logger.error(e.getMessage());
 			logger.debug("", e);
 			try {
 				Thread.sleep(5000);
