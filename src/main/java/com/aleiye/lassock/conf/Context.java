@@ -11,6 +11,9 @@ import com.google.common.collect.Maps;
 /**
  * The context is a key-value store used to pass configuration information
  * throughout the system.
+ * @author ruibing.zhao
+ * @since 2016年4月19日
+ * @version 1.0
  */
 public class Context {
 

@@ -2,7 +2,6 @@ package com.aleiye.lassock.test;
 
 import java.io.IOException;
 
-import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 import org.apache.commons.lang.StringUtils;
