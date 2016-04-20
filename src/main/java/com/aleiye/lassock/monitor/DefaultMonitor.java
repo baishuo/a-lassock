@@ -16,6 +16,7 @@ import com.aleiye.lassock.api.Intelligence;
 import com.aleiye.lassock.api.IntelligenceLetter;
 import com.aleiye.lassock.api.LassockInformation;
 import com.aleiye.lassock.api.LassockState;
+import com.aleiye.lassock.api.LassockState.RunState;
 import com.aleiye.lassock.conf.Context;
 import com.aleiye.lassock.lang.Sistem;
 import com.aleiye.lassock.lifecycle.AbstractLifecycleAware;
@@ -103,7 +104,7 @@ public class DefaultMonitor extends AbstractLifecycleAware implements Monitor {
 		if (timer != null)
 			timer.cancel();
 		LassockState state = live.getState();
-//		state.setState(RunState.SHUTDOWN);
+		// state.setState(RunState.SHUTDOWN);
 		selection.tell(state, ActorRef.noSender());
 		actorSystem.shutdown();
 		super.stop();
@@ -125,13 +126,23 @@ public class DefaultMonitor extends AbstractLifecycleAware implements Monitor {
 		}
 
 		public void onReceive(Object message) throws Exception {
-			if (message instanceof Boolean) {
-				if ((Boolean) message) {
-					if (!live.isPaused())
-						live.pause();
-				} else {
+			if (message instanceof RunState) {
+				RunState state = (RunState) message;
+				switch (state) {
+				case RUNNING:
 					if (live.isPaused())
 						live.resume();
+					break;
+				case SHUTDOWN:
+					log.info("Remote shutdown");
+					System.exit(0);
+					break;
+				case PAUSED:
+					if (!live.isPaused())
+						live.pause();
+					break;
+				default:
+					break;
 				}
 			}
 			// 返回状态
