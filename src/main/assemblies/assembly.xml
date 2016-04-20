@@ -24,6 +24,7 @@
 		</fileSet>
 		<fileSet>
 			<directory>bin</directory>
+			<fileMode>0744</fileMode>
 			<outputDirectory>/bin</outputDirectory>
 		</fileSet>
 		<fileSet>
