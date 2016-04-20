@@ -22,6 +22,7 @@ import org.slf4j.LoggerFactory;
 
 import com.aleiye.lassock.api.Course;
 import com.aleiye.lassock.api.CourseConst;
+import com.aleiye.lassock.api.Intelligence.ShadeState;
 import com.aleiye.lassock.live.exception.CourseException;
 import com.aleiye.lassock.live.exception.SignException;
 import com.aleiye.lassock.live.hill.source.AbstractEventDrivenSource;
@@ -266,8 +267,9 @@ public class TextSource extends AbstractEventDrivenSource implements Runnable {
 				refresh();
 				checkNomalAndIdies();
 				checkError();
+				Thread.sleep(1000);
 			} catch (Exception e) {
-
+				;
 			}
 		}
 	}
@@ -310,8 +312,17 @@ public class TextSource extends AbstractEventDrivenSource implements Runnable {
 			for (CluserSign unit : unitList) {
 				addSign(unit);
 			}
+			if (this.sign.getIntelligence().getState() == ShadeState.ERROR)
+				this.sign.getIntelligence().setState(ShadeState.NORMAL);
 		} catch (Exception e) {
-			logger.error("刷新Text 失败!", e);
+			this.sign.getIntelligence().setState(ShadeState.ERROR);
+			logger.error("Refresh files failed!", e);
+			logger.debug("", e);
+			try {
+				Thread.sleep(10000);
+			} catch (InterruptedException e1) {
+				;
+			}
 		}
 	}
 
@@ -378,7 +389,7 @@ public class TextSource extends AbstractEventDrivenSource implements Runnable {
 	}
 
 	/**
-	 * 移动一个Shade
+	 * 移除一个File source
 	 * @param t
 	 */
 	private void removeShade(CluserSign t) {
@@ -394,13 +405,21 @@ public class TextSource extends AbstractEventDrivenSource implements Runnable {
 	 */
 	protected List<CluserSign> makeDetails(Course course) {
 		List<CluserSign> details = new ArrayList<CluserSign>();
+		String inputPath = param.getPath();
+		if (StringUtils.isBlank(inputPath)) {
+			throw new IllegalArgumentException("Path in not be empty!");
+		}
+		File inputFile = new File(inputPath);
+		if (!inputFile.exists()) {
+			throw new IllegalArgumentException("Input path " + inputFile + " is not exist!");
+		}
 		String reg = course.getString(CourseConst.text.PATH_FILTER_REGEX);
 		// 创建FILE FINDER
 		FileFinder ff = new FileFinder(new String[] {
 			reg
 		});
 		// 获取所有可读文件
-		List<File> findFiles = ff.getFiles(course.getString(CourseConst.text.DATA_INPUT_PATH));
+		List<File> findFiles = ff.getFiles(inputPath);
 		// 创建Units
 		for (File file : findFiles) {
 			CluserSign sign = creatSign(file);
@@ -459,5 +478,6 @@ public class TextSource extends AbstractEventDrivenSource implements Runnable {
 	@Override
 	protected void doConfigure(Course course) throws Exception {
 		param = ScrollUtils.forParam(course, CluserSign.class);
+		this.sign.getIntelligence().put("file", param.getPath());
 	}
 }
