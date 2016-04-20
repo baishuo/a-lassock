@@ -319,7 +319,7 @@ public class TextSource extends AbstractEventDrivenSource implements Runnable {
 			logger.error("Refresh files failed!", e);
 			logger.debug("", e);
 			try {
-				Thread.sleep(10000);
+				Thread.sleep(5000);
 			} catch (InterruptedException e1) {
 				;
 			}
