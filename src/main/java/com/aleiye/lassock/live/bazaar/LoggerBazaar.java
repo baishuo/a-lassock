@@ -27,9 +27,12 @@ public class LoggerBazaar extends AbstractBazaar {
 		try {
 			event = channel.take();
 
-			if (event != null) {
+		if (event != null) {
 				if (logger.isDebugEnabled()) {
-					logger.debug("Event: " + new String((byte[]) event.getBody()));
+					String body =  new String( event.getBody());
+					//取出后删除空白
+					String ps = "Event: " + body;
+					logger.debug(ps.trim());
 					logger.debug(JSONObject.fromObject(event.getHeaders()).toString());
 					event.incrementCompleteCount();
 				}
