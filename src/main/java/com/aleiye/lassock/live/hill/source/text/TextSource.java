@@ -478,6 +478,6 @@ public class TextSource extends AbstractEventDrivenSource implements Runnable {
 	@Override
 	protected void doConfigure(Course course) throws Exception {
 		param = ScrollUtils.forParam(course, CluserSign.class);
-		this.sign.getIntelligence().put("file", param.getPath());
+		this.sign.getIntelligence().put("path", param.getPath());
 	}
 }
