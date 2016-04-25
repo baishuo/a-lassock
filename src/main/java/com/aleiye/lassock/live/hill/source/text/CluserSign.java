@@ -26,6 +26,17 @@ public class CluserSign {
 	// 每次读取大小
 	private int readLength = 2048;
 
+	//分隔符
+	private String regular = null;
+
+	public String getRegular() {
+		return regular;
+	}
+
+	public void setRegular(String regular) {
+		this.regular = regular;
+	}
+
 	public String getPath() {
 		return path;
 	}

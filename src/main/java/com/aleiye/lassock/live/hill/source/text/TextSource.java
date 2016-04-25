@@ -423,6 +423,7 @@ public class TextSource extends AbstractEventDrivenSource implements Runnable {
 		// 创建Units
 		for (File file : findFiles) {
 			CluserSign sign = creatSign(file);
+			sign.setRegular(course.getString(CourseConst.text.DATA_REGULAR));
 			details.add(sign);
 		}
 		return details;
