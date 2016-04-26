@@ -409,7 +409,7 @@ public class TextSource extends AbstractEventDrivenSource implements Runnable {
 		if (StringUtils.isBlank(inputPath)) {
 			throw new IllegalArgumentException("Path in not be empty!");
 		}
-		File inputFile = new File(inputPath);
+		File inputFile = new File(inputPath.trim());
 		if (!inputFile.exists()) {
 			throw new IllegalArgumentException("Input path " + inputFile + " is not exist!");
 		}
