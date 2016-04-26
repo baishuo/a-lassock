@@ -279,7 +279,33 @@ public class FileCluser extends TextCluser {
 				if (arx == null) {
 					arx = ByteBuffer.allocate(ss.capacity() + ss.limit());
 					arx.clear();
+				}else{
+					arx.position(arx.position() - 1);
+					byte lineLast = arx.get();
+					int po = ss.position();
+					ss.reset();
+					int size = po - ss.position();
+					byte[] line = new byte[size];
+					ss.get(line);
+					String linesString = new String(line);
+					//匹配当前读取的行的内容是否匹配正则
+					Matcher m = p.matcher(linesString);
+					m.matches();
+					if((lineLast == '\n' || lineLast == '\r') && m.matches()){
+						size = arx.limit();
+						arx.flip();
+						line = new byte[size];
+						arx.get(line);
+						dx += size;
+						// 传输
+						makeMushroom(line);
+						cx ++;
+						arx = null;
+						arx = ByteBuffer.allocate(ss.capacity() + ss.limit());
+						arx.clear();
+					}
 				}
+
 				// 当缓存可用部分小于当前读取数据时 ，增加缓存容量
 				if (arx.remaining() < ss.limit()) {
 					ByteBuffer tax = ByteBuffer.allocate(arx.capacity() + ss.limit());
