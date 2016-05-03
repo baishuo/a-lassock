@@ -1,5 +1,6 @@
 package com.aleiye.lassock.live.hill.source.syslog;
 
+import com.aleiye.event.constants.EventKey;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.Channel;
@@ -61,8 +62,8 @@ public class SyslogTCPServer implements InitializeAware {
 				}
 				GeneralMushroom mr = new GeneralMushroom();
 				mr.setBody(data.array());
-				mr.getHeaders().put("sender", address.getAddress().getHostName());
-				mr.getHeaders().put("ip", ip);
+				mr.getHeaders().put(EventKey.REMOTENAME, address.getAddress().getHostName());
+				mr.getHeaders().put(EventKey.REMOTEIP, ip);
 				source.putMushroom(mr);
 			}
 		}
