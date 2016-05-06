@@ -1,0 +1,64 @@
+{
+	"courses":[
+		{
+			"name":"file",	
+			"type":"FILE",
+			"runType":"TEXT",
+			"discription" : "文件采集测试",
+			"parameters":{
+				"inputPath":"/Users/asuroslove/git/a-lassock/src/main/resources/template/"
+			}
+		},
+		{
+			"name":"jdbctest",	
+			"type":"JDBC",
+			"runType":"TIMER",
+			"period":"60000",
+			"discription" : "数据库采集测试",
+			"parameters":{
+				"driver":"com.mysql.jdbc.Driver",
+			    "url":"jdbc:mysql://aleiyeb:3306/aleiye_nirvana_dev?useUnicode=true&characterEncoding=utf-8",
+			    "username":"aleiye",
+			    "password":"cdewsxzaq321",			
+				"dataSource":"collect",
+				"sql":"select * from USER_MSG"
+			}
+		},
+		{
+			"name":"syslogtest",
+			"type":"SYSLOG",
+			"parameters":{
+				"protocol":"udp",
+				"port":"5144"
+			}	
+		},
+		{
+			"name":"telnettest",
+			"type":"TELNET2",
+			"runType":"SCHEDULE",
+			"period":"300000",
+			"discription" : "直接登录采集",
+			"parameters":{
+				"jumped":["10.0.1.201;aleiye;123456"],				
+				"host":"10.0.1.1",
+				"username":"admin",
+				"password":"yhxt@123",
+				"commands":"dis arp;dis mac-address"
+			}
+		},
+		{
+			"name":"snmptest",			
+			"discription":"流量采集",
+			"type":"SNMP_CPU",
+			"runType":"SCHEDULE",
+			"period":"60000",
+			"parameters":{
+				"protocol":"udp",
+				"host":"10.0.1.201",
+				"oids" :[
+					"1.3.6.1.2.1.1.1.0"
+				]
+			}	
+		}
+	]
+}
