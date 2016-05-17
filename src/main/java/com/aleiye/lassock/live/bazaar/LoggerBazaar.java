@@ -9,6 +9,8 @@ import com.aleiye.lassock.conf.Context;
 import com.aleiye.lassock.live.basket.Basket;
 import com.aleiye.lassock.live.model.Mushroom;
 
+import java.io.FileWriter;
+
 /**
  * Logger输出消费端，采集数据将在Logger 中输出主要用于测试
  * 
@@ -31,7 +33,10 @@ public class LoggerBazaar extends AbstractBazaar {
 				if (logger.isDebugEnabled()) {
 					String body =  new String( event.getBody());
 					//取出后删除空白
-					String ps = "Event: " + body;
+				String ps = "Event: " + body;
+					FileWriter writer = new FileWriter("F:\\result.txt", true);
+					writer.write(body+"\r\n");
+					writer.close();
 					logger.debug(ps.trim());
 					logger.debug(JSONObject.fromObject(event.getHeaders()).toString());
 					event.incrementCompleteCount();
