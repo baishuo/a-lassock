@@ -22,6 +22,12 @@ public class SnmpParam {
 	private String host;
 	private String community;
 	private String os;
+	//设备名称
+	private String driverName;
+	//cpu|内存|温度
+	private String type;
+	//设备型号
+	private String driverModel;
 	// SNMP 版本
 	private int version = 1;
 	// 采集信息OID集
@@ -112,4 +118,27 @@ public class SnmpParam {
 		this.host = host;
 	}
 
+	public String getDriverName() {
+		return driverName;
+	}
+
+	public void setDriverName(String driverName) {
+		this.driverName = driverName;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getDriverModel() {
+		return driverModel;
+	}
+
+	public void setDriverModel(String driverModel) {
+		this.driverModel = driverModel;
+	}
 }
