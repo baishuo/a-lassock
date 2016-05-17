@@ -2,12 +2,7 @@ package com.aleiye.lassock.live.conf.source;
 
 import com.aleiye.lassock.live.hill.source.Source;
 import com.aleiye.lassock.live.hill.source.jdbc.JdbcSource;
-import com.aleiye.lassock.live.hill.source.snmp.SnmpCpuSource;
-import com.aleiye.lassock.live.hill.source.snmp.SnmpFlowSource;
-import com.aleiye.lassock.live.hill.source.snmp.SnmpMemorySource;
-import com.aleiye.lassock.live.hill.source.snmp.SnmpStandardSource;
-import com.aleiye.lassock.live.hill.source.snmp.SnmpTemperatureSource;
-import com.aleiye.lassock.live.hill.source.snmp.SnmpTrapSource;
+import com.aleiye.lassock.live.hill.source.snmp.*;
 import com.aleiye.lassock.live.hill.source.syslog.SyslogSource;
 import com.aleiye.lassock.live.hill.source.telnet.Telnet2Source;
 import com.aleiye.lassock.live.hill.source.telnet.TelnetJumpSource;
@@ -50,12 +45,32 @@ public enum SourceType {
 	/**
 	 * 内存 Source
 	 */
-	SNMP_MEMORY(SnmpMemorySource.class),
+	SNMP_MEMORY(SnmpPortStateSource.class),
 
 	/**
 	 * CPU Source
 	 */
 	SNMP_CPU(SnmpCpuSource.class),
+
+	/**
+	 * 端口状态 Source
+	 */
+	SNMP_PORTSTATE(SnmpPortStateSource.class),
+
+	/**
+	 * 设备状态
+	 */
+	SNMP_DRIVERSTATE(SnmpDriverStateSource.class),
+
+	/**
+	 * 设备基本信息
+	 */
+	SNMP_DRIVERBASE(SnmpDriverBaseSource.class),
+
+	/**
+	 * 端口统计信息
+	 */
+	SNMP_PORTINFO(SnmpPortInfoSource.class),
 
 	/**
 	 * 温度 Source

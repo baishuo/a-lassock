@@ -1,6 +1,8 @@
 package com.aleiye.lassock.live.hill.source.telnet;
 
+import java.nio.charset.Charset;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
@@ -94,14 +96,18 @@ public class Telnet2Source extends AbstractEventTrackSource {
 			}
 			// ------------------------------------------------------------------------
 			// 执行命令
-			Map<String, String> contents = new HashMap<String, String>();
+			//Map<String, String> contents = new HashMap<String, String>();
+			//按顺序放入和取出
+//			Map<String, String> contents = new LinkedHashMap<String, String>();
+			StringBuffer contents = new StringBuffer();
 			for (int i = 0; i < commands.length; i++) {
 				String s = telnet.sendCommandToEnd(commands[i]);
 
-				contents.put(commands[i], s);
+				contents.append(s);
 			}
 			// ------------------------------------------------------------------------
-			apply(contents);
+//			apply(contents);
+			appliy(contents.toString());
 		} catch (Exception e) {
 			LOGGER.error("Telnet " + this.host + ":" + this.port + " failed!", e);
 		} finally {
@@ -127,6 +133,17 @@ public class Telnet2Source extends AbstractEventTrackSource {
 				;
 			}
 			telnet.distinct();
+		}
+	}
+
+	//只输出结果
+	public void appliy(String input){
+		Mushroom generalMushroom = MushroomBuilder.withBody(input, Charset.forName("iso8859-1"));
+		generalMushroom.getHeaders().put("target", this.param.getHost());
+		try {
+			putMushroom(generalMushroom);
+		} catch (InterruptedException e) {
+			LOGGER.debug(e.getMessage(), e);
 		}
 	}
 
