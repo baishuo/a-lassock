@@ -50,7 +50,7 @@ public class SnmpDriverStateSource extends SnmpStandardSource{
         while (iterator.hasNext()) {
             Map.Entry<String, String> entry = iterator.next();
             Map<String, Object> map = new HashMap<String, Object>();
-            switch (this.param.getType()){
+            switch (this.param.getCollectType()){
                 case CPUTYPE :
                     map.put(SnmpPortStatisticalIndicators.CPU.getName(), entry.getValue());
                     break;

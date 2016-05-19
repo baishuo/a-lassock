@@ -25,7 +25,7 @@ public class SnmpParam {
 	//设备名称
 	private String driverName;
 	//cpu|内存|温度
-	private String type;
+	private String collectType;
 	//设备型号
 	private String driverModel;
 	// SNMP 版本
@@ -126,12 +126,12 @@ public class SnmpParam {
 		this.driverName = driverName;
 	}
 
-	public String getType() {
-		return type;
+	public String getCollectType() {
+		return collectType;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void setCollectType(String collectType) {
+		this.collectType = collectType;
 	}
 
 	public String getDriverModel() {
