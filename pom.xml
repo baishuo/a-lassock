@@ -263,7 +263,7 @@
 		<dependency>
 			<groupId>com.aleiye</groupId>
 			<artifactId>aleiye-lassock-api</artifactId>
-			<version>3.0.0</version>
+			<version>${version}</version>
 		</dependency>
 
 		<dependency>
