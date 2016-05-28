@@ -231,11 +231,11 @@
 			<artifactId>guava</artifactId>
 			<version>17.0</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.aleiye</groupId>
 			<artifactId>aleiye-zkclient</artifactId>
-			<version>3.0.0</version>
+			<version>${version}</version>
 		</dependency>
 		<!-- kafka -->
 		<dependency>
@@ -269,13 +269,13 @@
 		<dependency>
 			<groupId>com.aleiye</groupId>
 			<artifactId>aleiye-zkpath</artifactId>
-			<version>3.0.0</version>
+			<version>${version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.aleiye</groupId>
 			<artifactId>aleiye-event</artifactId>
-			<version>3.0.0</version>
+			<version>${version}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.slf4j</groupId>
@@ -287,7 +287,7 @@
 		<dependency>
 			<groupId>com.aleiye</groupId>
 			<artifactId>aleiye-common</artifactId>
-			<version>3.0.0</version>
+			<version>${version}</version>
 		</dependency>
 
 	</dependencies>
