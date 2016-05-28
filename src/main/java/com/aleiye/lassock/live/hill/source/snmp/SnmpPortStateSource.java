@@ -1,6 +1,10 @@
 package com.aleiye.lassock.live.hill.source.snmp;
 
+import com.aleiye.event.constants.EventKey;
+import com.aleiye.event.factory.AleiyeEventFactory;
+import com.aleiye.event.factory.AleiyeParsedEventFactory;
 import com.aleiye.lassock.api.Course;
+import com.aleiye.lassock.api.CourseType;
 import com.aleiye.lassock.api.SnmpPortStatisticalIndicators;
 import com.aleiye.lassock.live.model.Mushroom;
 import com.aleiye.lassock.live.model.MushroomBuilder;
@@ -64,19 +68,23 @@ public class SnmpPortStateSource extends SnmpStandardSource{
 
         Iterator<Map.Entry<String, String>> iterator = portNamesMap.entrySet().iterator();
         Long curTime = System.currentTimeMillis();
+
+        AleiyeParsedEventFactory.Builder factory = AleiyeParsedEventFactory.builder();
+
         while (iterator.hasNext()) {
             Map.Entry<String, String> entry = iterator.next();
-            Map<String, Object> map = new HashMap<String, Object>();
             String port = entry.getKey();
-            map.put(SnmpPortStatisticalIndicators.DRIVER_IP.getName(), this.param.getHost());
-            map.put(SnmpPortStatisticalIndicators.PORT_NAME.getName(),entry.getValue());
-            map.put(SnmpPortStatisticalIndicators.PORT_IP.getName(), portIpMap.get(port));
-            map.put(SnmpPortStatisticalIndicators.CON_STATE.getName(), portConStateMap.get(port));
-            map.put(SnmpPortStatisticalIndicators.CUR_STATE.getName(), portCutStateMap.get(port));
-            map.put(SnmpPortStatisticalIndicators.CURRENT_TIME.getName(), curTime);
 
-            Mushroom generalMushroom = MushroomBuilder.withBody(map, null);
-            generalMushroom.getHeaders().put("target", this.param.getHost());
+
+            factory.addParsedField(SnmpPortStatisticalIndicators.DRIVER_IP.getName(), this.param.getHost());
+            factory.addParsedField(SnmpPortStatisticalIndicators.PORT_NAME.getName(), entry.getValue());
+            factory.addParsedField(SnmpPortStatisticalIndicators.PORT_IP.getName(), portIpMap.get(port));
+            factory.addParsedField(SnmpPortStatisticalIndicators.CON_STATE.getName(), portConStateMap.get(port));
+            factory.addParsedField(SnmpPortStatisticalIndicators.CUR_STATE.getName(), portCutStateMap.get(port));
+            factory.addParsedField(SnmpPortStatisticalIndicators.CURRENT_TIME.getName(), curTime);
+
+            Mushroom generalMushroom = MushroomBuilder.withBody(factory.build(), null);
+            generalMushroom.getHeaders().put(EventKey.DATA_TYPE_NAME, CourseType.SNMP_PORTSTATE.toString());
             putMushroom(generalMushroom);
         }
 

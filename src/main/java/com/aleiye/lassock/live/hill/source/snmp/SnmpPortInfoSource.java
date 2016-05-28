@@ -1,6 +1,9 @@
 package com.aleiye.lassock.live.hill.source.snmp;
 
+import com.aleiye.event.constants.EventKey;
+import com.aleiye.event.factory.AleiyeParsedEventFactory;
 import com.aleiye.lassock.api.Course;
+import com.aleiye.lassock.api.CourseType;
 import com.aleiye.lassock.api.SnmpPortStatisticalIndicators;
 import com.aleiye.lassock.live.model.Mushroom;
 import com.aleiye.lassock.live.model.MushroomBuilder;
@@ -126,57 +129,61 @@ public class SnmpPortInfoSource extends SnmpStandardSource{
             long timeInterval = (nowTime - time) / 100;
             time = nowTime;
             Long curTime = System.currentTimeMillis();
+
+            AleiyeParsedEventFactory.Builder factory = AleiyeParsedEventFactory.builder();
+
             for (Map.Entry<String, String> entry : portNameMap.entrySet()) {
                 String port = entry.getKey();
                 long speed = Long.parseLong(speedMap.get(port));
-                Map<String, Object> map = new HashMap<String, Object>();
-                map.put(SnmpPortStatisticalIndicators.DRIVER_IP.getName(), this.param.getHost());
-                map.put(SnmpPortStatisticalIndicators.DRIVER_NAME.getName(),this.param.getDriverName());
-                map.put(SnmpPortStatisticalIndicators.SYSUPTIME.getName(), timeInterval);
-                map.put(SnmpPortStatisticalIndicators.PORT_NAME.getName(), entry.getValue());
-                map.put(SnmpPortStatisticalIndicators.PORT_IP.getName(), portIpMap.get(port));
-                map.put(SnmpPortStatisticalIndicators.CURRENT_TIME.getName(), curTime);
+
+                factory.addParsedField(SnmpPortStatisticalIndicators.DRIVER_IP.getName(), this.param.getHost());
+                factory.addParsedField(SnmpPortStatisticalIndicators.DRIVER_NAME.getName(), this.param.getDriverName());
+                factory.addParsedField(SnmpPortStatisticalIndicators.SYSUPTIME.getName(), timeInterval);
+                factory.addParsedField(SnmpPortStatisticalIndicators.PORT_NAME.getName(), entry.getValue());
+                factory.addParsedField(SnmpPortStatisticalIndicators.PORT_IP.getName(), portIpMap.get(port));
+                factory.addParsedField(SnmpPortStatisticalIndicators.CURRENT_TIME.getName(), curTime);
 
                 Long inValue = inMap.get(port);
                 Long outValue = outMap.get(port);
 
-                map.put(SnmpPortStatisticalIndicators.HALF_DUPLEX_ETHERNET.getName(),
+
+                factory.addParsedField(SnmpPortStatisticalIndicators.HALF_DUPLEX_ETHERNET.getName(),
                         new BigDecimal(calculationHalfDuplexEthernet(inValue, outValue, speed, timeInterval))
                                 .setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-                map.put(SnmpPortStatisticalIndicators.FULL_DUPLEX_ETHERNET.getName(),
+                factory.addParsedField(SnmpPortStatisticalIndicators.FULL_DUPLEX_ETHERNET.getName(),
                         new BigDecimal(calculationFullDuplexEthernet(inValue, outValue, speed, timeInterval))
                                 .setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-
-                map.put(SnmpPortStatisticalIndicators.PORT_RECEIVE.getName(),
+                factory.addParsedField(SnmpPortStatisticalIndicators.PORT_RECEIVE.getName(),
                         new BigDecimal(calculationPortRate(inValue, speed, timeInterval))
                                 .setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-                map.put(SnmpPortStatisticalIndicators.PORT_SEND.getName(),
+
+                factory.addParsedField(SnmpPortStatisticalIndicators.PORT_SEND.getName(),
                         new BigDecimal(calculationPortRate(outValue, speed, timeInterval))
                                 .setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 
-                map.put(SnmpPortStatisticalIndicators.REVEIVE_PACKET_LOSS.getName(),
+                factory.addParsedField(SnmpPortStatisticalIndicators.REVEIVE_PACKET_LOSS.getName(),
                         new BigDecimal(calculation(inDiscardsMap.get(port), timeInterval))
                                 .setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-                map.put(SnmpPortStatisticalIndicators.SEND_PACKET_LOSS.getName(),
+                factory.addParsedField(SnmpPortStatisticalIndicators.SEND_PACKET_LOSS.getName(),
                         new BigDecimal(calculation(outDiscardsMap.get(port), timeInterval))
                                 .setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 
-                map.put(SnmpPortStatisticalIndicators.REVEIVE_ERROR.getName(),
+                factory.addParsedField(SnmpPortStatisticalIndicators.REVEIVE_ERROR.getName(),
                         new BigDecimal(calculation(inErrorMap.get(port), timeInterval))
                                 .setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-                map.put(SnmpPortStatisticalIndicators.SEND_ERROR.getName(),
+                factory.addParsedField(SnmpPortStatisticalIndicators.SEND_ERROR.getName(),
                         new BigDecimal(calculation(outErrorMap.get(port), timeInterval))
                                 .setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 
-                map.put(SnmpPortStatisticalIndicators.REVEIVE_BROADCAST.getName(),
+                factory.addParsedField(SnmpPortStatisticalIndicators.REVEIVE_BROADCAST.getName(),
                         new BigDecimal(calculation(inNUCastMap.get(port), timeInterval))
                                 .setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-                map.put(SnmpPortStatisticalIndicators.SEND_BROADCAST.getName(),
+                factory.addParsedField(SnmpPortStatisticalIndicators.SEND_BROADCAST.getName(),
                         new BigDecimal(calculation(outNUCastMap.get(port), timeInterval))
                                 .setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 
-                Mushroom generalMushroom = MushroomBuilder.withBody(map, null);
-                generalMushroom.getHeaders().put("target", this.param.getHost());
+                Mushroom generalMushroom = MushroomBuilder.withBody(factory.build(), null);
+                generalMushroom.getHeaders().put(EventKey.DATA_TYPE_NAME, CourseType.SNMP_PORTINFO.toString());
                 putMushroom(generalMushroom);
 
             }
