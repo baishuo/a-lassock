@@ -85,7 +85,6 @@ public class SnmpDriverBaseSource extends SnmpStandardSource{
             factory.addParsedField(SnmpPortStatisticalIndicators.DRIVER_IP.getName(), this.param.getHost());
 
             factory.addParsedField(SnmpPortStatisticalIndicators.DRIVER_NAME.getName(), this.param.getDriverName());
-            factory.addParsedField(SnmpPortStatisticalIndicators.DRIVER_MODEL.getName(), this.param.getDriverModel());
             factory.addParsedField(SnmpPortStatisticalIndicators.CURRENT_TIME.getName(), curTime);
             factory.addParsedField(SnmpPortStatisticalIndicators.PORT_NAME.getName(), entry.getValue());
             factory.addParsedField(SnmpPortStatisticalIndicators.PORT_DES.getName(), portDesMap.get(port));
