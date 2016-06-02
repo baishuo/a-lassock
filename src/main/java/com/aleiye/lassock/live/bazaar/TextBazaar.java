@@ -45,10 +45,14 @@ public class TextBazaar extends AbstractBazaar{
                 FileUtils.writeStringToFile(telnetFile, body + lineSeparator, true);
             }
 
+            event.incrementCompleteCount();
+
         }catch (InterruptedException e){
             _LOG.error("get message error", e);
         }catch (Exception e){
             e.printStackTrace();
+            event.incrementFailedCount();
+            _LOG.error("put data into text error", e);
         }
     }
 
