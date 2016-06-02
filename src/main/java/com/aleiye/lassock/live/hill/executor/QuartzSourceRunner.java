@@ -73,8 +73,6 @@ public class QuartzSourceRunner extends SourceRunner {
 	public static class QuartzRunner implements Job {
 		@Override
 		public void execute(JobExecutionContext context) throws JobExecutionException {
-			// SchedulerContext schCtx =
-			// context.getScheduler().getContext();
 			JobDataMap jobdata = context.getJobDetail().getJobDataMap();
 			String shadeKey = (String) jobdata.get(DETAIL_KEY);
 			EventTrackSource shade = shades.get(shadeKey);

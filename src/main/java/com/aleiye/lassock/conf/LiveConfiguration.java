@@ -13,8 +13,6 @@ import java.util.Set;
  * @version 1.0
  */
 public class LiveConfiguration {
-	// private static final Logger logger =
-	// LoggerFactory.getLogger(LiveConfiguration.class);
 
 	private Map<String, Context> basketContextMap;
 	private Map<String, Context> bazaarContextMap;
@@ -57,31 +55,20 @@ public class LiveConfiguration {
 		Set<String> sets = new HashSet<String>();
 		// Construct the in-memory component hierarchy
 		for (String name : properties.keySet()) {
-			// Remove leading and trailing spaces
 			name = name.trim();
-			// value = value.trim();
 
 			int index = name.indexOf('.');
 
 			if (index == -1) {
-				// errors.add(new FlumeConfigurationError(name, "",
-				// FlumeConfigurationErrorType.AGENT_NAME_MISSING,
-				// ErrorOrWarning.ERROR));
-				// return false;
 				continue;
 			}
 
 			String objName = name.substring(0, index);
 
 			if (objName.length() == 0) {
-				// errors.add(new FlumeConfigurationError(name, "",
-				// FlumeConfigurationErrorType.AGENT_NAME_MISSING,
-				// ErrorOrWarning.ERROR));
-				// return false;
 				continue;
 			}
 			sets.add(objName);
-			// String configKey = name.substring(index + 1);
 		}
 		return sets;
 	}

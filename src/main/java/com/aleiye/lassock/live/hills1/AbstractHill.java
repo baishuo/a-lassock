@@ -100,15 +100,10 @@ public abstract class AbstractHill<T extends Sign, S extends AbstractShade<T>> i
 		synchronized (courseLock) {
 			// 课程表里不存在当前课程
 			if (!courses.containsKey(course.getName())) {
-				// try {
 				// 存放课程
 				courses.put(course.getName(), course);
 				afterAddCourse(course);
 
-				// } catch (CourseException e) {
-				// course.setFailure(true);
-				// course.setException(e);
-				// }
 			}
 		}
 	}

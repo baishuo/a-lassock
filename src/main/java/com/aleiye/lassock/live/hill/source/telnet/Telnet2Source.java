@@ -106,7 +106,6 @@ public class Telnet2Source extends AbstractEventTrackSource {
 				contents.append(s);
 			}
 			// ------------------------------------------------------------------------
-//			apply(contents);
 			appliy(contents.toString());
 		} catch (Exception e) {
 			LOGGER.error("Telnet " + this.host + ":" + this.port + " failed!", e);

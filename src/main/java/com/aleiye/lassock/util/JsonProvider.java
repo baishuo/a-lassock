@@ -23,9 +23,6 @@ public class JsonProvider {
 	public final static ObjectMapper mapper;
 
 	static {
-		//		StdSerializerProvider sp = new StdSerializerProvider();
-		//		sp.setNullValueSerializer(NullSerializer.instance);
-		//		adaptMapper = new ObjectMapper(null, sp, null);
 		adaptMapper = new ObjectMapper();
 		// 设置输入时忽略在JSON字符串中存在但Java对象实际没有的属性
 		adaptMapper.disable(DeserializationConfig.Feature.FAIL_ON_UNKNOWN_PROPERTIES);

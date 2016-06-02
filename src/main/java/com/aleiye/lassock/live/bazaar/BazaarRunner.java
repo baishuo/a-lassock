@@ -25,8 +25,6 @@ import com.aleiye.lassock.lifecycle.LifecycleState;
 public class BazaarRunner implements LifecycleAware {
 
 	private static final Logger logger = LoggerFactory.getLogger(BazaarRunner.class);
-	// private static final long backoffSleepIncrement = 1000;
-	// private static final long maxBackoffSleep = 5000;
 
 	private PollingRunner runner;
 	private Thread runnerThread;

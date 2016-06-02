@@ -40,7 +40,6 @@ import com.google.common.collect.Sets.SetView;
  */
 public class TextHill extends AbstractHill<TextSign, TextShade> {
 
-	// private final AtomicBoolean parsed = new AtomicBoolean(false);
 
 	// 等待执行队列(单元对应Shade)
 	private final BlockingQueue<TextShade> normals = new LinkedBlockingQueue<TextShade>();

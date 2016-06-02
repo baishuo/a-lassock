@@ -34,9 +34,6 @@ public class LoggerBazaar extends AbstractBazaar {
 					String body =  new String( event.getBody());
 					//取出后删除空白
 				String ps = "Event: " + body;
-					FileWriter writer = new FileWriter("F:\\result.txt", true);
-					writer.write(body+"\r\n");
-					writer.close();
 					logger.debug(ps.trim());
 					logger.debug(JSONObject.fromObject(event.getHeaders()).toString());
 					event.incrementCompleteCount();
@@ -47,6 +44,5 @@ public class LoggerBazaar extends AbstractBazaar {
 
 	@Override
 	public void configure(Context context) {
-		//
 	}
 }
