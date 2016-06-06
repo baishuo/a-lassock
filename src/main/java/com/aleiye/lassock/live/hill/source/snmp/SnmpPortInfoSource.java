@@ -136,52 +136,94 @@ public class SnmpPortInfoSource extends SnmpStandardSource{
                 String port = entry.getKey();
                 long speed = Long.parseLong(speedMap.get(port));
 
-                factory.addParsedField(SnmpPortStatisticalIndicators.DRIVER_IP.getName(), this.param.getHost());
-                factory.addParsedField(SnmpPortStatisticalIndicators.DRIVER_NAME.getName(), this.param.getDriverName());
+                String message;
+
+                String driverIp = this.param.getHost();
+                String driverName = this.param.getDriverName();
+                String portName = entry.getValue();
+                String portIp = portIpMap.get(port) != null ? portIpMap.get(port) : "";
+
+
+                factory.addParsedField(SnmpPortStatisticalIndicators.DRIVER_IP.getName(), driverIp);
+                factory.addParsedField(SnmpPortStatisticalIndicators.DRIVER_NAME.getName(), driverName);
                 factory.addParsedField(SnmpPortStatisticalIndicators.SYSUPTIME.getName(), timeInterval);
-                factory.addParsedField(SnmpPortStatisticalIndicators.PORT_NAME.getName(), entry.getValue());
-                String portIp = portIpMap.get(port);
-                factory.addParsedField(SnmpPortStatisticalIndicators.PORT_IP.getName(), portIp != null ? portIp : "");
+                factory.addParsedField(SnmpPortStatisticalIndicators.PORT_NAME.getName(), portName);
+                factory.addParsedField(SnmpPortStatisticalIndicators.PORT_IP.getName(), portIp);
                 factory.addParsedField(SnmpPortStatisticalIndicators.CURRENT_TIME.getName(), curTime);
 
                 Long inValue = inMap.get(port);
                 Long outValue = outMap.get(port);
 
+                Double halfDuplexEthernet = new BigDecimal(calculationHalfDuplexEthernet(inValue, outValue, speed, timeInterval))
+                        .setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+                Double fullDuplexEthernet = new BigDecimal(calculationFullDuplexEthernet(inValue, outValue, speed, timeInterval))
+                        .setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+                Double portReceive = new BigDecimal(calculationPortRate(inValue, speed, timeInterval))
+                        .setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+                Double portSend = new BigDecimal(calculationPortRate(outValue, speed, timeInterval))
+                        .setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+                Double reveivePacketLoss = new BigDecimal(calculation(inDiscardsMap.get(port), timeInterval))
+                        .setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+                Double sendPacketLoss = new BigDecimal(calculation(outDiscardsMap.get(port), timeInterval))
+                        .setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+                Double reveiveError = new BigDecimal(calculation(inErrorMap.get(port), timeInterval))
+                        .setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+                Double sendError = new BigDecimal(calculation(outErrorMap.get(port), timeInterval))
+                        .setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+                Double reveiveBroadcast = new BigDecimal(calculation(inNUCastMap.get(port), timeInterval))
+                        .setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+                Double sendBroadcast = new BigDecimal(calculation(outNUCastMap.get(port), timeInterval))
+                        .setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 
-                factory.addParsedField(SnmpPortStatisticalIndicators.HALF_DUPLEX_ETHERNET.getName(),
-                        new BigDecimal(calculationHalfDuplexEthernet(inValue, outValue, speed, timeInterval))
-                                .setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-                factory.addParsedField(SnmpPortStatisticalIndicators.FULL_DUPLEX_ETHERNET.getName(),
-                        new BigDecimal(calculationFullDuplexEthernet(inValue, outValue, speed, timeInterval))
-                                .setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-                factory.addParsedField(SnmpPortStatisticalIndicators.PORT_RECEIVE.getName(),
-                        new BigDecimal(calculationPortRate(inValue, speed, timeInterval))
-                                .setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+                factory.addParsedField(SnmpPortStatisticalIndicators.HALF_DUPLEX_ETHERNET.getName(), halfDuplexEthernet);
+                factory.addParsedField(SnmpPortStatisticalIndicators.FULL_DUPLEX_ETHERNET.getName(), fullDuplexEthernet);
 
-                factory.addParsedField(SnmpPortStatisticalIndicators.PORT_SEND.getName(),
-                        new BigDecimal(calculationPortRate(outValue, speed, timeInterval))
-                                .setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+                factory.addParsedField(SnmpPortStatisticalIndicators.PORT_RECEIVE.getName(), portReceive);
+                factory.addParsedField(SnmpPortStatisticalIndicators.PORT_SEND.getName(), portSend);
 
-                factory.addParsedField(SnmpPortStatisticalIndicators.REVEIVE_PACKET_LOSS.getName(),
-                        new BigDecimal(calculation(inDiscardsMap.get(port), timeInterval))
-                                .setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-                factory.addParsedField(SnmpPortStatisticalIndicators.SEND_PACKET_LOSS.getName(),
-                        new BigDecimal(calculation(outDiscardsMap.get(port), timeInterval))
-                                .setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+                factory.addParsedField(SnmpPortStatisticalIndicators.REVEIVE_PACKET_LOSS.getName(), reveivePacketLoss);
+                factory.addParsedField(SnmpPortStatisticalIndicators.SEND_PACKET_LOSS.getName(), sendPacketLoss);
 
-                factory.addParsedField(SnmpPortStatisticalIndicators.REVEIVE_ERROR.getName(),
-                        new BigDecimal(calculation(inErrorMap.get(port), timeInterval))
-                                .setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-                factory.addParsedField(SnmpPortStatisticalIndicators.SEND_ERROR.getName(),
-                        new BigDecimal(calculation(outErrorMap.get(port), timeInterval))
-                                .setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+                factory.addParsedField(SnmpPortStatisticalIndicators.REVEIVE_ERROR.getName(), reveiveError);
+                factory.addParsedField(SnmpPortStatisticalIndicators.SEND_ERROR.getName(), sendError);
 
-                factory.addParsedField(SnmpPortStatisticalIndicators.REVEIVE_BROADCAST.getName(),
-                        new BigDecimal(calculation(inNUCastMap.get(port), timeInterval))
-                                .setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
-                factory.addParsedField(SnmpPortStatisticalIndicators.SEND_BROADCAST.getName(),
-                        new BigDecimal(calculation(outNUCastMap.get(port), timeInterval))
-                                .setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
+                factory.addParsedField(SnmpPortStatisticalIndicators.REVEIVE_BROADCAST.getName(), reveiveBroadcast);
+                factory.addParsedField(SnmpPortStatisticalIndicators.SEND_BROADCAST.getName(), sendBroadcast);
+
+
+                message = driverIp +
+                        SnmpPortStatisticalIndicators.FIELD_SEPARATOR.getName() +
+                        driverName +
+                        SnmpPortStatisticalIndicators.FIELD_SEPARATOR.getName() +
+                        timeInterval +
+                        SnmpPortStatisticalIndicators.FIELD_SEPARATOR.getName() +
+                        portName +
+                        SnmpPortStatisticalIndicators.FIELD_SEPARATOR.getName() +
+                        portIp +
+                        SnmpPortStatisticalIndicators.FIELD_SEPARATOR.getName() +
+                        curTime +
+                        SnmpPortStatisticalIndicators.FIELD_SEPARATOR.getName() +
+                        halfDuplexEthernet +
+                        SnmpPortStatisticalIndicators.FIELD_SEPARATOR.getName() +
+                        fullDuplexEthernet +
+                        SnmpPortStatisticalIndicators.FIELD_SEPARATOR.getName() +
+                        portReceive +
+                        SnmpPortStatisticalIndicators.FIELD_SEPARATOR.getName() +
+                        portSend +
+                        SnmpPortStatisticalIndicators.FIELD_SEPARATOR.getName() +
+                        reveivePacketLoss +
+                        SnmpPortStatisticalIndicators.FIELD_SEPARATOR.getName() +
+                        sendPacketLoss +
+                        SnmpPortStatisticalIndicators.FIELD_SEPARATOR.getName() +
+                        reveiveError +
+                        SnmpPortStatisticalIndicators.FIELD_SEPARATOR.getName() +
+                        sendError +
+                        SnmpPortStatisticalIndicators.FIELD_SEPARATOR.getName() +
+                        reveiveBroadcast +
+                        SnmpPortStatisticalIndicators.FIELD_SEPARATOR.getName() +
+                        sendBroadcast;
+
+                factory.addParsedField("a_message", message);
 
                 Mushroom generalMushroom = MushroomBuilder.withBody(factory.build(), null);
                 generalMushroom.getHeaders().put(EventKey.DATA_TYPE_NAME, "a_"+CourseType.SNMP_PORTINFO.toString());

@@ -78,20 +78,48 @@ public class SnmpDriverBaseSource extends SnmpStandardSource{
         AleiyeParsedEventFactory.Builder factory = AleiyeParsedEventFactory.builder();
 
         while (iterator.hasNext()) {
+
+            String message ;
+
             Map.Entry<String, String> entry = iterator.next();
             String port = entry.getKey();
-            String Mtu =  portMtuMap.get(port);
+            Long Mtu =  portMtuMap.get(port) != null ? Long.parseLong(portMtuMap.get(port)) : 0;
 
-            factory.addParsedField(SnmpPortStatisticalIndicators.DRIVER_IP.getName(), this.param.getHost());
 
-            factory.addParsedField(SnmpPortStatisticalIndicators.DRIVER_NAME.getName(), this.param.getDriverName());
+            String host = this.param.getHost();
+            String driverName = this.param.getDriverName();
+            String portName = entry.getValue();
+            String portDes = portDesMap.get(port) ;
+            String portIp = portIpMap.get(port) != null ? portIpMap.get(port) : "";
+            String conState = portConStateMap.get(port);
+
+
+            factory.addParsedField(SnmpPortStatisticalIndicators.DRIVER_IP.getName(), host);
+            factory.addParsedField(SnmpPortStatisticalIndicators.DRIVER_NAME.getName(), driverName);
             factory.addParsedField(SnmpPortStatisticalIndicators.CURRENT_TIME.getName(), curTime);
-            factory.addParsedField(SnmpPortStatisticalIndicators.PORT_NAME.getName(), entry.getValue());
-            factory.addParsedField(SnmpPortStatisticalIndicators.PORT_DES.getName(), portDesMap.get(port));
-            String portIp = portIpMap.get(port);
-            factory.addParsedField(SnmpPortStatisticalIndicators.PORT_IP.getName(), portIp != null ? portIp : "");
-            factory.addParsedField(SnmpPortStatisticalIndicators.CON_STATE.getName(), portConStateMap.get(port));
-            factory.addParsedField(SnmpPortStatisticalIndicators.PORT_MTU.getName(), Mtu != null ? Long.parseLong(Mtu) : 0);
+            factory.addParsedField(SnmpPortStatisticalIndicators.PORT_NAME.getName(), portName);
+            factory.addParsedField(SnmpPortStatisticalIndicators.PORT_DES.getName(), portDes);
+            factory.addParsedField(SnmpPortStatisticalIndicators.PORT_IP.getName(), portIp);
+            factory.addParsedField(SnmpPortStatisticalIndicators.CON_STATE.getName(), conState);
+            factory.addParsedField(SnmpPortStatisticalIndicators.PORT_MTU.getName(), Mtu);
+
+            message = host +
+                    SnmpPortStatisticalIndicators.FIELD_SEPARATOR.getName() +
+                    driverName +
+                    SnmpPortStatisticalIndicators.FIELD_SEPARATOR.getName() +
+                    curTime +
+                    SnmpPortStatisticalIndicators.FIELD_SEPARATOR.getName() +
+                    portName +
+                    SnmpPortStatisticalIndicators.FIELD_SEPARATOR.getName() +
+                    portDes +
+                    SnmpPortStatisticalIndicators.FIELD_SEPARATOR.getName() +
+                    portIp +
+                    SnmpPortStatisticalIndicators.FIELD_SEPARATOR.getName() +
+                    conState +
+                    SnmpPortStatisticalIndicators.FIELD_SEPARATOR.getName() +
+                    Mtu;
+
+            factory.addParsedField("a_message", message);
 
             Mushroom generalMushroom = MushroomBuilder.withBody(factory.build(), null);
             generalMushroom.getHeaders().put(EventKey.DATA_TYPE_NAME, "a_"+CourseType.SNMP_DRIVERBASE.toString());

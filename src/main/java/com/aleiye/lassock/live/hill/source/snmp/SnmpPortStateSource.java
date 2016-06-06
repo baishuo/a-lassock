@@ -75,14 +75,38 @@ public class SnmpPortStateSource extends SnmpStandardSource{
             Map.Entry<String, String> entry = iterator.next();
             String port = entry.getKey();
 
+            String message;
 
-            factory.addParsedField(SnmpPortStatisticalIndicators.DRIVER_IP.getName(), this.param.getHost());
-            factory.addParsedField(SnmpPortStatisticalIndicators.PORT_NAME.getName(), entry.getValue());
-            String portIp = portIpMap.get(port);
-            factory.addParsedField(SnmpPortStatisticalIndicators.PORT_IP.getName(), portIp != null ? portIp : "");
-            factory.addParsedField(SnmpPortStatisticalIndicators.CON_STATE.getName(), portConStateMap.get(port));
-            factory.addParsedField(SnmpPortStatisticalIndicators.CUR_STATE.getName(), portCutStateMap.get(port));
+            String host = this.param.getHost();
+            String portName = entry.getValue();
+            String portIp = portIpMap.get(port) != null ? portIpMap.get(port) : "";
+            String portConState = portConStateMap.get(port);
+            String portCutState = portCutStateMap.get(port);
+
+            message = host +
+                    SnmpPortStatisticalIndicators.FIELD_SEPARATOR.getName() +
+                    portName +
+                    SnmpPortStatisticalIndicators.FIELD_SEPARATOR.getName() +
+                    portIp +
+                    SnmpPortStatisticalIndicators.FIELD_SEPARATOR.getName() +
+                    portConState +
+                    SnmpPortStatisticalIndicators.FIELD_SEPARATOR.getName() +
+                    portCutState +
+                    SnmpPortStatisticalIndicators.FIELD_SEPARATOR.getName() +
+                    curTime;
+
+
+
+
+            factory.addParsedField(SnmpPortStatisticalIndicators.DRIVER_IP.getName(), host);
+            factory.addParsedField(SnmpPortStatisticalIndicators.PORT_NAME.getName(), portName);
+            factory.addParsedField(SnmpPortStatisticalIndicators.PORT_IP.getName(), portIp);
+            factory.addParsedField(SnmpPortStatisticalIndicators.CON_STATE.getName(), portConState);
+            factory.addParsedField(SnmpPortStatisticalIndicators.CUR_STATE.getName(), portCutState);
             factory.addParsedField(SnmpPortStatisticalIndicators.CURRENT_TIME.getName(), curTime);
+
+            factory.addParsedField("a_message", message);
+
 
             Mushroom generalMushroom = MushroomBuilder.withBody(factory.build(), null);
             generalMushroom.getHeaders().put(EventKey.DATA_TYPE_NAME, "a_"+CourseType.SNMP_PORTSTATE.toString());

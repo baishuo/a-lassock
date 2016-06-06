@@ -53,26 +53,54 @@ public class SnmpDriverStateSource extends SnmpStandardSource{
 
         AleiyeParsedEventFactory.Builder factory = AleiyeParsedEventFactory.builder();
 
+        double result = 0.0;
+
+        String message ;
+
+        String host = this.param.getHost();
+        String driverName = this.param.getDriverName();
+
         while (iterator.hasNext()) {
             Map.Entry<String, String> entry = iterator.next();
-            switch (this.param.getCollectType()){
-                case CPUTYPE :
-                    factory.addParsedField(SnmpPortStatisticalIndicators.CPU.getName(), entry.getValue());
-                    break;
-                case  TEMPERATURETYPE :
-                    factory.addParsedField(SnmpPortStatisticalIndicators.TEMPERATURE.getName(), entry.getValue());
-                    break;
-                case MEMORYTYPE :
-                    factory.addParsedField(SnmpPortStatisticalIndicators.MEMORY.getName(), entry.getValue());
-                    break;
-            }
-            factory.addParsedField(SnmpPortStatisticalIndicators.CURRENT_TIME.getName(), curTime);
-            factory.addParsedField(SnmpPortStatisticalIndicators.DRIVER_IP.getName(), this.param.getHost());
-            factory.addParsedField(SnmpPortStatisticalIndicators.DRIVER_NAME.getName(), this.param.getDriverName());
-            Mushroom generalMushroom = MushroomBuilder.withBody(factory.build(), null);
-            generalMushroom.getHeaders().put(EventKey.DATA_TYPE_NAME, "a_"+CourseType.SNMP_DRIVERSTATE.toString());
-            putMushroom(generalMushroom);
+            result += Double.parseDouble(entry.getValue());
         }
+
+        result /= driverMap.size();
+
+        switch (this.param.getCollectType()){
+            case CPUTYPE :
+                factory.addParsedField(SnmpPortStatisticalIndicators.CPU.getName(), result);
+                break;
+            case  TEMPERATURETYPE :
+                factory.addParsedField(SnmpPortStatisticalIndicators.TEMPERATURE.getName(), result);
+                break;
+            case MEMORYTYPE :
+                factory.addParsedField(SnmpPortStatisticalIndicators.MEMORY.getName(), result);
+                break;
+        }
+
+
+        factory.addParsedField(SnmpPortStatisticalIndicators.CURRENT_TIME.getName(), curTime);
+        factory.addParsedField(SnmpPortStatisticalIndicators.DRIVER_IP.getName(), host);
+        factory.addParsedField(SnmpPortStatisticalIndicators.DRIVER_NAME.getName(), driverName);
+
+        message = result +
+                SnmpPortStatisticalIndicators.FIELD_SEPARATOR.getName() +
+                curTime +
+                SnmpPortStatisticalIndicators.FIELD_SEPARATOR.getName() +
+                host +
+                SnmpPortStatisticalIndicators.FIELD_SEPARATOR.getName() +
+                driverName;
+
+        factory.addParsedField("a_message", message);
+
+
+
+        Mushroom generalMushroom = MushroomBuilder.withBody(factory.build(), null);
+        generalMushroom.getHeaders().put(EventKey.DATA_TYPE_NAME, "a_"+CourseType.SNMP_DRIVERSTATE.toString());
+        putMushroom(generalMushroom);
+
+
 
     }
 
