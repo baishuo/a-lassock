@@ -88,12 +88,13 @@ public class SnmpDriverBaseSource extends SnmpStandardSource{
             factory.addParsedField(SnmpPortStatisticalIndicators.CURRENT_TIME.getName(), curTime);
             factory.addParsedField(SnmpPortStatisticalIndicators.PORT_NAME.getName(), entry.getValue());
             factory.addParsedField(SnmpPortStatisticalIndicators.PORT_DES.getName(), portDesMap.get(port));
-            factory.addParsedField(SnmpPortStatisticalIndicators.PORT_IP.getName(), portIpMap.get(port));
+            String portIp = portIpMap.get(port);
+            factory.addParsedField(SnmpPortStatisticalIndicators.PORT_IP.getName(), portIp != null ? portIp : "");
             factory.addParsedField(SnmpPortStatisticalIndicators.CON_STATE.getName(), portConStateMap.get(port));
             factory.addParsedField(SnmpPortStatisticalIndicators.PORT_MTU.getName(), Mtu != null ? Long.parseLong(Mtu) : Mtu);
 
             Mushroom generalMushroom = MushroomBuilder.withBody(factory.build(), null);
-            generalMushroom.getHeaders().put(EventKey.DATA_TYPE_NAME, CourseType.SNMP_DRIVERBASE.toString());
+            generalMushroom.getHeaders().put(EventKey.DATA_TYPE_NAME, "a_"+CourseType.SNMP_DRIVERBASE.toString());
             putMushroom(generalMushroom);
         }
 

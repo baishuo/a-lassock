@@ -78,13 +78,14 @@ public class SnmpPortStateSource extends SnmpStandardSource{
 
             factory.addParsedField(SnmpPortStatisticalIndicators.DRIVER_IP.getName(), this.param.getHost());
             factory.addParsedField(SnmpPortStatisticalIndicators.PORT_NAME.getName(), entry.getValue());
-            factory.addParsedField(SnmpPortStatisticalIndicators.PORT_IP.getName(), portIpMap.get(port));
+            String portIp = portIpMap.get(port);
+            factory.addParsedField(SnmpPortStatisticalIndicators.PORT_IP.getName(), portIp != null ? portIp : "");
             factory.addParsedField(SnmpPortStatisticalIndicators.CON_STATE.getName(), portConStateMap.get(port));
             factory.addParsedField(SnmpPortStatisticalIndicators.CUR_STATE.getName(), portCutStateMap.get(port));
             factory.addParsedField(SnmpPortStatisticalIndicators.CURRENT_TIME.getName(), curTime);
 
             Mushroom generalMushroom = MushroomBuilder.withBody(factory.build(), null);
-            generalMushroom.getHeaders().put(EventKey.DATA_TYPE_NAME, CourseType.SNMP_PORTSTATE.toString());
+            generalMushroom.getHeaders().put(EventKey.DATA_TYPE_NAME, "a_"+CourseType.SNMP_PORTSTATE.toString());
             putMushroom(generalMushroom);
         }
 

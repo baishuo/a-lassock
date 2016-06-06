@@ -70,7 +70,7 @@ public class SnmpDriverStateSource extends SnmpStandardSource{
             factory.addParsedField(SnmpPortStatisticalIndicators.DRIVER_IP.getName(), this.param.getHost());
             factory.addParsedField(SnmpPortStatisticalIndicators.DRIVER_NAME.getName(), this.param.getDriverName());
             Mushroom generalMushroom = MushroomBuilder.withBody(factory.build(), null);
-            generalMushroom.getHeaders().put(EventKey.DATA_TYPE_NAME, CourseType.SNMP_DRIVERSTATE.toString());
+            generalMushroom.getHeaders().put(EventKey.DATA_TYPE_NAME, "a_"+CourseType.SNMP_DRIVERSTATE.toString());
             putMushroom(generalMushroom);
         }
 

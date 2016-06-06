@@ -140,7 +140,8 @@ public class SnmpPortInfoSource extends SnmpStandardSource{
                 factory.addParsedField(SnmpPortStatisticalIndicators.DRIVER_NAME.getName(), this.param.getDriverName());
                 factory.addParsedField(SnmpPortStatisticalIndicators.SYSUPTIME.getName(), timeInterval);
                 factory.addParsedField(SnmpPortStatisticalIndicators.PORT_NAME.getName(), entry.getValue());
-                factory.addParsedField(SnmpPortStatisticalIndicators.PORT_IP.getName(), portIpMap.get(port));
+                String portIp = portIpMap.get(port);
+                factory.addParsedField(SnmpPortStatisticalIndicators.PORT_IP.getName(), portIp != null ? portIp : "");
                 factory.addParsedField(SnmpPortStatisticalIndicators.CURRENT_TIME.getName(), curTime);
 
                 Long inValue = inMap.get(port);
@@ -183,7 +184,7 @@ public class SnmpPortInfoSource extends SnmpStandardSource{
                                 .setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());
 
                 Mushroom generalMushroom = MushroomBuilder.withBody(factory.build(), null);
-                generalMushroom.getHeaders().put(EventKey.DATA_TYPE_NAME, CourseType.SNMP_PORTINFO.toString());
+                generalMushroom.getHeaders().put(EventKey.DATA_TYPE_NAME, "a_"+CourseType.SNMP_PORTINFO.toString());
                 putMushroom(generalMushroom);
 
             }
