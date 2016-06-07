@@ -98,7 +98,7 @@ public class SnmpFlowSource extends SnmpStandardSource {
 			map.put("outPeriodFlow", outFlowData.getPeriodFlow());
 			map.put("outFlow", outFlowData.getFlow());
 			map.put("outLastFlow", outFlowData.getLastFlow());
-			map.put(EventKey.DATA_TYPE_NAME, "flow");
+			map.put(EventKey.DATA_TYPE_NAME, "a_flow");
 			Mushroom generalMushroom = MushroomBuilder.withBody(map, null);
 			generalMushroom.getHeaders().put("target", this.param.getHost());
 			putMushroom(generalMushroom);
