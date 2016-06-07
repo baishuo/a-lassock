@@ -97,7 +97,7 @@ public class SnmpDriverStateSource extends SnmpStandardSource{
 
 
         Mushroom generalMushroom = MushroomBuilder.withBody(factory.build(), null);
-        generalMushroom.getHeaders().put(EventKey.DATA_TYPE_NAME, CourseType.SNMP_DRIVERSTATE.toString());
+        generalMushroom.getHeaders().put(EventKey.DATA_TYPE_NAME, "a_"+CourseType.SNMP_DRIVERSTATE.toString());
         putMushroom(generalMushroom);
 
 
