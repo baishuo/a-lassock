@@ -15,7 +15,6 @@ import org.snmp4j.Target;
 import org.snmp4j.smi.VariableBinding;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.*;
 
 /**
@@ -25,6 +24,8 @@ public class SnmpPortInfoSource extends SnmpStandardSource{
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SnmpDriverBaseSource.class);
 
+    // 上一次结果
+    private Map<String, Long> tempOidval = new HashMap<String, Long>();
 
     //端口名称
     private String preNameOid;
@@ -94,11 +95,21 @@ public class SnmpPortInfoSource extends SnmpStandardSource{
         // 查找端口-IP映射
         Map<String, String> portIpMap = portIpMap(snmp, target);
 
+        Map<String, String> inByteMap = query(snmp, target, preInOid, sufInOid);
+
+        Map<String, String> outByteMap = query(snmp, target, preOutOid, sufOutOid);
+
         //接口接收到的总字节数
-        Map<String, Long> inMap = calculationDif(query(snmp, target, preInOid, sufInOid));
+        Map<String, Long> inMap = calculationDif(inByteMap);
+
+        //in转化实体对象
+        Map<String, FlowData> inFlowMap = tidyFlowData(inByteMap);
 
         //接口发出的总字节数
-        Map<String, Long> outMap = calculationDif(query(snmp, target, preOutOid, sufOutOid));
+        Map<String, Long> outMap = calculationDif(outByteMap);
+
+        //out转化实体对象
+        Map<String, FlowData> outFlowMap = tidyFlowData(outByteMap);
 
         //接口传输速率
         Map<String, String> speedMap = mapSwitch(query(snmp, target, preSpeedOid, sufSpeedOid));
@@ -145,7 +156,7 @@ public class SnmpPortInfoSource extends SnmpStandardSource{
 
 
                 factory.addParsedField(SnmpPortStatisticalIndicators.DRIVER_IP.getName(), driverIp);
-                factory.addParsedField(SnmpPortStatisticalIndicators.DRIVER_NAME.getName(), driverName);
+                factory.addParsedField(SnmpPortStatisticalIndicators.DRIVER_NAME.getName(), driverName != null ? driverName : "");
                 factory.addParsedField(SnmpPortStatisticalIndicators.SYSUPTIME.getName(), timeInterval);
                 factory.addParsedField(SnmpPortStatisticalIndicators.PORT_NAME.getName(), portName);
                 factory.addParsedField(SnmpPortStatisticalIndicators.PORT_IP.getName(), portIp);
@@ -191,6 +202,29 @@ public class SnmpPortInfoSource extends SnmpStandardSource{
                 factory.addParsedField(SnmpPortStatisticalIndicators.SEND_BROADCAST.getName(), sendBroadcast);
 
 
+                FlowData inFlow = inFlowMap.get(port);
+                Double inSecSpeed = inFlow.getSecSpeed();
+                Double periodFlow = inFlow.getPeriodFlow();
+                Double inflow = inFlow.getFlow();
+                Double lastFlow = inFlow.getLastFlow();
+
+                factory.addParsedField(SnmpPortStatisticalIndicators.IN_SEC_SPEED.getName(), inSecSpeed);
+                factory.addParsedField(SnmpPortStatisticalIndicators.IN_PERIOD_FLOW.getName(), periodFlow);
+                factory.addParsedField(SnmpPortStatisticalIndicators.IN_FLOW.getName(), inflow);
+                factory.addParsedField(SnmpPortStatisticalIndicators.IN_LAST_FLOW.getName(), lastFlow);
+
+                FlowData outFlow = outFlowMap.get(port);
+                Double outSecSpeed = outFlow.getSecSpeed();
+                Double outPeriodFlow = outFlow.getPeriodFlow();
+                Double outflow = outFlow.getFlow();
+                Double outLastFlow = outFlow.getLastFlow();
+
+                factory.addParsedField(SnmpPortStatisticalIndicators.OUT_SEC_SPEED.getName(), outSecSpeed);
+                factory.addParsedField(SnmpPortStatisticalIndicators.OUT_PERIOD_FLOW.getName(), outPeriodFlow);
+                factory.addParsedField(SnmpPortStatisticalIndicators.OUT_FLOW.getName(), outflow);
+                factory.addParsedField(SnmpPortStatisticalIndicators.OUT_LAST_FLOW.getName(), outLastFlow);
+
+
                 message = driverIp +
                         SnmpPortStatisticalIndicators.FIELD_SEPARATOR.getName() +
                         driverName +
@@ -221,7 +255,23 @@ public class SnmpPortInfoSource extends SnmpStandardSource{
                         SnmpPortStatisticalIndicators.FIELD_SEPARATOR.getName() +
                         reveiveBroadcast +
                         SnmpPortStatisticalIndicators.FIELD_SEPARATOR.getName() +
-                        sendBroadcast;
+                        sendBroadcast +
+                        SnmpPortStatisticalIndicators.FIELD_SEPARATOR.getName() +
+                        inSecSpeed +
+                        SnmpPortStatisticalIndicators.FIELD_SEPARATOR.getName() +
+                        periodFlow +
+                        SnmpPortStatisticalIndicators.FIELD_SEPARATOR.getName() +
+                        inflow +
+                        SnmpPortStatisticalIndicators.FIELD_SEPARATOR.getName() +
+                        lastFlow +
+                        SnmpPortStatisticalIndicators.FIELD_SEPARATOR.getName() +
+                        outSecSpeed +
+                        SnmpPortStatisticalIndicators.FIELD_SEPARATOR.getName() +
+                        outPeriodFlow +
+                        SnmpPortStatisticalIndicators.FIELD_SEPARATOR.getName() +
+                        outflow +
+                        SnmpPortStatisticalIndicators.FIELD_SEPARATOR.getName() +
+                        outLastFlow;
 
                 factory.addParsedField("a_message", message);
 
@@ -235,6 +285,127 @@ public class SnmpPortInfoSource extends SnmpStandardSource{
 
 
     }
+
+    /**
+     * 流量信息
+     *
+     * @author ruibing.zhao
+     * @since 2015年8月28日
+     * @version 2.1.2
+     */
+    public static class FlowData {
+        private String oid;
+        private int port;
+        // 周期流量
+        private double periodFlow;
+        // 每秒速率
+        private double secSpeed;
+        // 流量
+        private double flow;
+        // 上次注量
+        private double lastFlow;
+
+        public String getOid() {
+            return oid;
+        }
+
+        public void setOid(String oid) {
+            this.oid = oid;
+        }
+
+        public int getPort() {
+            return port;
+        }
+
+        public void setPort(int port) {
+            this.port = port;
+        }
+
+        public double getPeriodFlow() {
+            return periodFlow;
+        }
+
+        public void setPeriodFlow(double periodFlow) {
+            this.periodFlow = periodFlow;
+        }
+
+        public double getSecSpeed() {
+            return secSpeed;
+        }
+
+        public void setSecSpeed(double secSpeed) {
+            this.secSpeed = secSpeed;
+        }
+
+        public double getFlow() {
+            return flow;
+        }
+
+        public void setFlow(double flow) {
+            this.flow = flow;
+        }
+
+        public double getLastFlow() {
+            return lastFlow;
+        }
+
+        public void setLastFlow(double lastFlow) {
+            this.lastFlow = lastFlow;
+        }
+
+    }
+
+
+    /**
+     * 将(oid->value)整理为(端口 -> 当前OID，每秒速率，分钟总和，当前流量，上一次流量)
+     *
+     * @param map key:端口，value:当前OID，每秒速率，分钟总和，当前流量，上一次流量
+     * @return
+     */
+    private Map<String, FlowData> tidyFlowData(Map<String, String> map) {
+        Map<String, FlowData> result = new HashMap<String, FlowData>(map.size());
+        Iterator<Map.Entry<String, String>> iterator = map.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Map.Entry<String, String> entry = iterator.next();
+            String oid = entry.getKey();
+            if (entry.getValue().matches("\\d+")) {
+                long nowFlowVal = Long.parseLong(entry.getValue()) * 8;// 当前流量值
+                Long lastFlowVal = tempOidval.get(oid);// 前一分钟流量值
+                tempOidval.put(oid, nowFlowVal);
+                if (lastFlowVal != null) {
+                    String[] arr = oid.split("\\.");
+                    String portStr = arr[arr.length - 1];// 端口号
+                    long value = calFlow(nowFlowVal, lastFlowVal);// 分钟总和
+                    long perValue = value / 60;// 每秒速率
+                    FlowData fd = new FlowData();
+                    fd.setOid(oid);
+                    fd.setPort(Integer.parseInt(portStr));
+                    fd.setFlow(nowFlowVal / (double) 1000);
+                    fd.setLastFlow(lastFlowVal / (double) 1000);
+                    fd.setPeriodFlow(value / (double) 1000);
+                    fd.setSecSpeed(perValue / (double) 1000);
+                    result.put(portStr, fd);
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 根据当前采集到的流量值和前1分钟采集到的流量值计算这一分钟的流量
+     *
+     * @param nowVal
+     * @param lastVal
+     * @return
+     */
+    private long calFlow(long nowVal, long lastVal) {
+        long value = nowVal - lastVal;
+        if (value < 0) {
+            value = 4294967296l * 8 - lastVal + nowVal;
+        }
+        return value;
+    }
+
 
     /**
      * 计算一段时间的差值
