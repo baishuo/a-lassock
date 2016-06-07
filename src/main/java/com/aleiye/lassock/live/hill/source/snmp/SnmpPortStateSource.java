@@ -109,7 +109,7 @@ public class SnmpPortStateSource extends SnmpStandardSource{
 
 
             Mushroom generalMushroom = MushroomBuilder.withBody(factory.build(), null);
-            generalMushroom.getHeaders().put(EventKey.DATA_TYPE_NAME, "a_"+CourseType.SNMP_PORTSTATE.toString());
+            generalMushroom.getHeaders().put(EventKey.DATA_TYPE_NAME, CourseType.SNMP_PORTSTATE.toString());
             putMushroom(generalMushroom);
         }
 

@@ -3,6 +3,7 @@ package com.aleiye.lassock.live.hill.source.snmp;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.aleiye.event.constants.EventKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.snmp4j.PDU;
@@ -35,6 +36,7 @@ public class SnmpCpuSource extends SnmpStandardSource {
 		}
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("cpuLoad", cpmCPUTotal1min.getVariable().toString());
+		map.put(EventKey.DATA_TYPE_NAME , "cpu");
 		// body
 		Mushroom generalMushroom = MushroomBuilder.withBody(map, null);
 		generalMushroom.getHeaders().put("target", this.param.getHost());

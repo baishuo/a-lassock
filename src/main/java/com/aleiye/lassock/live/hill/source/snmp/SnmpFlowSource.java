@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import com.aleiye.event.constants.EventKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.snmp4j.PDU;
@@ -97,6 +98,7 @@ public class SnmpFlowSource extends SnmpStandardSource {
 			map.put("outPeriodFlow", outFlowData.getPeriodFlow());
 			map.put("outFlow", outFlowData.getFlow());
 			map.put("outLastFlow", outFlowData.getLastFlow());
+			map.put(EventKey.DATA_TYPE_NAME, "flow");
 			Mushroom generalMushroom = MushroomBuilder.withBody(map, null);
 			generalMushroom.getHeaders().put("target", this.param.getHost());
 			putMushroom(generalMushroom);

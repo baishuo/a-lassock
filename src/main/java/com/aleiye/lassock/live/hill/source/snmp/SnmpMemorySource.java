@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.aleiye.event.constants.EventKey;
 import org.apache.log4j.Logger;
 import org.snmp4j.PDU;
 import org.snmp4j.Snmp;
@@ -66,6 +67,7 @@ public class SnmpMemorySource extends SnmpStandardSource {
 		double memoryFreeRate = (double) memoryFree / memoryTotal * 100;
 		Double mfr = Double.valueOf(df.format(memoryFreeRate));
 		map.put("memoryFreeRate", mfr);
+		map.put(EventKey.DATA_TYPE_NAME , "memory");
 		// 附加属性添加到采集
 		Mushroom mr = MushroomBuilder.withBody(map, null);
 		mr.getHeaders().put("target", this.param.getHost());
