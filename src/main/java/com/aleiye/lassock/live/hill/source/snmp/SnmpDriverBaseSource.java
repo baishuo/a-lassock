@@ -86,12 +86,12 @@ public class SnmpDriverBaseSource extends SnmpStandardSource{
             Long Mtu =  portMtuMap.get(port) != null ? Long.parseLong(portMtuMap.get(port)) : 0;
 
 
-            String host = this.param.getHost();
-            String driverName = this.param.getDriverName();
-            String portName = entry.getValue();
-            String portDes = portDesMap.get(port) ;
+            String host = this.param.getHost() != null ? this.param.getHost() : "";
+            String driverName = this.param.getDriverName() != null ? this.param.getHost() : "";
+            String portName = entry.getValue() != null ? entry.getValue() : "";
+            String portDes = portDesMap.get(port) != null ? portDesMap.get(port) : "";
             String portIp = portIpMap.get(port) != null ? portIpMap.get(port) : "";
-            String conState = portConStateMap.get(port);
+            String conState = portConStateMap.get(port) != null ? portConStateMap.get(port) : "";
 
 
             factory.addParsedField(SnmpPortStatisticalIndicators.DRIVER_IP.getName(), host);
