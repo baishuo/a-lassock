@@ -44,7 +44,7 @@ public abstract class AbstractSource extends NamedLifecycle implements Source {
 		generalMushroom.getHeaders().put(EventKey.HOSTNAME, Sistem.getHost());
 
 		generalMushroom.setOriginalValues(sign.getCourse().getValues());
-		generalMushroom.getHeaders().put("type", sign.getCourse().getType().toString());
+		generalMushroom.getHeaders().put("lassockDataType", sign.getCourse().getType().toString());
 		GeneralMushroom mr = (GeneralMushroom) generalMushroom;
 		if (mr.getIntelligence() == null) {
 			mr.setIntelligence(sign.getIntelligence());
