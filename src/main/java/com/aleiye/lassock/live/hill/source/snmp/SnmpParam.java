@@ -20,6 +20,7 @@ public class SnmpParam {
 	/** 标准 SNMP */
 	// IP
 	private String host;
+	private String devName;
 	private String community;
 	private String os;
 	//设备名称
@@ -140,5 +141,13 @@ public class SnmpParam {
 
 	public void setDriverModel(String driverModel) {
 		this.driverModel = driverModel;
+	}
+
+	public String getDevName() {
+		return devName;
+	}
+
+	public void setDevName(String devName) {
+		this.devName = devName;
 	}
 }

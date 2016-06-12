@@ -150,12 +150,14 @@ public class SnmpPortInfoSource extends SnmpStandardSource{
                 String message;
 
                 String driverIp = this.param.getHost();
+                String devName = this.param.getDevName();
                 String driverName = this.param.getDriverName();
                 String portName = entry.getValue();
                 String portIp = portIpMap.get(port) != null ? portIpMap.get(port) : "";
 
 
                 factory.addParsedField(SnmpPortStatisticalIndicators.DRIVER_IP.getName(), driverIp);
+                factory.addParsedField(SnmpPortStatisticalIndicators.DEV_NAME.getName(), devName);
                 factory.addParsedField(SnmpPortStatisticalIndicators.DRIVER_NAME.getName(), driverName != null ? driverName : "");
                 factory.addParsedField(SnmpPortStatisticalIndicators.SYSUPTIME.getName(), timeInterval);
                 factory.addParsedField(SnmpPortStatisticalIndicators.PORT_NAME.getName(), portName);
@@ -226,6 +228,8 @@ public class SnmpPortInfoSource extends SnmpStandardSource{
 
 
                 message = driverIp +
+                        SnmpPortStatisticalIndicators.FIELD_SEPARATOR.getName() +
+                        devName +
                         SnmpPortStatisticalIndicators.FIELD_SEPARATOR.getName() +
                         driverName +
                         SnmpPortStatisticalIndicators.FIELD_SEPARATOR.getName() +

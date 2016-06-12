@@ -59,6 +59,7 @@ public class SnmpDriverStateSource extends SnmpStandardSource{
 
         String host = this.param.getHost();
         String driverName = this.param.getDriverName();
+        String devName = this.param.getDevName();
 
         while (iterator.hasNext()) {
             Map.Entry<String, String> entry = iterator.next();
@@ -80,11 +81,14 @@ public class SnmpDriverStateSource extends SnmpStandardSource{
         }
 
 
+        factory.addParsedField(SnmpPortStatisticalIndicators.DEV_NAME.getName(), devName);
         factory.addParsedField(SnmpPortStatisticalIndicators.CURRENT_TIME.getName(), curTime);
         factory.addParsedField(SnmpPortStatisticalIndicators.DRIVER_IP.getName(), host);
         factory.addParsedField(SnmpPortStatisticalIndicators.DRIVER_NAME.getName(), driverName);
 
         message = result +
+                SnmpPortStatisticalIndicators.FIELD_SEPARATOR.getName() +
+                devName +
                 SnmpPortStatisticalIndicators.FIELD_SEPARATOR.getName() +
                 curTime +
                 SnmpPortStatisticalIndicators.FIELD_SEPARATOR.getName() +

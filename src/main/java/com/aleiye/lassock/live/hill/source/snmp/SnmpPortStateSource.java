@@ -78,12 +78,15 @@ public class SnmpPortStateSource extends SnmpStandardSource{
             String message;
 
             String host = this.param.getHost();
+            String devName = this.param.getDevName();
             String portName = entry.getValue();
             String portIp = portIpMap.get(port) != null ? portIpMap.get(port) : "";
             String portConState = portConStateMap.get(port);
             String portCutState = portCutStateMap.get(port);
 
             message = host +
+                    SnmpPortStatisticalIndicators.FIELD_SEPARATOR.getName() +
+                    devName +
                     SnmpPortStatisticalIndicators.FIELD_SEPARATOR.getName() +
                     portName +
                     SnmpPortStatisticalIndicators.FIELD_SEPARATOR.getName() +
@@ -98,6 +101,7 @@ public class SnmpPortStateSource extends SnmpStandardSource{
 
 
 
+            factory.addParsedField(SnmpPortStatisticalIndicators.DEV_NAME.getName(), devName);
             factory.addParsedField(SnmpPortStatisticalIndicators.DRIVER_IP.getName(), host);
             factory.addParsedField(SnmpPortStatisticalIndicators.PORT_NAME.getName(), portName);
             factory.addParsedField(SnmpPortStatisticalIndicators.PORT_IP.getName(), portIp);
