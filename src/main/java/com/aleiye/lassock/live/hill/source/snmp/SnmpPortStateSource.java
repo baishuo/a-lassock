@@ -105,7 +105,7 @@ public class SnmpPortStateSource extends SnmpStandardSource{
             factory.addParsedField(SnmpPortStatisticalIndicators.CUR_STATE.getName(), portCutState);
             factory.addParsedField(SnmpPortStatisticalIndicators.CURRENT_TIME.getName(), curTime);
 
-            factory.addParsedField("a_message", message);
+            factory.addParsedField(EventKey.MESSAGE, message);
 
 
             Mushroom generalMushroom = MushroomBuilder.withBody(factory.build(), null);

@@ -92,7 +92,7 @@ public class SnmpDriverStateSource extends SnmpStandardSource{
                 SnmpPortStatisticalIndicators.FIELD_SEPARATOR.getName() +
                 driverName;
 
-        factory.addParsedField("a_message", message);
+        factory.addParsedField(EventKey.MESSAGE, message);
 
 
 

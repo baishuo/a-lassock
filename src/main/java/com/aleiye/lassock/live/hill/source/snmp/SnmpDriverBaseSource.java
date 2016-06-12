@@ -119,7 +119,7 @@ public class SnmpDriverBaseSource extends SnmpStandardSource{
                     SnmpPortStatisticalIndicators.FIELD_SEPARATOR.getName() +
                     Mtu;
 
-            factory.addParsedField("a_message", message);
+            factory.addParsedField(EventKey.MESSAGE, message);
 
             Mushroom generalMushroom = MushroomBuilder.withBody(factory.build(), null);
             generalMushroom.getHeaders().put(EventKey.DATA_TYPE_NAME, "a_"+CourseType.SNMP_DRIVERBASE.toString());
