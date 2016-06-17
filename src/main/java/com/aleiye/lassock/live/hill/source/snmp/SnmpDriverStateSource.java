@@ -71,12 +71,18 @@ public class SnmpDriverStateSource extends SnmpStandardSource{
         switch (this.param.getCollectType()){
             case CPUTYPE :
                 factory.addParsedField(SnmpPortStatisticalIndicators.CPU.getName(), result);
+                factory.addParsedField(SnmpPortStatisticalIndicators.DRIVER_STATE_TYPE.getName(),
+                        SnmpPortStatisticalIndicators.CPU.getName());
                 break;
             case  TEMPERATURETYPE :
                 factory.addParsedField(SnmpPortStatisticalIndicators.TEMPERATURE.getName(), result);
+                factory.addParsedField(SnmpPortStatisticalIndicators.DRIVER_STATE_TYPE.getName(),
+                        SnmpPortStatisticalIndicators.TEMPERATURE.getName());
                 break;
             case MEMORYTYPE :
                 factory.addParsedField(SnmpPortStatisticalIndicators.MEMORY.getName(), result);
+                factory.addParsedField(SnmpPortStatisticalIndicators.DRIVER_STATE_TYPE.getName(),
+                        SnmpPortStatisticalIndicators.MEMORY.getName());
                 break;
         }
 
