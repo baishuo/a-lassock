@@ -48,16 +48,6 @@ public class CustomThreadPoolExecutor extends ThreadPoolExecutor {
 		} else {
 			exeQeue = new LinkedBlockingQueue<Runnable>(QUEUE_SIZE);
 		}
-		// if (StringUtils.isBlank(REJECTED)) {
-		// return new CustomThreadPoolExecutor(POOL_SIZE, MAX_SIZE,
-		// KEEP_ALIVE_TIME, TimeUnit.MILLISECONDS, exeQeue);
-		// } else {
-		// RejectedExecutionHandler handler =
-		// ClassUtils.<RejectedExecutionHandler> newInstance(REJECTED);
-		// return new CustomThreadPoolExecutor(POOL_SIZE, MAX_SIZE,
-		// KEEP_ALIVE_TIME, TimeUnit.MILLISECONDS, exeQeue,
-		// handler);
-		// }
 		return new CustomThreadPoolExecutor(POOL_SIZE, MAX_SIZE, KEEP_ALIVE_TIME, TimeUnit.MILLISECONDS, exeQeue,
 				new ThreadPoolExecutor.CallerRunsPolicy(), shade, errShade, emergency);
 	}

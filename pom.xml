@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.aleiye</groupId>
 	<artifactId>lassock</artifactId>
-	<version>3.0.0</version>
+	<version>3.1.0</version>
 
 	<name>lassock</name>
 	<url>http://maven.apache.org</url>
@@ -231,12 +231,6 @@
 			<artifactId>guava</artifactId>
 			<version>17.0</version>
 		</dependency>
-		
-		<dependency>
-			<groupId>com.aleiye</groupId>
-			<artifactId>aleiye-zkclient</artifactId>
-			<version>3.0.0</version>
-		</dependency>
 		<!-- kafka -->
 		<dependency>
 			<groupId>com.typesafe.akka</groupId>
@@ -257,25 +251,36 @@
 			<groupId>org.apache.kafka</groupId>
 			<artifactId>kafka_2.10</artifactId>
 			<version>${kafka.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.apache.zookeeper</groupId>
+					<artifactId>zookeeper</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		
 		<!-- Aleiye -->
 		<dependency>
 			<groupId>com.aleiye</groupId>
+			<artifactId>aleiye-zkclient</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.aleiye</groupId>
 			<artifactId>aleiye-lassock-api</artifactId>
-			<version>3.0.0</version>
+			<version>${project.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.aleiye</groupId>
 			<artifactId>aleiye-zkpath</artifactId>
-			<version>3.0.0</version>
+			<version>${project.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>com.aleiye</groupId>
 			<artifactId>aleiye-event</artifactId>
-			<version>3.0.0</version>
+			<version>${project.version}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.slf4j</groupId>
@@ -287,7 +292,7 @@
 		<dependency>
 			<groupId>com.aleiye</groupId>
 			<artifactId>aleiye-common</artifactId>
-			<version>3.0.0</version>
+			<version>${project.version}</version>
 		</dependency>
 
 	</dependencies>

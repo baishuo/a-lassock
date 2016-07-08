@@ -26,22 +26,7 @@ public class DefaultBazaarFactory implements BazaarFactory {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Class<? extends Bazaar> getClass(String type) throws Exception {
-		// String channelClassName = type;
-		// ChannelType channelType = ChannelType.OTHER;
-		// try {
-		// channelType = ChannelType.valueOf(type.toUpperCase(Locale.ENGLISH));
-		// } catch (IllegalArgumentException ex) {
-		// logger.debug("Channel type {} is a custom type", type);
-		// }
-		// if (!channelType.equals(ChannelType.OTHER)) {
-		// channelClassName = channelType.getChannelClassName();
-		// }
-		// try {
 		return (Class<? extends Bazaar>) Class.forName(type);
-		// } catch (Exception ex) {
-		// throw new FlumeException("Unable to load channel type: " + type +
-		// ", class: " + channelClassName, ex);
-		// }
 	}
 
 }

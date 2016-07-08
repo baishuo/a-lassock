@@ -19,7 +19,6 @@ public class DefaultPingParser implements PingParser {
 		for (int i = 1; i < response.size(); i++) {
 			String msg = response.get(i);
 			if (msg.split("=").length == 5) {
-				//			if (msg.contains("bytes from") && msg.contains("icmp_seq=")) {
 				countTrue++;
 			}
 		}

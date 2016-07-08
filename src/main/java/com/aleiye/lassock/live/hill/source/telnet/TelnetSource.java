@@ -51,28 +51,6 @@ public class TelnetSource extends AbstractEventTrackSource {
 	private String[] commands;
 	private long millis = 2000;
 
-	// public static void main(String args[]) {
-	// TelnetShade shade = new TelnetShade();
-	// shade.setBasket(new SimpleLogoutBasket());
-	// shade.setName("test");
-	// TelnetSign sign = new TelnetSign();
-	// sign.setId("aaaa");
-	// sign.setPrepareCommand("telnet aleiyec;pwd@123;root;pwd@123;telnet aleiyed;root;pwd@123");
-	// sign.associate("1");
-	// sign.setHost("10.0.1.1");
-	// sign.setPort(23);
-	// sign.setUesrname("admin");
-	// sign.setPassword("yhxt@123");
-	// String[] p = { "dis arp", "dis mac-address" };
-	// sign.setCommands(p);
-	// shade.configure(sign);
-	// shade.start();
-	// try {
-	// shade.pick();
-	// } catch (Exception e) {
-	// e.printStackTrace();
-	// }
-	// }
 
 	@Override
 	protected void doPick() throws Exception {

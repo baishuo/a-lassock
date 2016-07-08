@@ -12,7 +12,6 @@ import com.aleiye.lassock.live.hill.source.SourceRunner;
 
 public class PollableSourceRunner extends SourceRunner {
 	private static final Logger LOGGER = LoggerFactory.getLogger(PollableSourceRunner.class);
-	// private static final long backoffSleepIncrement = 1000;
 	private static final long maxBackoffSleep = 5000;
 
 	private AtomicBoolean shouldStop;

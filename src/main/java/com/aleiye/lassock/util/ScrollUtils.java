@@ -11,16 +11,6 @@ import com.aleiye.lassock.api.Course;
 import com.aleiye.lassock.api.annotation.Required;
 
 public class ScrollUtils {
-	// public static Sign forSign(Course course, Class<? extends Sign> clazz)
-	// throws Exception {
-	// Sign sign = clazz.newInstance();
-	// JSONObject jo = JSONObject.fromObject(course);
-	// jo.putAll(course.getParameters());
-	// sign = JsonProvider.adaptMapper.readValue(jo.toString(), clazz);
-	// sign.setId(course.getName());
-	// sign.associate(((Course) course).getName());
-	// return sign;
-	// }
 
 	public static <T> T forParam(Course course, Class<T> clazz) throws Exception {
 		JSONObject jo = JSONObject.fromObject(course.getParameters());

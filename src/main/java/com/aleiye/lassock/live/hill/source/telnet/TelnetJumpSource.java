@@ -238,7 +238,6 @@ public class TelnetJumpSource extends AbstractEventTrackSource {
 	@Override
 	protected void doConfigure(Course context) throws Exception {
 		this.param = (TelnetParam) ScrollUtils.forParam(context, TelnetParam.class);
-		// this.sign = (TelnetSign) context;
 		host = param.getHost();
 		port = param.getPort();
 		username = param.getUsername();

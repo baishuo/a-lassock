@@ -135,7 +135,7 @@ public class SnmpStandardSource extends SnmpSource {
 			// 设置安全级别
 			((UserTarget) target).setSecurityLevel(SecurityLevel.AUTH_PRIV);
 			((UserTarget) target).setSecurityName(new OctetString(this.param.getUsrName()));
-			((UserTarget) target).setVersion(SnmpConstants.version3);
+			target.setVersion(SnmpConstants.version3);
 		} else {
 			target = new CommunityTarget();
 			if (param.getVersion() == SnmpConstants.version1) {

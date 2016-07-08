@@ -64,9 +64,6 @@ public abstract class AbstractShade<T extends Sign> implements Shade {
 		// 每次事件产生 增1
 		basket.push(generalMushroom);
 		this.intelligence.setAcceptedCount(this.intelligence.getAcceptedCount() + 1);
-		// MonitorHelper.setPicked(sign.getKey(), cid.split(","),
-		// sign.getType(), sign.getDescription(),
-		// mushroom.getContent().length);
 	}
 
 	@Override

@@ -1,10 +1,7 @@
 package com.aleiye.lassock.live.hill.source.snmp;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Vector;
+import java.util.*;
 
 import org.apache.commons.lang3.StringUtils;
 import org.snmp4j.PDU;
@@ -75,6 +72,27 @@ public abstract class SnmpSource extends AbstractEventTrackSource {
 			}
 		}
 		return map;
+	}
+
+	/**
+	 * 转换map，端口是key，值是value
+	 * @param map
+	 * @return
+	 * @throws Exception
+	 */
+	protected static Map<String, String> mapSwitch(Map map) throws Exception {
+		if(map.size() ==0 ){
+			return null;
+		}
+		Map<String, String> result = new HashMap<String, String>(map.size());
+		Iterator<Map.Entry<String, String>> iterator = map.entrySet().iterator();
+		while(iterator.hasNext()){
+			Map.Entry<String, String> entry = iterator.next();
+			String[] arr = entry.getKey().split("\\.");
+			String port = arr[arr.length - 1];
+			result.put(port,entry.getValue());
+		}
+		return result;
 	}
 
 	/**

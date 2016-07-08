@@ -72,7 +72,6 @@ public class ApacheTelnet {
 						buf.append(ch);
 						real.append(ch);
 
-//						 System.out.print(ch);
 
 						if (in.available() == 0) {
 							String str = real.toString().trim();

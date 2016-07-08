@@ -44,7 +44,6 @@ public class LiveContainer implements InitializeAware {
 		bazaarStation = new BazaarStation(configuration, basketStation);
 		bazaarStation.initialize();
 		// 加载采集源
-//		hill = new HillMirror();
 		hill = new DefaultHill();
 		hill.setBaskets(basketStation);
 		hill.initialize();
