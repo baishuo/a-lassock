@@ -2,6 +2,7 @@ package com.aleiye.lassock.live.hills1;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import com.aleiye.common.exception.AuthWrongException;
 import com.aleiye.common.utils.EncrypDES;
 import com.aleiye.event.constants.EventKey;
 import com.aleiye.lassock.api.Intelligence;
@@ -49,7 +50,7 @@ public abstract class AbstractShade<T extends Sign> implements Shade {
 	 * @throws InterruptedException 线程阻塞唤醒异常,该异常发生时代表该Shade关闭
 	 * @throws SignRemovedException Sign关联课程表为0时该异常发生,已无关联课程表的Sign(Shade)处于移除状态
 	 */
-	protected void putMushroom(GeneralMushroom generalMushroom) throws Exception {
+	protected void putMushroom(GeneralMushroom generalMushroom) throws AuthWrongException, InterruptedException {
 		// 判断关联课程是否为空
 		generalMushroom.setOriginalValues(sign.getValues());
 		if (generalMushroom.getIntelligence() == null) {

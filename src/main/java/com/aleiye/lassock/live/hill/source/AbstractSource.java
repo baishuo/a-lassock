@@ -1,5 +1,6 @@
 package com.aleiye.lassock.live.hill.source;
 
+import com.aleiye.common.exception.AuthWrongException;
 import com.aleiye.common.utils.EncrypDES;
 import com.aleiye.event.constants.EventKey;
 import com.aleiye.lassock.api.Intelligence;
@@ -36,7 +37,7 @@ public abstract class AbstractSource extends NamedLifecycle implements Source {
 	 * @param generalMushroom
 	 * @throws InterruptedException 线程阻塞唤醒异常,该异常发生时代表该Shade关闭
 	 */
-	protected void putMushroom(Mushroom generalMushroom) throws Exception {
+	protected void putMushroom(Mushroom generalMushroom) throws AuthWrongException, InterruptedException {
 		generalMushroom.getHeaders().put(EventKey.RESOURCEID, this.getName());
 		generalMushroom.getHeaders().put(EventKey.USERID,
 				EncrypDES.decrypt(Sistem.getHeader().get("authkey").toString()));
