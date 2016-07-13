@@ -41,6 +41,8 @@ public abstract class TextShade extends AbstractShade<TextSign> implements Runna
 			;
 		} catch (SignRemovedException e) {
 			this.setStat(Stat.ERR);
+		} catch (AuthWrongException e) {
+			this.setStat(Stat.ERR);
 		}
 	}
 
@@ -114,7 +116,7 @@ public abstract class TextShade extends AbstractShade<TextSign> implements Runna
 	 */
 	public static class LinesPickPolicy implements PickPolicy {
 
-		public void pick(TextShade shade) throws IOException, SignRemovedException, InterruptedException {
+		public void pick(TextShade shade) throws IOException, SignRemovedException, InterruptedException, AuthWrongException {
 			if (shade.canPick()) {
 				shade.pick();
 			}

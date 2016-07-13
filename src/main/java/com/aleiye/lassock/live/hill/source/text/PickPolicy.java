@@ -2,6 +2,7 @@ package com.aleiye.lassock.live.hill.source.text;
 
 import java.io.IOException;
 
+import com.aleiye.common.exception.AuthWrongException;
 import com.aleiye.lassock.live.exception.SignRemovedException;
 import com.aleiye.lassock.live.hill.source.text.cluser.TextCluser;
 
@@ -13,5 +14,5 @@ import com.aleiye.lassock.live.hill.source.text.cluser.TextCluser;
  * @version 2.1.2
  */
 public interface PickPolicy {
-	void pick(TextCluser shade) throws IOException, SignRemovedException, InterruptedException;
+	void pick(TextCluser shade) throws IOException, SignRemovedException, InterruptedException, AuthWrongException;
 }

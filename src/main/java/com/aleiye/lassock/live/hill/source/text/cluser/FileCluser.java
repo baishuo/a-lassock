@@ -10,6 +10,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.aleiye.common.exception.AuthWrongException;
 import org.apache.commons.io.IOUtils;
 
 import com.aleiye.event.constants.EventKey;
@@ -94,7 +95,7 @@ public class FileCluser extends TextCluser {
 
 	// int flag;
 
-	private void makeMushroom(byte[] content) throws SignRemovedException, InterruptedException {
+	private void makeMushroom(byte[] content) throws SignRemovedException, InterruptedException, AuthWrongException {
 		GeneralMushroom mr = new GeneralMushroom();
 		mr.setBody(content);
 		mr.getHeaders().put(EventKey.FILEPATH, this.sign.getPath());
@@ -131,7 +132,7 @@ public class FileCluser extends TextCluser {
 	}
 
 	// 读入栈
-	public boolean next() throws IOException, SignRemovedException, InterruptedException {
+	public boolean next() throws IOException, SignRemovedException, InterruptedException, AuthWrongException {
 		if (!canPick()) {
 			return false;
 		}
@@ -159,7 +160,7 @@ public class FileCluser extends TextCluser {
 	}
 
 	// 读入行
-	private void readLines() throws IOException, SignRemovedException, InterruptedException {
+	private void readLines() throws IOException, SignRemovedException, InterruptedException, AuthWrongException {
 		// 行开始的位置、结束位置
 		bp = ss.position();
 		sp = ss.limit();
@@ -232,7 +233,7 @@ public class FileCluser extends TextCluser {
 		ss.compact();
 	}
 
-	private void readLinesByRegular() throws IOException, SignRemovedException, InterruptedException {
+	private void readLinesByRegular() throws IOException, SignRemovedException, InterruptedException, AuthWrongException {
 		// 行开始的位置、结束位置
 		bp = ss.position();
 		sp = ss.limit();
@@ -333,7 +334,7 @@ public class FileCluser extends TextCluser {
 	}
 
 	// 读行
-	private void readLine() throws SignRemovedException, InterruptedException {
+	private void readLine() throws SignRemovedException, InterruptedException, AuthWrongException {
 		// 换行位置
 		sp = ss.position();
 		// 计算该行开始移至上行结束位的下一位
@@ -378,7 +379,7 @@ public class FileCluser extends TextCluser {
 	}
 
 	// 读行
-	private void readLineByRegular() throws SignRemovedException, InterruptedException {
+	private void readLineByRegular() throws SignRemovedException, InterruptedException, AuthWrongException {
 		if (dx != 0) {
 			bx = dx + 1;
 		}
@@ -470,7 +471,7 @@ public class FileCluser extends TextCluser {
 		}
 	}
 
-	private void bothTransmission() throws SignRemovedException, InterruptedException {
+	private void bothTransmission() throws SignRemovedException, InterruptedException, AuthWrongException {
 		int size = 0;
 		byte[] line;
 		ss.position(bpx);
@@ -490,7 +491,7 @@ public class FileCluser extends TextCluser {
 		cx ++;
 	}
 
-	private void leaveTransmission()throws SignRemovedException, InterruptedException {
+	private void leaveTransmission() throws SignRemovedException, InterruptedException, AuthWrongException {
 		int size = 0;
 		byte[] line;
 		size = arx.limit();

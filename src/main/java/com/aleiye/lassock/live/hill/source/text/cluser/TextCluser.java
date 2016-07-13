@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import com.aleiye.common.exception.AuthWrongException;
 import com.aleiye.lassock.live.exception.SignRemovedException;
 import com.aleiye.lassock.live.hill.source.text.CluserSign;
 import com.aleiye.lassock.live.hill.source.text.PickPolicy;
@@ -56,6 +57,8 @@ public abstract class TextCluser implements Cluser, Runnable {
 		} catch (InterruptedException e) {
 			;
 		} catch (SignRemovedException e) {
+			this.setState(CluserState.ERR);
+		} catch (AuthWrongException e) {
 			this.setState(CluserState.ERR);
 		}
 	}
@@ -158,7 +161,7 @@ public abstract class TextCluser implements Cluser, Runnable {
 	 */
 	public static class LinesPickPolicy implements PickPolicy {
 
-		public void pick(TextCluser shade) throws IOException, SignRemovedException, InterruptedException {
+		public void pick(TextCluser shade) throws IOException, SignRemovedException, InterruptedException, AuthWrongException {
 			if (shade.canPick()) {
 				shade.next();
 			}

@@ -15,6 +15,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
+import com.aleiye.common.exception.AuthWrongException;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -352,7 +353,7 @@ public class TextSource extends AbstractEventDrivenSource implements Runnable {
 				s.seek(offset);
 				s.setListener(new CluserListener() {
 					@Override
-					public void picked(Mushroom mushroom) throws InterruptedException {
+					public void picked(Mushroom mushroom) throws InterruptedException, AuthWrongException {
 						putMushroom(mushroom);
 					}
 				});
