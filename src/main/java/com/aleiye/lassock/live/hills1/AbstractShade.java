@@ -49,7 +49,7 @@ public abstract class AbstractShade<T extends Sign> implements Shade {
 	 * @throws InterruptedException 线程阻塞唤醒异常,该异常发生时代表该Shade关闭
 	 * @throws SignRemovedException Sign关联课程表为0时该异常发生,已无关联课程表的Sign(Shade)处于移除状态
 	 */
-	protected void putMushroom(GeneralMushroom generalMushroom) throws InterruptedException, SignRemovedException {
+	protected void putMushroom(GeneralMushroom generalMushroom) throws Exception {
 		// 判断关联课程是否为空
 		generalMushroom.setOriginalValues(sign.getValues());
 		if (generalMushroom.getIntelligence() == null) {

@@ -36,7 +36,7 @@ public abstract class AbstractSource extends NamedLifecycle implements Source {
 	 * @param generalMushroom
 	 * @throws InterruptedException 线程阻塞唤醒异常,该异常发生时代表该Shade关闭
 	 */
-	protected void putMushroom(Mushroom generalMushroom) throws InterruptedException {
+	protected void putMushroom(Mushroom generalMushroom) throws Exception {
 		generalMushroom.getHeaders().put(EventKey.RESOURCEID, this.getName());
 		generalMushroom.getHeaders().put(EventKey.USERID,
 				EncrypDES.decrypt(Sistem.getHeader().get("authkey").toString()));
