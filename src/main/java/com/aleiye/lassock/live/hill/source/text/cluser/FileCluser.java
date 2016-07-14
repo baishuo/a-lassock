@@ -605,7 +605,7 @@ public class FileCluser extends TextCluser {
 					IOUtils.closeQuietly(es);
 				}
 				if (ds != null) {
-					IOUtils.closeQuietly(es);
+					IOUtils.closeQuietly(ds);
 				}
 				FileAttributes fa = new FileAttributes(file);
 				// 再验证是否是同一文件
