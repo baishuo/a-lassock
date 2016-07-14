@@ -1,5 +1,6 @@
 package com.aleiye.lassock.live.hill.source.telnet;
 
+import com.aleiye.common.exception.AuthWrongException;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -194,6 +195,8 @@ public class TelnetSource extends AbstractEventTrackSource {
 		try {
 			putMushroom(generalMushroom);
 		} catch (InterruptedException e) {
+			LOGGER.debug(e.getMessage(), e);
+		} catch (AuthWrongException e) {
 			LOGGER.debug(e.getMessage(), e);
 		}
 	}

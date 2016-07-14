@@ -2,6 +2,7 @@ package com.aleiye.lassock.live.hills1.text;
 
 import java.io.IOException;
 
+import com.aleiye.common.exception.AuthWrongException;
 import com.aleiye.lassock.live.basket.Basket;
 import com.aleiye.lassock.live.exception.SignRemovedException;
 import com.aleiye.lassock.live.hills1.AbstractShade;
@@ -40,6 +41,8 @@ public abstract class TextShade extends AbstractShade<TextSign> implements Runna
 			;
 		} catch (SignRemovedException e) {
 			this.setStat(Stat.ERR);
+		} catch (AuthWrongException e) {
+			this.setStat(Stat.ERR);
 		}
 	}
 
@@ -52,7 +55,7 @@ public abstract class TextShade extends AbstractShade<TextSign> implements Runna
 	public abstract boolean canPick();
 
 	// 采集信息
-	public abstract boolean pick() throws IOException, SignRemovedException, InterruptedException;
+	public abstract boolean pick() throws IOException, SignRemovedException, InterruptedException, AuthWrongException;
 
 	// 采集信息
 	public abstract Stat selfCheck();
@@ -113,7 +116,7 @@ public abstract class TextShade extends AbstractShade<TextSign> implements Runna
 	 */
 	public static class LinesPickPolicy implements PickPolicy {
 
-		public void pick(TextShade shade) throws IOException, SignRemovedException, InterruptedException {
+		public void pick(TextShade shade) throws IOException, SignRemovedException, InterruptedException, AuthWrongException {
 			if (shade.canPick()) {
 				shade.pick();
 			}

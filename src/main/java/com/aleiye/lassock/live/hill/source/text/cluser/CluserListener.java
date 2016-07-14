@@ -1,5 +1,6 @@
 package com.aleiye.lassock.live.hill.source.text.cluser;
 
+import com.aleiye.common.exception.AuthWrongException;
 import com.aleiye.lassock.live.model.Mushroom;
 
 /**
@@ -10,5 +11,5 @@ import com.aleiye.lassock.live.model.Mushroom;
  * @version 1.0
  */
 public interface CluserListener {
-	void picked(Mushroom mushroom) throws InterruptedException;
+	void picked(Mushroom mushroom) throws InterruptedException, AuthWrongException;
 }

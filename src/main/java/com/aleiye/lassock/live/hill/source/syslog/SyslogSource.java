@@ -3,6 +3,7 @@ package com.aleiye.lassock.live.hill.source.syslog;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.aleiye.common.exception.AuthWrongException;
 import com.aleiye.lassock.api.Course;
 import com.aleiye.lassock.api.CourseConst;
 import com.aleiye.lassock.common.InitializeAware;
@@ -48,7 +49,7 @@ public class SyslogSource extends AbstractEventDrivenSource {
 		return super.isStarted();
 	}
 
-	public void putMushroom(Mushroom mr) throws InterruptedException {
+	public void putMushroom(Mushroom mr) throws InterruptedException, AuthWrongException {
 		super.putMushroom(mr);
 	}
 
