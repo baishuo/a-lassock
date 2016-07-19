@@ -172,12 +172,14 @@ public class FileCluser extends TextCluser {
 			case '\n':
 				eol = true;
 				break;
-			case '\r':
-				// 判断下一个字符是不是换行
-				if ((ss.get()) == '\n') {
-					eol = true;
-				}
-				break;
+				case '\r':
+					if (ss.hasRemaining()) {//只有当有下个字符时才能继续
+						// 判断下一个字符是不是换行
+						if ((ss.get()) == '\n') {
+							eol = true;
+						}
+					}
+					break;
 			}
 			if (eol) {
 				// 回朔一位
