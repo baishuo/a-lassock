@@ -12,7 +12,7 @@ import com.aleiye.lassock.live.model.Mushroom;
  * @version 2.1.2
  */
 public class MemoryQueueBasket extends AbstractBasket {
-	LinkedBlockingQueue<Mushroom> queue = new LinkedBlockingQueue<Mushroom>();
+	LinkedBlockingQueue<Mushroom> queue = new LinkedBlockingQueue<Mushroom>(10000);
 
 	@Override
 	public void push(Mushroom generalMushroom) throws InterruptedException {
