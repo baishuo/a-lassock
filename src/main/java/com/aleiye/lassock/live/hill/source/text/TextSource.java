@@ -1,26 +1,6 @@
 package com.aleiye.lassock.live.hill.source.text;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.TimeUnit;
-
 import com.aleiye.common.exception.AuthWrongException;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.aleiye.lassock.api.Course;
 import com.aleiye.lassock.api.CourseConst;
 import com.aleiye.lassock.api.Intelligence.ShadeState;
@@ -37,10 +17,23 @@ import com.aleiye.lassock.util.MarkUtil;
 import com.aleiye.lassock.util.ScrollUtils;
 import com.google.common.collect.Sets;
 import com.google.common.collect.Sets.SetView;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
+import org.codehaus.plexus.util.DirectoryScanner;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.util.*;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 事件驱动采集图
- * 
+ *
  * @author ruibing.zhao
  * @since 2015年5月22日
  * @version 2.1.1
@@ -95,7 +88,7 @@ public class TextSource extends AbstractEventDrivenSource implements Runnable {
 	long time = System.currentTimeMillis();
 
 	/**
-	 * 消防检查线程(当事件停止时作检查) 
+	 * 消防检查线程(当事件停止时作检查)
 	 * 该线程负责可读队列和空闲队列
 	 */
 	public void checkNomalAndIdies() {
@@ -147,7 +140,7 @@ public class TextSource extends AbstractEventDrivenSource implements Runnable {
 	}
 
 	/**
-	 * 医生线程(事件发生异常时修正或移除) 
+	 * 医生线程(事件发生异常时修正或移除)
 	 * 负责异常对列检查和修复
 	 */
 	public void checkError() {
@@ -334,7 +327,7 @@ public class TextSource extends AbstractEventDrivenSource implements Runnable {
 
 	/**
 	 * 添加Unit
-	 * 
+	 *
 	 * @param t
 	 */
 	protected void addSign(CluserSign t) throws SignException, CourseException {
@@ -374,7 +367,7 @@ public class TextSource extends AbstractEventDrivenSource implements Runnable {
 	/**
 	 * 移除Shade
 	 * 默认间接移除
-	 * 
+	 *
 	 * @param t
 	 */
 	protected void removeSign(CluserSign t) {
@@ -415,18 +408,48 @@ public class TextSource extends AbstractEventDrivenSource implements Runnable {
 			throw new IllegalArgumentException("Input path " + inputFile + " is not exist!");
 		}
 		String reg = course.getString(CourseConst.text.PATH_FILTER_REGEX);
-		// 创建FILE FINDER
-		FileFinder ff = new FileFinder(new String[] {
-			reg
-		});
-		// 获取所有可读文件
-		List<File> findFiles = ff.getFiles(inputPath);
-		// 创建Units
-		for (File file : findFiles) {
-			CluserSign sign = creatSign(file);
-			sign.setRegular(course.getString(CourseConst.text.DATA_REGULAR));
-			details.add(sign);
+        //使用新的路径过滤,降低使用的难度
+		int index = inputPath.indexOf('*');
+		String path;
+		String[] include = new String[2];
+		if (index != -1) {
+			path = inputPath.substring(0, index);
+			include[0] = inputPath.substring(index);
+			if (!path.endsWith("/")) {
+				int lastIndex = path.lastIndexOf("/");
+				path = inputPath.substring(0, lastIndex + 1);
+				include[0] = inputPath.substring(lastIndex + 1);
+			}
+		} else {
+			path = inputPath;
+			include[0] = "*";
 		}
+		include[1] = reg;
+		DirectoryScanner scanner = new DirectoryScanner();
+		scanner.setBasedir(path);
+		scanner.setIncludes(include);
+		scanner.scan();
+
+        String[] fileList = scanner.getIncludedFiles();
+        if (fileList != null && fileList.length > 0) {
+            for (String filePath : fileList) {
+                CluserSign sign = creatSign(new File(path,filePath));
+                sign.setRegular(course.getString(CourseConst.text.DATA_REGULAR));
+                details.add(sign);
+            }
+        }
+        //		// 创建FILE FINDER
+//		FileFinder ff = new FileFinder(new String[] {
+//			reg
+//		});
+//		// 获取所有可读文件
+//		List<File> findFiles = ff.getFiles(inputPath);
+//		// 创建Units
+//		for (File file : findFiles) {
+//			CluserSign sign = creatSign(file);
+//			sign.setRegular(course.getString(CourseConst.text.DATA_REGULAR));
+//			details.add(sign);
+//		}
 		return details;
 	}
 
