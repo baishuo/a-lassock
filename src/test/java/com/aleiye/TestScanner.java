@@ -34,7 +34,7 @@ public class TestScanner {
 
         DirectoryScanner scanner = new DirectoryScanner();
         scanner.setBasedir(path);
-        scanner.setIncludes(new String[]{include});
+        scanner.setIncludes(new String[]{include,""});
         scanner.scan();
 
         String[] files = scanner.getIncludedFiles();

@@ -403,10 +403,6 @@ public class TextSource extends AbstractEventDrivenSource implements Runnable {
 		if (StringUtils.isBlank(inputPath)) {
 			throw new IllegalArgumentException("Path in not be empty!");
 		}
-		File inputFile = new File(inputPath.trim());
-		if (!inputFile.exists()) {
-			throw new IllegalArgumentException("Input path " + inputFile + " is not exist!");
-		}
 		String reg = course.getString(CourseConst.text.PATH_FILTER_REGEX);
         //使用新的路径过滤,降低使用的难度
 		int index = inputPath.indexOf('*');
@@ -437,7 +433,9 @@ public class TextSource extends AbstractEventDrivenSource implements Runnable {
                 sign.setRegular(course.getString(CourseConst.text.DATA_REGULAR));
                 details.add(sign);
             }
-        }
+        }else{
+            throw new IllegalArgumentException("Input path " + inputPath + " can't find any file!");
+		}
         //		// 创建FILE FINDER
 //		FileFinder ff = new FileFinder(new String[] {
 //			reg
