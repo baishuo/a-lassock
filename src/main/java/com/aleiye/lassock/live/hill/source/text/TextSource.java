@@ -406,37 +406,45 @@ public class TextSource extends AbstractEventDrivenSource implements Runnable {
         }
         String reg = course.getString(CourseConst.text.PATH_FILTER_REGEX);
         //使用新的路径过滤,降低使用的难度
-        int index = inputPath.indexOf('*');
-        String path;
-        String[] include = new String[2];
-        if (index != -1) {
-            path = inputPath.substring(0, index);
-            include[0] = inputPath.substring(index);
-            if (!path.endsWith("/")) {
-                int lastIndex = path.lastIndexOf("/");
-                path = inputPath.substring(0, lastIndex + 1);
-                include[0] = inputPath.substring(lastIndex + 1);
+        File inputFile = new File(inputPath.trim());
+        if(inputFile.exists()&& inputFile.isFile()){
+            CluserSign sign = creatSign(inputFile);
+            sign.setRegular(course.getString(CourseConst.text.DATA_REGULAR));
+            details.add(sign);
+        }else{
+            int index = inputPath.indexOf('*');
+            String path;
+            String[] include = new String[2];
+            if (index != -1) {
+                path = inputPath.substring(0, index);
+                include[0] = inputPath.substring(index);
+                if (!path.endsWith("/")) {
+                    int lastIndex = path.lastIndexOf("/");
+                    path = inputPath.substring(0, lastIndex + 1);
+                    include[0] = inputPath.substring(lastIndex + 1);
+                }
+            } else {
+                path = inputPath;
+                include[0] = "*";
             }
-        } else {
-            path = inputPath;
-            include[0] = "*";
-        }
-        include[1] = reg == null ? "" : reg;
-        DirectoryScanner scanner = new DirectoryScanner();
-        scanner.setBasedir(path);
-        scanner.setIncludes(include);
-        scanner.scan();
+            include[1] = reg == null ? "" : reg;
+            DirectoryScanner scanner = new DirectoryScanner();
+            scanner.setBasedir(path);
+            scanner.setIncludes(include);
+            scanner.scan();
 
-        String[] fileList = scanner.getIncludedFiles();
-        if (fileList != null && fileList.length > 0) {
-            for (String filePath : fileList) {
-                CluserSign sign = creatSign(new File(path, filePath));
-                sign.setRegular(course.getString(CourseConst.text.DATA_REGULAR));
-                details.add(sign);
+            String[] fileList = scanner.getIncludedFiles();
+            if (fileList != null && fileList.length > 0) {
+                for (String filePath : fileList) {
+                    CluserSign sign = creatSign(new File(path, filePath));
+                    sign.setRegular(course.getString(CourseConst.text.DATA_REGULAR));
+                    details.add(sign);
+                }
+            } else {
+                throw new IllegalArgumentException("Input path " + inputPath + " can't find any file!");
             }
-        } else {
-            throw new IllegalArgumentException("Input path " + inputPath + " can't find any file!");
         }
+
         //		// 创建FILE FINDER
 //		FileFinder ff = new FileFinder(new String[] {
 //			reg
