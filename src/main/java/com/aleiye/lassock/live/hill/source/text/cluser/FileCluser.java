@@ -3,6 +3,7 @@ package com.aleiye.lassock.live.hill.source.text.cluser;
 import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.List;
@@ -97,7 +98,12 @@ public class FileCluser extends TextCluser {
 
 	private void makeMushroom(byte[] content) throws SignRemovedException, InterruptedException, AuthWrongException {
 		GeneralMushroom mr = new GeneralMushroom();
-		mr.setBody(content);
+		try{
+			mr.setBody(new String(content,this.sign.getEncode()).getBytes("UTF-8"));
+		}catch (UnsupportedEncodingException e){
+			mr.setBody(content);
+			e.printStackTrace();
+		}
 		mr.getHeaders().put(EventKey.FILEPATH, this.sign.getPath());
 		mr.getHeaders().put("soffset", String.valueOf(this.bx));
 		mr.getHeaders().put("eoffset", String.valueOf(this.dx));

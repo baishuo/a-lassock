@@ -29,6 +29,8 @@ public class CluserSign {
 	//分隔符
 	private String regular = null;
 
+	private String encode = null;
+
 	public String getRegular() {
 		return regular;
 	}
@@ -107,5 +109,13 @@ public class CluserSign {
 
 	public void setRemoved(boolean removed) {
 		this.removed = removed;
+	}
+
+	public String getEncode() {
+		return encode;
+	}
+
+	public void setEncode(String encode) {
+		this.encode = encode;
 	}
 }

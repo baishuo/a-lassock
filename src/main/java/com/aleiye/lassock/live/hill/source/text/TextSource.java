@@ -410,6 +410,7 @@ public class TextSource extends AbstractEventDrivenSource implements Runnable {
         if(inputFile.exists()&& inputFile.isFile()){
             CluserSign sign = creatSign(inputFile);
             sign.setRegular(course.getString(CourseConst.text.DATA_REGULAR));
+            sign.setEncode(course.getString(CourseConst.text.DATA_ENCODE));
             details.add(sign);
         }else{
             int index = inputPath.indexOf('*');
@@ -438,6 +439,7 @@ public class TextSource extends AbstractEventDrivenSource implements Runnable {
                 for (String filePath : fileList) {
                     CluserSign sign = creatSign(new File(path, filePath));
                     sign.setRegular(course.getString(CourseConst.text.DATA_REGULAR));
+                    sign.setEncode(course.getString(CourseConst.text.DATA_ENCODE));
                     details.add(sign);
                 }
             } else {
