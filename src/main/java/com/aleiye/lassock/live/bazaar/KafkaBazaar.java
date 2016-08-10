@@ -1,5 +1,6 @@
 package com.aleiye.lassock.live.bazaar;
 
+import com.aleiye.event.constants.EventKey;
 import com.aleiye.event.exception.InvalidEventContentException;
 import com.aleiye.event.factory.AleiyeEventFactory;
 import com.aleiye.lassock.conf.Context;
@@ -11,6 +12,9 @@ import com.aleiye.zkclient.standard.CuratorClient;
 import com.aleiye.zkclient.standard.CuratorFactory;
 import com.aleiye.zkpath.constants.ZKPathConstants;
 
+import com.fasterxml.uuid.EthernetAddress;
+import com.fasterxml.uuid.Generators;
+import com.fasterxml.uuid.impl.TimeBasedGenerator;
 import kafka.javaapi.producer.Producer;
 import kafka.producer.KeyedMessage;
 import kafka.producer.ProducerClosedException;
@@ -45,6 +49,12 @@ public class KafkaBazaar extends AbstractBazaar {
     public static final String KAFKA_BROKER_DEF_PATH = ZKPathConstants.KAFKA_BROKER_DEF_PATH;
 
     public static final String KAFKA_PARTITION_DEF_PATH = ZKPathConstants.KAFKA_PARTITION_DEF_PATH;
+
+    private EthernetAddress addr = EthernetAddress.fromInterface();
+
+    private TimeBasedGenerator uuidGenerator = Generators.timeBasedGenerator(addr);
+
+    private boolean autoCreateId = ConfigUtils.getConfig().getBoolean("system.auto.create.id");
 
     private CuratorFramework client;
 
@@ -188,6 +198,10 @@ public class KafkaBazaar extends AbstractBazaar {
         try {
             eventBuilder.setContent(mr.getBody());
             eventBuilder.addParam(mr.getHeaders());
+            //增加唯一Id,防止传输重复
+            if (autoCreateId) {
+                eventBuilder.addParam(EventKey.ID, uuidGenerator.generate().toString());
+            }
             KeyedMessage<String, byte[]> message = new KeyedMessage<String, byte[]>(topic,
                     String.valueOf((char) ('a' + messageCount)), eventBuilder.build());
 
