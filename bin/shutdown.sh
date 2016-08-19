@@ -8,7 +8,7 @@ TestPid(){
 
     if [ -f ${pidfile} ] ; then
        if ps ux|grep `cat ${pidfile}`|grep "lassock.jar"|grep -v "grep" > /dev/null ; then
-          kill -15 `cat ${pidfile}`
+          kill -9 `cat ${pidfile}`
           echo "shutdown success"
        else
          "the lassock is not running"
