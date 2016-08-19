@@ -170,6 +170,11 @@ public abstract class TextCluser implements Cluser, Runnable {
                     hasNext = shade.next();
                     limit--;
                 }
+                if (!hasNext) {
+                    Thread.sleep(100);
+                }
+            } else {
+                Thread.sleep(100);
             }
         }
     }
