@@ -20,7 +20,7 @@ TestPid
 
 devName=`hostname`
 
-nohup java -cp ${CURRENT_HOME}/conf/*:${CURRENT_HOME}/lassock.jar com.aleiye.lassock.Lassock ${devName} >> ${CURRENT_HOME}/logs/run.log 2>&1 &
+nohup java -cp ${CURRENT_HOME}/conf/*:${CURRENT_HOME}/lassock.jar com.aleiye.lassock.Lassock ${devName} > /dev/null 2>&1 &
 echo "lassock start successful"
 echo $! > ${pidfile}
 
