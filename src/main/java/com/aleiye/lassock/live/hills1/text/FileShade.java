@@ -6,6 +6,7 @@ import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
+import com.aleiye.common.exception.AuthWrongException;
 import org.apache.commons.io.IOUtils;
 
 import com.aleiye.event.constants.EventKey;
@@ -63,7 +64,7 @@ public class FileShade extends TextShade {
 		this.intelligence.setType(unit.getType());
 	}
 
-	private void makeMushroom(byte[] content) throws SignRemovedException, InterruptedException {
+	private void makeMushroom(byte[] content) throws SignRemovedException, InterruptedException, AuthWrongException {
 		GeneralMushroom mr = new GeneralMushroom();
 		mr.setIntelligence(this.intelligence);
 		mr.setBody(content);
@@ -98,7 +99,7 @@ public class FileShade extends TextShade {
 	}
 
 	// 读入栈
-	public boolean pick() throws IOException, SignRemovedException, InterruptedException {
+	public boolean pick() throws IOException, SignRemovedException, InterruptedException, AuthWrongException {
 		if (!canPick()) {
 			return false;
 		}
@@ -119,7 +120,7 @@ public class FileShade extends TextShade {
 	}
 
 	// 读入行
-	private void readLines() throws IOException, SignRemovedException, InterruptedException {
+	private void readLines() throws IOException, SignRemovedException, InterruptedException, AuthWrongException {
 		// 行开始的位置、结束位置
 		bp = ss.position();
 		sp = ss.limit();
@@ -193,7 +194,7 @@ public class FileShade extends TextShade {
 	}
 
 	// 读行
-	private void readLine() throws SignRemovedException, InterruptedException {
+	private void readLine() throws SignRemovedException, InterruptedException, AuthWrongException {
 		// 换行位置
 		sp = ss.position();
 		// 计算该行开始移至上行结束位的下一位

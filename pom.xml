@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.aleiye</groupId>
 	<artifactId>lassock</artifactId>
-	<version>3.1.0</version>
+	<version>3.2.0</version>
 
 	<name>lassock</name>
 	<url>http://maven.apache.org</url>
@@ -231,6 +231,11 @@
 			<artifactId>guava</artifactId>
 			<version>17.0</version>
 		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.uuid</groupId>
+			<artifactId>java-uuid-generator</artifactId>
+			<version>3.1.3</version>
+		</dependency>
 		<!-- kafka -->
 		<dependency>
 			<groupId>com.typesafe.akka</groupId>
@@ -257,6 +262,11 @@
 					<artifactId>zookeeper</artifactId>
 				</exclusion>
 			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.plexus</groupId>
+			<artifactId>plexus-utils</artifactId>
+			<version>3.0.22</version>
 		</dependency>
 		
 		<!-- Aleiye -->

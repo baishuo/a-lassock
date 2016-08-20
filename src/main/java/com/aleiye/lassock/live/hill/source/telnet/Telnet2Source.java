@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import com.aleiye.common.exception.AuthWrongException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -143,6 +144,8 @@ public class Telnet2Source extends AbstractEventTrackSource {
 			putMushroom(generalMushroom);
 		} catch (InterruptedException e) {
 			LOGGER.debug(e.getMessage(), e);
+		} catch (AuthWrongException e) {
+			LOGGER.debug(e.getMessage(), e);
 		}
 	}
 
@@ -152,6 +155,8 @@ public class Telnet2Source extends AbstractEventTrackSource {
 		try {
 			putMushroom(generalMushroom);
 		} catch (InterruptedException e) {
+			LOGGER.debug(e.getMessage(), e);
+		} catch (AuthWrongException e) {
 			LOGGER.debug(e.getMessage(), e);
 		}
 	}
