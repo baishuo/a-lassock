@@ -20,7 +20,7 @@ TestPid
 
 devName=`hostname`
 
-nohup java -cp ${CURRENT_HOME}/conf/*:${CURRENT_HOME}/lassock.jar com.aleiye.lassock.Lassock ${devName} > /dev/null 2>&1 &
+nohup java -Xms512m -Xmx512m -Djava.awt.headless=true -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -XX:CMSInitiatingOccupancyFraction=75 -XX:+UseCMSInitiatingOccupancyOnly -XX:+HeapDumpOnOutOfMemoryError -XX:+DisableExplicitGC -Dfile.encoding=UTF-8 -cp ${CURRENT_HOME}/conf/*:${CURRENT_HOME}/lassock.jar com.aleiye.lassock.Lassock ${devName} > /dev/null 2>&1 &
 echo "lassock start successful"
 echo $! > ${pidfile}
 
