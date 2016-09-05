@@ -311,7 +311,6 @@ public class TextSource extends AbstractEventDrivenSource implements Runnable {
         } catch (Exception e) {
             this.sign.getIntelligence().setState(ShadeState.ERROR);
             logger.error(e.getMessage());
-            logger.debug("", e);
             try {
                 Thread.sleep(5000);
             } catch (InterruptedException e1) {
