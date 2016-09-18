@@ -19,8 +19,11 @@ public class AleiyeLassock {
 
     public static void main(String[] args) {
         try {
+            //获取机器名
+            String hostName = args[0];
             // 将本机IP存入 System
             System.setProperty("local.host", SigarUtils.getIP());
+            System.setProperty("local.hostName", hostName);
 
             // 采集器系统信息
             Class.forName(Sistem.class.getName());
