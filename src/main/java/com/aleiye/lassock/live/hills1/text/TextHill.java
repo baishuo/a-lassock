@@ -424,6 +424,7 @@ public class TextHill extends AbstractHill<TextSign, TextShade> {
             sign.setCt(bfa.creationTime().toMillis());
             sign.setLmt(bfa.lastModifiedTime().toMillis());
             sign.setPath(file.getPath());
+            sign.setBasketName(course.getBasketName());
             sign.setCourse(course);
             details.add(sign);
         }
