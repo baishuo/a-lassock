@@ -260,10 +260,10 @@ public class FileCluser extends TextCluser {
                     break;
                 case '\r':
                     // 判断下一个字符是不是换行
-                    if ((ss.get()) == '\n') {
+//                    if ((ss.get()) == '\n') {
                         isRegularTrue = false;
                         eol = writeBuffer();
-                    }
+//                    }
                     break;
             }
             if (eol) {
@@ -271,7 +271,7 @@ public class FileCluser extends TextCluser {
                 ss.position(ss.position() - 1);//				this.readLine();
                 this.readLineByRegular();
                 // 跳过换行符
-                ss.get();
+//                ss.get();
                 // 标记行起始位
                 ss.mark();
                 sp = ss.position();
@@ -306,7 +306,8 @@ public class FileCluser extends TextCluser {
                     Matcher m = p.matcher(linesString);
                     m.matches();
                     if ((lineLast == '\n' || lineLast == '\r') && m.matches()) {
-                        size = arx.limit();
+//                        size = arx.limit();
+                        size = arx.position();
                         arx.flip();
                         line = new byte[size];
                         arx.get(line);
