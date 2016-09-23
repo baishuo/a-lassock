@@ -87,7 +87,6 @@ public class DefaultMonitor extends AbstractLifecycleAware implements Monitor {
                 ActorSelection regSelection = actorSystem.actorSelection(MixedUtils.formatActorPath(targetName,
                         targetHost, targetPort, targetRegName));
                 LassockInformation info = Sistem.getInformation();
-//				regSelection.tell(info, sActor);
                 Timeout timeout = new Timeout(Duration.create(100, "seconds"));
                 Future<Object> future = Patterns.ask(regSelection, info, timeout);
                 try {
