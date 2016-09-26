@@ -168,7 +168,10 @@ public class DefaultMonitor extends AbstractLifecycleAware implements Monitor {
                 }
             }
             // 返回状态
-            getSender().tell(live.getState(), ActorRef.noSender());
+            List<Intelligence> is = live.getIntelligences();
+            LassockState state = live.getState();
+            IntelligenceLetter letter = new IntelligenceLetter(state, is);
+            getSender().tell(letter, ActorRef.noSender());
         }
     }
 }
