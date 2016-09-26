@@ -15,5 +15,5 @@ do
       sh ${CURRENT_HOME}/bin/shutdown.sh
       sh ${CURRENT_HOME}/bin/lassock-daemon.sh
    fi
-   sleep 10
+   sleep 5
 done
