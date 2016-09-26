@@ -9,7 +9,7 @@ TestPid(){
 
 
     if [ -f ${checkpidfile} ] ; then
-       if ps ux|grep `cat ${pidfile}`|grep "aleiye-lassock-check.sh"|grep -v "grep" > /dev/null ; then
+       if ps ux|grep `cat ${checkpidfile}`|grep "aleiye-lassock-check.sh"|grep -v "grep" > /dev/null ; then
           kill -9 `cat ${checkpidfile}`
        fi
     fi
