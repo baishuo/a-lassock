@@ -2,7 +2,7 @@
 PRG="${0}"
 PRGDIR=`dirname ${PRG}`
 CURRENT_HOME=`cd "${PRGDIR}/.." > /dev/null;pwd `
-pidfile=${CURRENT_HOME}"/lassock.pid"
+pidfile=${CURRENT_HOME}/lassock.pid
 
 TestPid () {
     if [ -f ${pidfile} ] ; then

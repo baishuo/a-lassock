@@ -2,7 +2,7 @@
 PRG="${0}"
 PRGDIR=`dirname ${PRG}`
 CURRENT_HOME=`cd "${PRGDIR}/.." > /dev/null;pwd `
-statuechange=${CURRENT_HOME}"/statuechange.aleiye"
+statuechange=${CURRENT_HOME}/statuechange.aleiye
 
 rm -rf ${statuechange}
 

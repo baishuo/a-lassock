@@ -2,7 +2,7 @@
 PRG="${0}"
 PRGDIR=`dirname ${PRG}`
 CURRENT_HOME=`cd "${PRGDIR}/.." > /dev/null;pwd `
-pidfile=${CURRENT_HOME}"/check.pid"
+pidfile=${CURRENT_HOME}/check.pid
 
 
 TestPid () {
