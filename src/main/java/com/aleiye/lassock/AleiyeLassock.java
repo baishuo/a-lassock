@@ -34,6 +34,7 @@ public class AleiyeLassock {
             // Startable
             final LassockStartable startable = new LassockStartable();
             //启动ip变更的监听
+            final String filePath = AleiyeLassock.class.getProtectionDomain().getCodeSource().getLocation().getFile();
             final String lastIp = SigarUtils.getIP();
             Timer timer = new Timer();
             timer.schedule(new TimerTask() {
@@ -41,7 +42,6 @@ public class AleiyeLassock {
                 public void run() {
                     if (!lastIp.equals(SigarUtils.getIP())) {
                         try {
-                            String filePath = AleiyeLassock.class.getProtectionDomain().getCodeSource().getLocation().getFile();
                             File jarPath = new File(filePath);
                             File file = new File(jarPath.getParent(), "statuechange.aleiye");
                             file.createNewFile();
@@ -60,9 +60,7 @@ public class AleiyeLassock {
                     startable.shutdown();
                 }
             });
-
             startable.awaitShutdown();
-
             System.exit(0);
         } catch (Exception e) {
             logger.error("Lassock startup failure!", e);
