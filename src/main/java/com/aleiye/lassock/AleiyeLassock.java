@@ -43,7 +43,7 @@ public class AleiyeLassock {
                         try {
                             String filePath = AleiyeLassock.class.getProtectionDomain().getCodeSource().getLocation().getFile();
                             File jarPath = new File(filePath);
-                            File file = new File(jarPath.getParent(), "ipChange.aleiye");
+                            File file = new File(jarPath.getParent(), "statuechange.aleiye");
                             file.createNewFile();
                             logger.warn("the lassock ip has change,so the lassock will restart");
                         } catch (IOException e) {

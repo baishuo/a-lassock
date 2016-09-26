@@ -2,9 +2,9 @@
 PRG="${0}"
 PRGDIR=`dirname ${PRG}`
 CURRENT_HOME=`cd "${PRGDIR}/.." > /dev/null;pwd `
-ipChangePath=${CURRENT_HOME}"/ipChange.aleiye"
+statuechange=${CURRENT_HOME}"/statuechange.aleiye"
 
-rm -rf ${ipChangePath}
+rm -rf ${statuechange}
 
 sh ${CURRENT_HOME}/bin/lassock-daemon.sh
 
