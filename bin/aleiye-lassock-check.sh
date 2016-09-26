@@ -10,7 +10,7 @@ sh ${CURRENT_HOME}/bin/lassock-daemon.sh
 
 while [ 1 -eq 1 ]
 do
-   if [ -d $ipChangePath ]; then
+   if [ -f $ipChangePath ]; then
       rm -rf ${ipChangePath}
       sh ${CURRENT_HOME}/bin/shutdown.sh
       sh ${CURRENT_HOME}/bin/lassock-daemon.sh
