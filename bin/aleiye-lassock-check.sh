@@ -10,8 +10,8 @@ sh ${CURRENT_HOME}/bin/lassock-daemon.sh
 
 while [ 1 -eq 1 ]
 do
-   if [ -f $ipChangePath ]; then
-      rm -rf ${ipChangePath}
+   if [ -f statuechange ]; then
+      rm -rf ${statuechange}
       sh ${CURRENT_HOME}/bin/shutdown.sh
       sh ${CURRENT_HOME}/bin/lassock-daemon.sh
    fi
