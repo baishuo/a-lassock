@@ -18,7 +18,7 @@ public class TestScanner {
     @Test
     public void testSanner() {
 
-        String inpupath = "/Users/weiwentao/Downloads/yiyang/syslog/";
+        String inpupath = "/Users/weiwentao/Downloads/log/";
         int index = inpupath.indexOf('*');
         String path = "";
         String include = "*";
@@ -31,21 +31,22 @@ public class TestScanner {
                 include = inpupath.substring(lastIndex + 1);
             }
         }else{
-            path = inpupath;
+            path = inpupath.substring(0,inpupath.lastIndexOf("/"));
+            include = inpupath.substring(inpupath.lastIndexOf("/"));
         }
 
         System.out.println(path + "===" + include);
 
         DirectoryScanner scanner = new DirectoryScanner();
         scanner.setBasedir(path);
-        scanner.setIncludes(new String[]{include,""});
+        scanner.setIncludes(new String[]{include+"/*"});
         scanner.scan();
 
         String[] files = scanner.getIncludedFiles();
 
         for (int i = 0; i < files.length; i++) {
             File file = new File(path,files[i]);
-            System.out.println(file.exists());
+            System.out.println(file.getAbsoluteFile());
         }
     }
 

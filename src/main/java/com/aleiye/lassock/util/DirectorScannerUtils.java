@@ -30,8 +30,8 @@ public class DirectorScannerUtils {
                 pathInclude = inputPath.substring(lastIndex + 1);
             }
         } else {
-            path = inputPath;
-            pathInclude = "*";
+            path = inputPath.substring(0, inputPath.lastIndexOf("/"));
+            pathInclude = inputPath.substring(inputPath.lastIndexOf("/"));
         }
         return new FilePathParseInfo(path, pathInclude);
     }
@@ -41,14 +41,15 @@ public class DirectorScannerUtils {
         scanner.setBasedir(filePathParseInfo.getBasePath());
 
         ObjectMapper objectMapper = new ObjectMapper();
-        String[] includes = new String[]{filePathParseInfo.getIncludefile()};
+        String[] includes = new String[]{filePathParseInfo.getIncludefile() + "/*"};
         if (fileIncludesJson != null && fileIncludesJson.length() > 0) {
             try {
                 List<String> fileIncludes = objectMapper.readValue(fileIncludesJson, List.class);
-                includes = new String[fileIncludes.size() + 1];
-                includes[0] = filePathParseInfo.getIncludefile();
-                for (int i = 0; i < fileIncludes.size(); i++) {
-                    includes[i + 1] = fileIncludes.get(i);
+                if (fileIncludes.size() > 0) {
+                    includes = new String[fileIncludes.size()];
+                    for (int i = 0; i < fileIncludes.size(); i++) {
+                        includes[i] = filePathParseInfo.getIncludefile() + "/" + fileIncludes.get(i);
+                    }
                 }
             } catch (IOException e) {
                 logger.warn("parse includes error", e);
