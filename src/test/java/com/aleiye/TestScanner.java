@@ -1,5 +1,7 @@
 package com.aleiye;
 
+import com.aleiye.lassock.live.hill.source.text.FilePathParseInfo;
+import com.aleiye.lassock.util.DirectorScannerUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.plexus.util.DirectoryScanner;
 import org.codehaus.plexus.util.Scanner;
@@ -16,36 +18,23 @@ import java.util.List;
 public class TestScanner {
 
     @Test
-    public void testSanner() {
+    public void testSanner() throws IOException {
 
-        String inpupath = "/Users/weiwentao/Downloads/log/";
-        int index = inpupath.indexOf('*');
-        String path = "";
-        String include = "*";
-        if (index != -1) {
-            path = inpupath.substring(0, index);
-            include = inpupath.substring(index);
-            if (!path.endsWith("/")) {
-                int lastIndex = path.lastIndexOf("/");
-                path = inpupath.substring(0, lastIndex + 1);
-                include = inpupath.substring(lastIndex + 1);
-            }
-        }else{
-            path = inpupath.substring(0,inpupath.lastIndexOf("/"));
-            include = inpupath.substring(inpupath.lastIndexOf("/"));
-        }
+        String inpupath = "/Users/weiwentao/Downloads/log/log.log";
+        FilePathParseInfo filePathParseInfo = DirectorScannerUtils.parseFilePath(inpupath);
+        System.out.println(filePathParseInfo.getBasePath());
+        System.out.println(filePathParseInfo.getIncludefile());
 
-        System.out.println(path + "===" + include);
 
-        DirectoryScanner scanner = new DirectoryScanner();
-        scanner.setBasedir(path);
-        scanner.setIncludes(new String[]{include+"/*"});
-        scanner.scan();
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<String> iList = new ArrayList<>();
+        iList.add("");
 
-        String[] files = scanner.getIncludedFiles();
+
+        String[] files = DirectorScannerUtils.scannerFiles("","",filePathParseInfo);
 
         for (int i = 0; i < files.length; i++) {
-            File file = new File(path,files[i]);
+            File file = new File(filePathParseInfo.getBasePath(),files[i]);
             System.out.println(file.getAbsoluteFile());
         }
     }

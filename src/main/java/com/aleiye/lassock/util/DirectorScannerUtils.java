@@ -18,21 +18,8 @@ public class DirectorScannerUtils {
 
     public static FilePathParseInfo parseFilePath(String inputPath) {
 
-        int index = inputPath.indexOf('*');
-        String path;
-        String pathInclude;
-        if (index != -1) {
-            path = inputPath.substring(0, index);
-            pathInclude = inputPath.substring(index);
-            if (!path.endsWith("/")) {
-                int lastIndex = path.lastIndexOf("/");
-                path = inputPath.substring(0, lastIndex + 1);
-                pathInclude = inputPath.substring(lastIndex + 1);
-            }
-        } else {
-            path = inputPath.substring(0, inputPath.lastIndexOf("/"));
-            pathInclude = inputPath.substring(inputPath.lastIndexOf("/"));
-        }
+        String path = inputPath.substring(0, inputPath.lastIndexOf("/"));
+        String pathInclude = inputPath.substring(inputPath.lastIndexOf("/"));
         return new FilePathParseInfo(path, pathInclude);
     }
 
@@ -41,7 +28,7 @@ public class DirectorScannerUtils {
         scanner.setBasedir(filePathParseInfo.getBasePath());
 
         ObjectMapper objectMapper = new ObjectMapper();
-        String[] includes = new String[]{filePathParseInfo.getIncludefile() + "/*"};
+        String[] includes = new String[]{filePathParseInfo.getIncludefile() + "/*", filePathParseInfo.getIncludefile()};
         if (fileIncludesJson != null && fileIncludesJson.length() > 0) {
             try {
                 List<String> fileIncludes = objectMapper.readValue(fileIncludesJson, List.class);
