@@ -47,7 +47,7 @@ public class DirectorScannerUtils {
                 List<String> fileExclude = objectMapper.readValue(filesExcludesJson, List.class);
                 String[] excludes = new String[fileExclude.size()];
                 for (int i = 0; i < fileExclude.size(); i++) {
-                    excludes[i] = fileExclude.get(i);
+                    excludes[i] = filePathParseInfo.getIncludefile()+ "/" + fileExclude.get(i);
                 }
                 scanner.setExcludes(excludes);
             } catch (IOException e) {

@@ -20,7 +20,7 @@ public class TestScanner {
     @Test
     public void testSanner() throws IOException {
 
-        String inpupath = "/Users/weiwentao/Downloads/log/log.log";
+        String inpupath = "/Users/weiwentao/Downloads/log";
         FilePathParseInfo filePathParseInfo = DirectorScannerUtils.parseFilePath(inpupath);
         System.out.println(filePathParseInfo.getBasePath());
         System.out.println(filePathParseInfo.getIncludefile());
@@ -28,10 +28,10 @@ public class TestScanner {
 
         ObjectMapper objectMapper = new ObjectMapper();
         List<String> iList = new ArrayList<>();
-        iList.add("");
+        iList.add("log.log");
 
 
-        String[] files = DirectorScannerUtils.scannerFiles("","",filePathParseInfo);
+        String[] files = DirectorScannerUtils.scannerFiles("",objectMapper.writeValueAsString(iList),filePathParseInfo);
 
         for (int i = 0; i < files.length; i++) {
             File file = new File(filePathParseInfo.getBasePath(),files[i]);
