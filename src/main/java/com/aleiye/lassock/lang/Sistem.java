@@ -41,9 +41,7 @@ public class Sistem {
         String ip0 = system.getString("ip");
         ip = StringUtils.isNotBlank(ip0) ? ip0 : SigarUtils.getIP();
         // 获取HOST
-        String host0 = system.getString("hostName");
-        host0 = StringUtils.isNotBlank(host0) ? host0 : System.getProperty("local.hostName");
-        host = "localhost".equals(host0) ? ip : host0;
+        host = System.getProperty("local.hostName");
         // 获取MAC
         String mac0 = system.getString("mac");
         mac = StringUtils.isNotBlank(mac0) ? mac0 : SigarUtils.getMac();
