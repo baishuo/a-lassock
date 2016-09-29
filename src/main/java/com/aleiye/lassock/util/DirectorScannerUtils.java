@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -45,11 +46,13 @@ public class DirectorScannerUtils {
         if (filesExcludesJson != null && filesExcludesJson.length() > 0) {
             try {
                 List<String> fileExclude = objectMapper.readValue(filesExcludesJson, List.class);
-                String[] excludes = new String[fileExclude.size()];
+                List<String> excludes = new ArrayList<String>();
                 for (int i = 0; i < fileExclude.size(); i++) {
-                    excludes[i] = filePathParseInfo.getIncludefile()+ "/" + fileExclude.get(i);
+                    if (!fileExclude.get(i).trim().isEmpty()) {
+                        excludes.add(filePathParseInfo.getIncludefile() + "/" + fileExclude.get(i));
+                    }
                 }
-                scanner.setExcludes(excludes);
+                scanner.setExcludes(excludes.toArray(new String[]{}));
             } catch (IOException e) {
                 logger.warn("parse excludes error", e);
             }

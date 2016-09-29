@@ -28,10 +28,10 @@ public class TestScanner {
 
         ObjectMapper objectMapper = new ObjectMapper();
         List<String> iList = new ArrayList<>();
-        iList.add("log.log");
+        iList.add("*log.log");
 
 
-        String[] files = DirectorScannerUtils.scannerFiles("",objectMapper.writeValueAsString(iList),filePathParseInfo);
+        String[] files = DirectorScannerUtils.scannerFiles("[\"*log.log\"]","[\"*.txt\",\"*.log\"]",filePathParseInfo);
 
         for (int i = 0; i < files.length; i++) {
             File file = new File(filePathParseInfo.getBasePath(),files[i]);
