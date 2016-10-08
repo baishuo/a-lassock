@@ -263,7 +263,7 @@ public class TextSource extends AbstractEventDrivenSource implements Runnable {
                 checkError();
                 Thread.sleep(1000);
             } catch (Exception e) {
-                ;
+                logger.error("check file error", e);
             }
         }
     }
@@ -310,7 +310,7 @@ public class TextSource extends AbstractEventDrivenSource implements Runnable {
                 this.sign.getIntelligence().setState(ShadeState.NORMAL);
         } catch (Exception e) {
             this.sign.getIntelligence().setState(ShadeState.ERROR);
-            logger.error(e.getMessage(),e);
+            logger.error(e.getMessage(), e);
             try {
                 Thread.sleep(5000);
             } catch (InterruptedException e1) {
