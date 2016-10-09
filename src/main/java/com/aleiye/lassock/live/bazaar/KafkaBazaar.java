@@ -198,6 +198,7 @@ public class KafkaBazaar extends AbstractBazaar {
         try {
             eventBuilder.setContent(mr.getBody());
             eventBuilder.addParam(mr.getHeaders());
+            eventBuilder.addParam(EventKey.COLLECTTIME, String.valueOf(System.currentTimeMillis()));
             //增加唯一Id,防止传输重复
             if (autoCreateId) {
                 eventBuilder.addParam(EventKey.ID, uuidGenerator.generate().toString());

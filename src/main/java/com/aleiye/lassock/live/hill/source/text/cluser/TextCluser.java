@@ -9,6 +9,8 @@ import com.aleiye.common.exception.AuthWrongException;
 import com.aleiye.lassock.live.exception.SignRemovedException;
 import com.aleiye.lassock.live.hill.source.text.CluserSign;
 import com.aleiye.lassock.live.hill.source.text.PickPolicy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 事件驱动
@@ -18,6 +20,8 @@ import com.aleiye.lassock.live.hill.source.text.PickPolicy;
  * @since 2015年5月18日
  */
 public abstract class TextCluser implements Cluser, Runnable {
+
+    private static final Logger _LOG = LoggerFactory.getLogger(TextCluser.class);
 
     protected final AtomicBoolean done = new AtomicBoolean(false);
     protected final CluserSign sign;
@@ -60,6 +64,8 @@ public abstract class TextCluser implements Cluser, Runnable {
             this.setState(CluserState.ERR);
         } catch (AuthWrongException e) {
             this.setState(CluserState.ERR);
+        } catch (Exception e) {
+            _LOG.error("pick error", e);
         }
     }
 
