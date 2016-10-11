@@ -25,6 +25,7 @@ import com.aleiye.lassock.lifecycle.AbstractLifecycleAware;
 import com.aleiye.lassock.live.Live;
 import com.aleiye.lassock.util.ConfigUtils;
 import com.aleiye.lassock.util.MixedUtils;
+import com.aleiye.lassock.util.StatusUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import scala.concurrent.Await;
@@ -94,10 +95,12 @@ public class DefaultMonitor extends AbstractLifecycleAware implements Monitor {
                     if (!result.equals("successful")) {
                         _LOG.error("register lassock error");
                         _LOG.error(result);
+                        StatusUtils.markStatusChange(true);
                         System.exit(0);
                     }
                 } catch (Exception e) {
                     _LOG.error("regiester lassock error,so the lassock will shutdown", e);
+                    StatusUtils.markStatusChange();
                     System.exit(0);
                 }
 

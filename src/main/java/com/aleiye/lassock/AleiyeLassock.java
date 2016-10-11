@@ -1,13 +1,11 @@
 package com.aleiye.lassock;
 
+import com.aleiye.lassock.lang.Sistem;
+import com.aleiye.lassock.util.SigarUtils;
+import com.aleiye.lassock.util.StatusUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.aleiye.lassock.lang.Sistem;
-import com.aleiye.lassock.util.SigarUtils;
-
-import java.io.File;
-import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -34,21 +32,13 @@ public class AleiyeLassock {
             // Startable
             final LassockStartable startable = new LassockStartable();
             //启动ip变更的监听
-            final String filePath = AleiyeLassock.class.getProtectionDomain().getCodeSource().getLocation().getFile();
             final String lastIp = SigarUtils.getIP();
             Timer timer = new Timer();
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
                     if (!lastIp.equals(SigarUtils.getIP())) {
-                        try {
-                            File jarPath = new File(filePath);
-                            File file = new File(jarPath.getParent(), "statuechange.aleiye");
-                            file.createNewFile();
-                            logger.warn("the lassock ip has change,so the lassock will restart");
-                        } catch (IOException e) {
-                            logger.error("create ipChange.aleiye file error", e);
-                        }
+                        StatusUtils.markStatusChange();
                         System.exit(0);
                     }
                 }
