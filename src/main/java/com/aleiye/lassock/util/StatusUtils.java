@@ -23,19 +23,17 @@ public class StatusUtils {
     public static void markStatusChange(boolean shutDown) {
         try {
             File jarPath = new File(filePath);
-
             String fileName;
             if (shutDown) {
                 fileName = "shutdown.aleiye";
             } else {
                 fileName = "statuechange.aleiye";
             }
-
             File file = new File(jarPath.getParent(), fileName);
             file.createNewFile();
             logger.warn("the lassock ip has change,so the lassock will restart");
         } catch (IOException e) {
-            logger.error("create ipChange.aleiye file error", e);
+            logger.error("mark lassock status error", e);
         }
     }
 }
