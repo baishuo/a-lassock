@@ -177,26 +177,32 @@ public class FileCluser extends TextCluser {
         // 标记为0
         ss.mark();
         boolean eol = false;
+        //需要过滤的字节数
+        int skipChartNum = 0;
         while (ss.hasRemaining()) {
             switch (ss.get()) {
                 case '\n':
                     eol = true;
+                    skipChartNum = 1;
                     break;
                 case '\r':
                     if (ss.hasRemaining()) {//只有当有下个字符时才能继续
                         // 判断下一个字符是不是换行
                         if ((ss.get()) == '\n') {
                             eol = true;
+                            skipChartNum = 2;
                         }
                     }
                     break;
             }
             if (eol) {
                 // 回朔一位
-                ss.position(ss.position() - 1);
+                ss.position(ss.position() - skipChartNum);
                 this.readLine();
                 // 跳过换行符
-                ss.get();
+                for (int i = 0; i < skipChartNum; i++) {
+                    ss.get();
+                }
                 // 标记行起始位
                 ss.mark();
                 sp = ss.position();
@@ -260,10 +266,10 @@ public class FileCluser extends TextCluser {
                     break;
                 case '\r':
                     // 判断下一个字符是不是换行
-                    if ((ss.get()) == '\n') {
-                        isRegularTrue = false;
-                        eol = writeBuffer();
-                    }
+//                    if ((ss.get()) == '\n') {
+                    isRegularTrue = false;
+                    eol = writeBuffer();
+//                    }
                     break;
             }
             if (eol) {
@@ -271,7 +277,7 @@ public class FileCluser extends TextCluser {
                 ss.position(ss.position() - 1);//				this.readLine();
                 this.readLineByRegular();
                 // 跳过换行符
-                ss.get();
+//                ss.get();
                 // 标记行起始位
                 ss.mark();
                 sp = ss.position();
@@ -306,7 +312,8 @@ public class FileCluser extends TextCluser {
                     Matcher m = p.matcher(linesString);
                     m.matches();
                     if ((lineLast == '\n' || lineLast == '\r') && m.matches()) {
-                        size = arx.limit();
+//                        size = arx.limit();
+                        size = arx.position();
                         arx.flip();
                         line = new byte[size];
                         arx.get(line);

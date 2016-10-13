@@ -2,11 +2,12 @@
 PRG="${0}"
 PRGDIR=`dirname ${PRG}`
 CURRENT_HOME=`cd "${PRGDIR}/.." > /dev/null;pwd `
-pidfile=${CURRENT_HOME}"/lassock.pid"
+pidfile=${CURRENT_HOME}/check.pid
+
 
 TestPid () {
     if [ -f ${pidfile} ] ; then
-        if ps ux | grep `cat $pidfile` |grep "lassock.jar" | grep -v "grep" > /dev/null ; then
+        if ps ux | grep `cat $pidfile` |grep "aleiye-lassock-check.sh" | grep -v "grep" > /dev/null ; then
             echo "`date +"%F %T"`: `basename $0` is running!  main process id = $(cat ${pidfile})"
             exit 1
         else
@@ -17,11 +18,5 @@ TestPid () {
 # Trap
 trap "rm -f ${pidfile} ; exit 1 " 1 2 3 15
 TestPid
-
-devName=`hostname`
-
-nohup java -cp ${CURRENT_HOME}/conf/*:${CURRENT_HOME}/lassock.jar com.aleiye.lassock.Lassock ${devName} > /dev/null 2>&1 &
-echo "lassock start successful"
+nohup sh ${CURRENT_HOME}/bin/aleiye-lassock-check.sh >> /dev/null 2>&1 &
 echo $! > ${pidfile}
-
-

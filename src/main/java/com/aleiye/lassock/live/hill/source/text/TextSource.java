@@ -13,13 +13,13 @@ import com.aleiye.lassock.live.hill.source.text.cluser.FileCluser;
 import com.aleiye.lassock.live.hill.source.text.cluser.TextCluser;
 import com.aleiye.lassock.live.model.Mushroom;
 import com.aleiye.lassock.util.CloseableUtils;
+import com.aleiye.lassock.util.DirectorScannerUtils;
 import com.aleiye.lassock.util.MarkUtil;
 import com.aleiye.lassock.util.ScrollUtils;
 import com.google.common.collect.Sets;
 import com.google.common.collect.Sets.SetView;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.codehaus.plexus.util.DirectoryScanner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -263,7 +263,7 @@ public class TextSource extends AbstractEventDrivenSource implements Runnable {
                 checkError();
                 Thread.sleep(1000);
             } catch (Exception e) {
-                ;
+                logger.error("check file error", e);
             }
         }
     }
@@ -310,8 +310,7 @@ public class TextSource extends AbstractEventDrivenSource implements Runnable {
                 this.sign.getIntelligence().setState(ShadeState.NORMAL);
         } catch (Exception e) {
             this.sign.getIntelligence().setState(ShadeState.ERROR);
-            logger.error(e.getMessage());
-            logger.debug("", e);
+            logger.error(e.getMessage(), e);
             try {
                 Thread.sleep(5000);
             } catch (InterruptedException e1) {
@@ -404,40 +403,21 @@ public class TextSource extends AbstractEventDrivenSource implements Runnable {
         if (StringUtils.isBlank(inputPath)) {
             throw new IllegalArgumentException("Path in not be empty!");
         }
-        String reg = course.getString(CourseConst.text.PATH_FILTER_REGEX);
+        String fileIncludesJson = course.getString(CourseConst.text.FILES_INCLUDES);
+        String filesExcludesJson = course.getString(CourseConst.text.FILES_EXCLUDES);
         //使用新的路径过滤,降低使用的难度
         File inputFile = new File(inputPath.trim());
-        if(inputFile.exists()&& inputFile.isFile()){
+        if (inputFile.exists() && inputFile.isFile()) {
             CluserSign sign = creatSign(inputFile);
             sign.setRegular(course.getString(CourseConst.text.DATA_REGULAR));
             sign.setEncode(course.getString(CourseConst.text.DATA_ENCODE));
             details.add(sign);
-        }else{
-            int index = inputPath.indexOf('*');
-            String path;
-            String[] include = new String[2];
-            if (index != -1) {
-                path = inputPath.substring(0, index);
-                include[0] = inputPath.substring(index);
-                if (!path.endsWith("/")) {
-                    int lastIndex = path.lastIndexOf("/");
-                    path = inputPath.substring(0, lastIndex + 1);
-                    include[0] = inputPath.substring(lastIndex + 1);
-                }
-            } else {
-                path = inputPath;
-                include[0] = "*";
-            }
-            include[1] = reg == null ? "" : reg;
-            DirectoryScanner scanner = new DirectoryScanner();
-            scanner.setBasedir(path);
-            scanner.setIncludes(include);
-            scanner.scan();
-
-            String[] fileList = scanner.getIncludedFiles();
+        } else {
+            FilePathParseInfo filePathParseInfo = DirectorScannerUtils.parseFilePath(inputPath);
+            String[] fileList = DirectorScannerUtils.scannerFiles(fileIncludesJson, filesExcludesJson, filePathParseInfo);
             if (fileList != null && fileList.length > 0) {
                 for (String filePath : fileList) {
-                    CluserSign sign = creatSign(new File(path, filePath));
+                    CluserSign sign = creatSign(new File(filePathParseInfo.getBasePath(), filePath));
                     sign.setRegular(course.getString(CourseConst.text.DATA_REGULAR));
                     sign.setEncode(course.getString(CourseConst.text.DATA_ENCODE));
                     details.add(sign);
@@ -446,21 +426,9 @@ public class TextSource extends AbstractEventDrivenSource implements Runnable {
                 throw new IllegalArgumentException("Input path " + inputPath + " can't find any file!");
             }
         }
-
-        //		// 创建FILE FINDER
-//		FileFinder ff = new FileFinder(new String[] {
-//			reg
-//		});
-//		// 获取所有可读文件
-//		List<File> findFiles = ff.getFiles(inputPath);
-//		// 创建Units
-//		for (File file : findFiles) {
-//			CluserSign sign = creatSign(file);
-//			sign.setRegular(course.getString(CourseConst.text.DATA_REGULAR));
-//			details.add(sign);
-//		}
         return details;
     }
+
 
     CluserSign creatSign(File file) {
         FileAttributes bfa = new FileAttributes(file);
